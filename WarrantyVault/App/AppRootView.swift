@@ -1,8 +1,13 @@
+import SwiftData
 import SwiftUI
 
 struct AppRootView: View {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    #if DEBUG
+    @Environment(\.modelContext) private var modelContext
+    @Query private var previewItems: [WarrantyItem]
+    #endif
 
     var body: some View {
         ZStack {
@@ -17,6 +22,28 @@ struct AppRootView: View {
             }
         }
         .animation(MotionManager.softAnimation(reduceMotion: reduceMotion), value: hasCompletedOnboarding)
+        .onAppear {
+            bootstrapPreviewIfNeeded()
+        }
+    }
+
+    private func bootstrapPreviewIfNeeded() {
+        #if DEBUG
+        guard ProcessInfo.processInfo.arguments.contains("-WarrantyVaultPreviewMode") else {
+            return
+        }
+
+        hasCompletedOnboarding = true
+
+        guard previewItems.isEmpty else {
+            return
+        }
+
+        for item in DemoDataProvider.makeItems(includeDebugExtras: true, namePrefix: "Demo ") {
+            modelContext.insert(item)
+        }
+        try? modelContext.save()
+        #endif
     }
 }
 

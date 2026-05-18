@@ -1,0 +1,96 @@
+name: Simulator Preview
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  preview:
+    runs-on: macos-latest
+    env:
+      SCHEME: WarrantyVault
+      PROJECT: WarrantyVault.xcodeproj
+      APP_BUNDLE_ID: com.yourname.warrantyvault
+      SIMULATOR_DESTINATION: platform=iOS Simulator,name=iPhone 16
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show Xcode
+        run: |
+          xcodebuild -version
+          xcrun --version
+
+      - name: Install XcodeGen
+        run: |
+          brew update
+          brew install xcodegen
+
+      - name: Generate Xcode project
+        run: |
+          chmod +x Scripts/generate_project.sh
+          ./Scripts/generate_project.sh
+
+      - name: Build simulator app
+        run: |
+          mkdir -p build/logs build/simulator build/screenshots
+          xcodebuild \
+            -project "$PROJECT" \
+            -scheme "$SCHEME" \
+            -destination "$SIMULATOR_DESTINATION" \
+            -configuration Debug \
+            -derivedDataPath build/DerivedData \
+            CODE_SIGNING_ALLOWED=NO \
+            APP_BUNDLE_ID="$APP_BUNDLE_ID" \
+            clean build | tee build/logs/simulator-preview-build.log
+
+          APP_PATH="$(find build/DerivedData/Build/Products -type d -name 'WarrantyVault.app' -path '*iphonesimulator*' -print -quit)"
+          if [[ -z "$APP_PATH" ]]; then
+            echo "WarrantyVault.app was not found in DerivedData."
+            exit 1
+          fi
+          echo "$APP_PATH" > build/simulator/app-path.txt
+          ditto -c -k --keepParent "$APP_PATH" build/simulator/WarrantyVault-simulator-app.zip
+
+      - name: Boot simulator and capture screenshots
+        run: |
+          SIM_NAME="iPhone 16"
+          xcrun simctl boot "$SIM_NAME" || true
+          xcrun simctl bootstatus "$SIM_NAME" -b
+
+          APP_PATH="$(cat build/simulator/app-path.txt)"
+          xcrun simctl install booted "$APP_PATH"
+          xcrun simctl launch booted "$APP_BUNDLE_ID" -WarrantyVaultPreviewMode
+          sleep 8
+          xcrun simctl io booted screenshot build/screenshots/01-home-dashboard.png
+
+          xcrun simctl terminate booted "$APP_BUNDLE_ID" || true
+          xcrun simctl launch booted "$APP_BUNDLE_ID"
+          sleep 4
+          xcrun simctl io booted screenshot build/screenshots/02-relaunch.png
+
+      - name: Upload preview screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: WarrantyVault-preview-screenshots
+          path: build/screenshots/*.png
+          if-no-files-found: error
+
+      - name: Upload simulator app
+        uses: actions/upload-artifact@v4
+        with:
+          name: WarrantyVault-simulator-app
+          path: build/simulator/WarrantyVault-simulator-app.zip
+          if-no-files-found: error
+
+      - name: Upload preview logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: WarrantyVault-preview-logs
+          path: build/logs/*
+          if-no-files-found: warn

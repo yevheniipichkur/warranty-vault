@@ -79,7 +79,7 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             APP_BUNDLE_ID="$BUNDLE_ID_VALUE" \
             build | tee build/logs/simulator-build.log
-          APP_PATH="$(find build/DerivedData/Build/Products -path '*Debug-iphonesimulator/WarrantyVault.app' -print -quit)"
+          APP_PATH="$(find build/DerivedData/Build/Products -type d -name 'WarrantyVault.app' -path '*iphonesimulator*' -print -quit)"
           if [[ -n "$APP_PATH" ]]; then
             ditto -c -k --keepParent "$APP_PATH" build/simulator/WarrantyVault-simulator-app.zip
           fi
