@@ -24,7 +24,7 @@ jobs:
       SCHEME: WarrantyVault
       PROJECT: WarrantyVault.xcodeproj
       SIMULATOR_DESTINATION: platform=iOS Simulator,name=iPhone 16
-      EXPORT_METHOD: ${{ github.event.inputs.export_method || 'development' }}
+      EXPORT_METHOD: ${{ github.event.inputs.export_method || 'ad-hoc' }}
       BUNDLE_ID_SECRET: ${{ secrets.BUNDLE_ID || 'com.yevheniipichkur.warrantyvault' }}
       APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID || 'G66CMCY8H2' }}
       CERTIFICATE_BASE64: ${{ secrets.CERTIFICATE_BASE64 }}
