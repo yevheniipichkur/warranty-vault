@@ -1,0 +1,243 @@
+"app.name" = "Сейф гарантій";
+
+"language.system" = "Мова системи";
+"language.english" = "English";
+"language.polish" = "Polski";
+"language.ukrainian" = "Українська";
+"language.russian" = "Русский";
+
+"tab.home" = "Головна";
+"tab.items" = "Речі";
+"tab.receipts" = "Чеки";
+"tab.reminders" = "Нагад.";
+"tab.settings" = "Налашт.";
+
+"common.next" = "Далі";
+"common.cancel" = "Скасувати";
+"common.save" = "Зберегти";
+"common.delete" = "Видалити";
+"common.ok" = "OK";
+"common.none" = "Немає";
+"common.edit" = "Змінити";
+"common.close" = "Закрити";
+
+"onboarding.receipts.title" = "Зберігайте чеки безпечно";
+"onboarding.receipts.message" = "Зберігайте чеки, фото товарів, серійні номери та гарантійні документи локально на iPhone.";
+"onboarding.reminders.title" = "Не пропускайте завершення гарантії";
+"onboarding.reminders.message" = "Створюйте локальні нагадування до завершення гарантії без акаунта й сервера.";
+"onboarding.export.title" = "Експортуйте архів гарантій";
+"onboarding.export.message" = "Створюйте охайні PDF для товару, коли потрібен доказ для сервісу або продажу.";
+"onboarding.getStarted" = "Почати";
+
+"home.title" = "Головна";
+"home.empty.title" = "Сейф порожній";
+"home.empty.message" = "Додайте першу покупку, щоб відстежувати гарантії, чеки та документи.";
+"home.stat.items" = "Усі речі";
+"home.stat.expiring" = "Скоро заверш.";
+"home.stat.expired" = "Прострочені";
+"home.stat.value" = "Загальна вартість";
+"home.upcoming" = "Найближчі завершення";
+"home.noUpcoming" = "Немає найближчих завершень активних гарантій.";
+
+"items.title" = "Речі";
+"items.search.placeholder" = "Пошук за назвою, брендом, магазином, номером";
+"items.empty.title" = "Речей ще немає";
+"items.empty.message" = "Додайте товари й документи, щоб створити архів гарантій.";
+"items.noResults.title" = "Немає результатів пошуку";
+"items.noResults.message" = "Спробуйте інший запит або фільтр.";
+
+"item.add" = "Додати річ";
+"item.add.title" = "Додати річ";
+"item.edit.title" = "Змінити річ";
+"item.name" = "Назва";
+"item.brand" = "Бренд";
+"item.model" = "Модель";
+"item.serialNumber" = "Серійний номер";
+"item.store" = "Магазин";
+"item.purchaseDate" = "Дата покупки";
+"item.warrantyDuration" = "Тривалість гарантії";
+"item.warrantyExpiration" = "Дата завершення гарантії";
+"item.price" = "Ціна";
+"item.currency" = "Валюта";
+"item.category" = "Категорія";
+"item.notes" = "Нотатки";
+
+"form.section.basic" = "Основне";
+"form.section.warranty" = "Гарантія";
+"form.section.purchase" = "Покупка";
+"form.section.images" = "Фото й документи";
+
+"duration.noWarranty" = "Без гарантії";
+"duration.6" = "6 місяців";
+"duration.12" = "12 місяців";
+"duration.24" = "24 місяці";
+"duration.36" = "36 місяців";
+"duration.custom" = "Власна дата";
+
+"category.electronics" = "Електроніка";
+"category.home" = "Дім";
+"category.kitchen" = "Кухня";
+"category.car" = "Авто";
+"category.tools" = "Інструменти";
+"category.furniture" = "Меблі";
+"category.documents" = "Документи";
+"category.other" = "Інше";
+
+"status.active" = "Активна";
+"status.expiringSoon" = "Скоро завершується";
+"status.expired" = "Прострочена";
+"status.noWarranty" = "Без гарантії";
+
+"filter.all" = "Усі";
+"filter.active" = "Активна гарантія";
+"filter.expiringSoon" = "Скоро завершується";
+"filter.expired" = "Прострочені";
+"filter.noWarranty" = "Без гарантії";
+
+"sort.title" = "Сортування";
+"sort.newest" = "Найновіші";
+"sort.warrantyExpiration" = "Завершення гарантії";
+"sort.price" = "Ціна";
+"sort.name" = "Назва";
+
+"image.choose" = "Вибрати зображення";
+"image.replace" = "Замінити зображення";
+"image.remove" = "Видалити зображення";
+"image.product" = "Фото товару";
+"image.receipt" = "Фото чека";
+"image.warrantyDocument" = "Гарантійний документ";
+
+"validation.title" = "Перевірте форму";
+"validation.nameRequired" = "Назва речі обов'язкова.";
+"delete.item.title" = "Видалити річ?";
+"delete.item.message" = "Це видалить річ і локально збережені зображення.";
+
+"detail.section.details" = "Деталі";
+"detail.section.documents" = "Документи";
+"detail.expiringWarning" = "Ця гарантія скоро завершується.";
+"detail.exportPDF" = "Експорт PDF";
+"detail.addReminder" = "Додати нагадування";
+
+"receipts.title" = "Чеки";
+"receipts.search.placeholder" = "Пошук магазину або речі";
+"receipts.empty.title" = "Чеків ще немає";
+"receipts.empty.message" = "Фото чеків, додані до речей, з'являться тут.";
+
+"reminders.title" = "Нагадування";
+"reminders.permission" = "Дозвіл на сповіщення";
+"reminders.enable" = "Увімкнути нагадування";
+"reminders.pending" = "Очікують";
+"reminders.upcoming" = "Найближчі гарантії";
+"reminders.empty.title" = "Нагадувань ще немає";
+"reminders.empty.message" = "Додайте дати гарантій, щоб створити локальні сповіщення.";
+"reminders.status.enabled" = "Сповіщення увімкнені.";
+"reminders.status.denied" = "Сповіщення вимкнені в системних налаштуваннях.";
+"reminders.status.notDetermined" = "Дозвольте сповіщення, щоб отримувати нагадування.";
+
+"settings.title" = "Налаштування";
+"settings.section.language" = "Мова";
+"settings.section.defaults" = "Типові значення";
+"settings.section.appearance" = "Вигляд";
+"settings.section.data" = "Керування даними";
+"settings.section.pro" = "Paywall";
+"settings.section.privacy" = "Приватність";
+"settings.language" = "Мова";
+"settings.defaultCurrency" = "Типова валюта";
+"settings.reminder30" = "За 30 днів до завершення";
+"settings.reminder7" = "За 7 днів до завершення";
+"settings.reminder1" = "За 1 день до завершення";
+"settings.appearanceInfo" = "Використовує системний світлий або темний вигляд.";
+"settings.seedDemo" = "Додати демо-дані";
+"settings.exportJSON" = "Експорт demo JSON";
+"settings.showOnboarding" = "Показати onboarding";
+"settings.deleteAll" = "Видалити всі дані";
+"settings.deleteAll.title" = "Видалити всі дані?";
+"settings.deleteAll.message" = "Це видалить усі локальні речі, зображення та нагадування.";
+"settings.openPaywall" = "Відкрити Paywall";
+"settings.proUnlocked" = "Pro розблоковано";
+"settings.debugUnlockPro" = "Локально розблокувати Pro";
+"settings.privacyNote" = "All data is stored on your device. No AI. No external server.";
+"settings.dataStaysOnDevice" = "Дані залишаються на вашому пристрої.";
+
+"paywall.navigationTitle" = "Сейф гарантій Pro";
+"paywall.title" = "Сейф гарантій Pro";
+"paywall.subtitle" = "Розблокуйте повний локальний workflow архіву.";
+"paywall.free" = "Free";
+"paywall.free.items" = "До 10 речей";
+"paywall.free.reminders" = "Базові нагадування";
+"paywall.pro" = "Pro";
+"paywall.pro.unlimited" = "Безлімітні речі";
+"paywall.pro.pdf" = "Експорт PDF";
+"paywall.pro.receipts" = "Галерея чеків";
+"paywall.pro.filters" = "Розширені фільтри";
+"paywall.pro.icloud" = "Майбутня синхронізація iCloud";
+"paywall.productsUnavailable" = "Продукти StoreKit ще не налаштовані.";
+"paywall.productIDs" = "Placeholder IDs: warrantyvault.pro.monthly, warrantyvault.pro.yearly";
+
+"notification.expiring.title" = "Гарантія скоро завершується";
+"notification.expiring.body" = "Гарантія %@ завершується за %d дн.";
+
+"pdf.title" = "Архів гарантії";
+"pdf.receipt" = "Чек";
+
+"appearance.system" = "Система";
+"appearance.light" = "Світла";
+"appearance.dark" = "Темна";
+"settings.appearance" = "Вигляд";
+"settings.section.about" = "Про застосунок";
+"settings.appVersion" = "Версія застосунку";
+"item.saved" = "Збережено";
+
+"liveActivity.title" = "Live Activity";
+"liveActivity.start" = "Запустити Live Activity";
+"liveActivity.stop" = "Зупинити Live Activity";
+"liveActivity.status.expiringSoon" = "Гарантія скоро завершується";
+"liveActivity.daysLeft" = "Днів лишилось";
+"liveActivity.checkReceipt" = "Перевірте чек до завершення гарантії.";
+"liveActivity.started" = "Live Activity запущено.";
+"liveActivity.stopped" = "Live Activity зупинено.";
+"liveActivity.failed" = "Не вдалося запустити Live Activity.";
+"liveActivity.unavailable" = "Live Activity недоступна на цьому пристрої.";
+"liveActivity.disabled" = "Live Activities вимкнені в системних налаштуваннях.";
+"liveActivity.noEligibleItem" = "Ця річ не підходить для Live Activity.";
+
+"debug.title" = "Developer / QA";
+"debug.unlocked.title" = "Debug-меню розблоковано";
+"debug.unlocked.message" = "Секція Developer / QA тепер доступна.";
+"debug.section.data" = "Дані";
+"debug.section.paywall" = "Paywall";
+"debug.section.notifications" = "Сповіщення";
+"debug.section.liveActivity" = "Live Activity";
+"debug.section.pdf" = "PDF";
+"debug.section.localization" = "Локалізація";
+"debug.section.appearance" = "Вигляд";
+"debug.section.diagnostics" = "Діагностика";
+"debug.section.reset" = "Скидання";
+"debug.seedDemoData" = "Додати демо-дані";
+"debug.seedDemoData.subtitle" = "Замінює наявні Demo елементи.";
+"debug.clearAllData" = "Очистити всі дані";
+"debug.resetOnboarding" = "Скинути onboarding";
+"debug.togglePro" = "Перемкнути Pro локально";
+"debug.resetPro" = "Скинути Pro";
+"debug.triggerPaywall" = "Показати paywall";
+"debug.testNotifications" = "Тестувати сповіщення";
+"debug.testLiveActivity" = "Тестувати Live Activity";
+"debug.exportTestPDF" = "Експортувати тестовий PDF";
+"debug.showAppPaths" = "Показати шляхи застосунку";
+"debug.resetAllSettings" = "Скинути всі налаштування";
+"debug.createExpiring" = "Створити річ із гарантією, що завершується";
+"debug.createExpired" = "Створити річ із простроченою гарантією";
+"debug.createNoWarranty" = "Створити річ без гарантії";
+"debug.message.title" = "Debug";
+"debug.done" = "Готово.";
+"debug.created" = "Тестову річ створено.";
+"debug.seeded" = "Демо-дані додано.";
+"debug.cleared" = "Усі дані очищено.";
+"debug.resetDone" = "Скидання завершено.";
+"debug.confirm.title" = "Підтвердьте дію";
+"debug.confirm.message" = "Ця debug дія змінить локальні дані застосунку.";
+"debug.seedConfirm.message" = "Наявні Demo елементи буде видалено й створено заново.";
+"debug.resetSettings.message" = "Налаштування застосунку буде скинуто. Речі не буде видалено.";
+"debug.notifications.scheduled" = "Тестове сповіщення заплановано через 5 секунд.";
+"debug.notifications.denied" = "Дозвіл на сповіщення відхилено.";
+"debug.notifications.failed" = "Не вдалося запланувати тестове сповіщення.";

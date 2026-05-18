@@ -1,0 +1,243 @@
+"app.name" = "Сейф гарантий";
+
+"language.system" = "Как в системе";
+"language.english" = "English";
+"language.polish" = "Polski";
+"language.ukrainian" = "Українська";
+"language.russian" = "Русский";
+
+"tab.home" = "Главная";
+"tab.items" = "Товары";
+"tab.receipts" = "Чеки";
+"tab.reminders" = "Напом.";
+"tab.settings" = "Настр.";
+
+"common.next" = "Далее";
+"common.cancel" = "Отмена";
+"common.save" = "Сохранить";
+"common.delete" = "Удалить";
+"common.ok" = "OK";
+"common.none" = "Нет";
+"common.edit" = "Править";
+"common.close" = "Закрыть";
+
+"onboarding.receipts.title" = "Храните чеки безопасно";
+"onboarding.receipts.message" = "Сохраняйте чеки, фото товаров, серийные номера и гарантийные документы локально на iPhone.";
+"onboarding.reminders.title" = "Не пропускайте окончание гарантии";
+"onboarding.reminders.message" = "Создавайте локальные напоминания до окончания гарантии без аккаунта и сервера.";
+"onboarding.export.title" = "Экспортируйте архив гарантий";
+"onboarding.export.message" = "Создавайте аккуратные PDF для товара, когда нужен документ для сервиса или продажи.";
+"onboarding.getStarted" = "Начать";
+
+"home.title" = "Главная";
+"home.empty.title" = "Сейф пуст";
+"home.empty.message" = "Добавьте первую покупку, чтобы отслеживать гарантии, чеки и документы.";
+"home.stat.items" = "Все товары";
+"home.stat.expiring" = "Скоро истекают";
+"home.stat.expired" = "Истекли";
+"home.stat.value" = "Общая стоимость";
+"home.upcoming" = "Ближайшие окончания";
+"home.noUpcoming" = "Нет ближайших окончаний активных гарантий.";
+
+"items.title" = "Товары";
+"items.search.placeholder" = "Поиск по названию, бренду, магазину, номеру";
+"items.empty.title" = "Товаров пока нет";
+"items.empty.message" = "Добавьте товары и документы, чтобы создать архив гарантий.";
+"items.noResults.title" = "Нет результатов поиска";
+"items.noResults.message" = "Попробуйте другой запрос или фильтр.";
+
+"item.add" = "Добавить товар";
+"item.add.title" = "Добавить товар";
+"item.edit.title" = "Редактировать товар";
+"item.name" = "Название";
+"item.brand" = "Бренд";
+"item.model" = "Модель";
+"item.serialNumber" = "Серийный номер";
+"item.store" = "Магазин";
+"item.purchaseDate" = "Дата покупки";
+"item.warrantyDuration" = "Срок гарантии";
+"item.warrantyExpiration" = "Дата окончания гарантии";
+"item.price" = "Цена";
+"item.currency" = "Валюта";
+"item.category" = "Категория";
+"item.notes" = "Заметки";
+
+"form.section.basic" = "Основное";
+"form.section.warranty" = "Гарантия";
+"form.section.purchase" = "Покупка";
+"form.section.images" = "Фото и документы";
+
+"duration.noWarranty" = "Без гарантии";
+"duration.6" = "6 месяцев";
+"duration.12" = "12 месяцев";
+"duration.24" = "24 месяца";
+"duration.36" = "36 месяцев";
+"duration.custom" = "Своя дата";
+
+"category.electronics" = "Электроника";
+"category.home" = "Дом";
+"category.kitchen" = "Кухня";
+"category.car" = "Авто";
+"category.tools" = "Инструменты";
+"category.furniture" = "Мебель";
+"category.documents" = "Документы";
+"category.other" = "Другое";
+
+"status.active" = "Активна";
+"status.expiringSoon" = "Скоро истекает";
+"status.expired" = "Истекла";
+"status.noWarranty" = "Без гарантии";
+
+"filter.all" = "Все";
+"filter.active" = "Активная гарантия";
+"filter.expiringSoon" = "Скоро истекает";
+"filter.expired" = "Истекшие";
+"filter.noWarranty" = "Без гарантии";
+
+"sort.title" = "Сортировка";
+"sort.newest" = "Новые";
+"sort.warrantyExpiration" = "Окончание гарантии";
+"sort.price" = "Цена";
+"sort.name" = "Название";
+
+"image.choose" = "Выбрать изображение";
+"image.replace" = "Заменить изображение";
+"image.remove" = "Удалить изображение";
+"image.product" = "Фото товара";
+"image.receipt" = "Фото чека";
+"image.warrantyDocument" = "Гарантийный документ";
+
+"validation.title" = "Проверьте форму";
+"validation.nameRequired" = "Название товара обязательно.";
+"delete.item.title" = "Удалить товар?";
+"delete.item.message" = "Товар и локально сохранённые изображения будут удалены.";
+
+"detail.section.details" = "Детали";
+"detail.section.documents" = "Документы";
+"detail.expiringWarning" = "Эта гарантия скоро истекает.";
+"detail.exportPDF" = "Экспорт PDF";
+"detail.addReminder" = "Добавить напоминание";
+
+"receipts.title" = "Чеки";
+"receipts.search.placeholder" = "Поиск магазина или товара";
+"receipts.empty.title" = "Чеков пока нет";
+"receipts.empty.message" = "Фото чеков, добавленные к товарам, появятся здесь.";
+
+"reminders.title" = "Напоминания";
+"reminders.permission" = "Разрешение уведомлений";
+"reminders.enable" = "Включить напоминания";
+"reminders.pending" = "Ожидают";
+"reminders.upcoming" = "Ближайшие гарантии";
+"reminders.empty.title" = "Напоминаний пока нет";
+"reminders.empty.message" = "Добавьте даты гарантии, чтобы создать локальные уведомления.";
+"reminders.status.enabled" = "Уведомления включены.";
+"reminders.status.denied" = "Уведомления выключены в настройках системы.";
+"reminders.status.notDetermined" = "Разрешите уведомления, чтобы получать напоминания.";
+
+"settings.title" = "Настройки";
+"settings.section.language" = "Язык";
+"settings.section.defaults" = "По умолчанию";
+"settings.section.appearance" = "Оформление";
+"settings.section.data" = "Данные";
+"settings.section.pro" = "Paywall";
+"settings.section.privacy" = "Приватность";
+"settings.language" = "Язык";
+"settings.defaultCurrency" = "Валюта по умолчанию";
+"settings.reminder30" = "За 30 дней до окончания";
+"settings.reminder7" = "За 7 дней до окончания";
+"settings.reminder1" = "За 1 день до окончания";
+"settings.appearanceInfo" = "Использует системную светлую или тёмную тему.";
+"settings.seedDemo" = "Добавить демо-данные";
+"settings.exportJSON" = "Экспорт demo JSON";
+"settings.showOnboarding" = "Показать onboarding";
+"settings.deleteAll" = "Удалить все данные";
+"settings.deleteAll.title" = "Удалить все данные?";
+"settings.deleteAll.message" = "Все локальные товары, изображения и напоминания будут удалены.";
+"settings.openPaywall" = "Открыть Paywall";
+"settings.proUnlocked" = "Pro разблокирован";
+"settings.debugUnlockPro" = "Локально разблокировать Pro";
+"settings.privacyNote" = "All data is stored on your device. No AI. No external server.";
+"settings.dataStaysOnDevice" = "Данные остаются на вашем устройстве.";
+
+"paywall.navigationTitle" = "Сейф гарантий Pro";
+"paywall.title" = "Сейф гарантий Pro";
+"paywall.subtitle" = "Разблокируйте полный локальный workflow архива.";
+"paywall.free" = "Free";
+"paywall.free.items" = "До 10 товаров";
+"paywall.free.reminders" = "Базовые напоминания";
+"paywall.pro" = "Pro";
+"paywall.pro.unlimited" = "Безлимитные товары";
+"paywall.pro.pdf" = "Экспорт PDF";
+"paywall.pro.receipts" = "Галерея чеков";
+"paywall.pro.filters" = "Расширенные фильтры";
+"paywall.pro.icloud" = "Будущая синхронизация iCloud";
+"paywall.productsUnavailable" = "Продукты StoreKit ещё не настроены.";
+"paywall.productIDs" = "Placeholder IDs: warrantyvault.pro.monthly, warrantyvault.pro.yearly";
+
+"notification.expiring.title" = "Гарантия скоро истекает";
+"notification.expiring.body" = "Гарантия %@ истекает через %d дн.";
+
+"pdf.title" = "Архив гарантии";
+"pdf.receipt" = "Чек";
+
+"appearance.system" = "Система";
+"appearance.light" = "Светлая";
+"appearance.dark" = "Тёмная";
+"settings.appearance" = "Оформление";
+"settings.section.about" = "О приложении";
+"settings.appVersion" = "Версия приложения";
+"item.saved" = "Сохранено";
+
+"liveActivity.title" = "Live Activity";
+"liveActivity.start" = "Запустить Live Activity";
+"liveActivity.stop" = "Остановить Live Activity";
+"liveActivity.status.expiringSoon" = "Гарантия скоро истекает";
+"liveActivity.daysLeft" = "Дней осталось";
+"liveActivity.checkReceipt" = "Проверьте чек до окончания гарантии.";
+"liveActivity.started" = "Live Activity запущена.";
+"liveActivity.stopped" = "Live Activity остановлена.";
+"liveActivity.failed" = "Не удалось запустить Live Activity.";
+"liveActivity.unavailable" = "Live Activity недоступна на этом устройстве.";
+"liveActivity.disabled" = "Live Activities выключены в системных настройках.";
+"liveActivity.noEligibleItem" = "Этот товар не подходит для Live Activity.";
+
+"debug.title" = "Developer / QA";
+"debug.unlocked.title" = "Debug-меню разблокировано";
+"debug.unlocked.message" = "Секция Developer / QA теперь доступна.";
+"debug.section.data" = "Данные";
+"debug.section.paywall" = "Paywall";
+"debug.section.notifications" = "Уведомления";
+"debug.section.liveActivity" = "Live Activity";
+"debug.section.pdf" = "PDF";
+"debug.section.localization" = "Локализация";
+"debug.section.appearance" = "Оформление";
+"debug.section.diagnostics" = "Диагностика";
+"debug.section.reset" = "Сброс";
+"debug.seedDemoData" = "Добавить демо-данные";
+"debug.seedDemoData.subtitle" = "Заменяет существующие Demo элементы.";
+"debug.clearAllData" = "Очистить все данные";
+"debug.resetOnboarding" = "Сбросить onboarding";
+"debug.togglePro" = "Переключить Pro локально";
+"debug.resetPro" = "Сбросить Pro";
+"debug.triggerPaywall" = "Показать paywall";
+"debug.testNotifications" = "Тест уведомлений";
+"debug.testLiveActivity" = "Тест Live Activity";
+"debug.exportTestPDF" = "Экспорт тестового PDF";
+"debug.showAppPaths" = "Показать пути приложения";
+"debug.resetAllSettings" = "Сбросить все настройки";
+"debug.createExpiring" = "Создать товар с истекающей гарантией";
+"debug.createExpired" = "Создать товар с истекшей гарантией";
+"debug.createNoWarranty" = "Создать товар без гарантии";
+"debug.message.title" = "Debug";
+"debug.done" = "Готово.";
+"debug.created" = "Тестовый товар создан.";
+"debug.seeded" = "Демо-данные добавлены.";
+"debug.cleared" = "Все данные очищены.";
+"debug.resetDone" = "Сброс выполнен.";
+"debug.confirm.title" = "Подтвердите действие";
+"debug.confirm.message" = "Это debug-действие изменит локальные данные приложения.";
+"debug.seedConfirm.message" = "Существующие Demo элементы будут удалены и созданы заново.";
+"debug.resetSettings.message" = "Настройки приложения будут сброшены. Товары не будут удалены.";
+"debug.notifications.scheduled" = "Тестовое уведомление запланировано через 5 секунд.";
+"debug.notifications.denied" = "Разрешение на уведомления отклонено.";
+"debug.notifications.failed" = "Не удалось запланировать тестовое уведомление.";

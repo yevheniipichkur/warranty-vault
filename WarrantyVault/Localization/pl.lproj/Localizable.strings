@@ -1,0 +1,243 @@
+"app.name" = "Sejf gwarancji";
+
+"language.system" = "Domyślny systemowy";
+"language.english" = "English";
+"language.polish" = "Polski";
+"language.ukrainian" = "Українська";
+"language.russian" = "Русский";
+
+"tab.home" = "Start";
+"tab.items" = "Rzeczy";
+"tab.receipts" = "Paragony";
+"tab.reminders" = "Przypomn.";
+"tab.settings" = "Ustawienia";
+
+"common.next" = "Dalej";
+"common.cancel" = "Anuluj";
+"common.save" = "Zapisz";
+"common.delete" = "Usuń";
+"common.ok" = "OK";
+"common.none" = "Brak";
+"common.edit" = "Edytuj";
+"common.close" = "Zamknij";
+
+"onboarding.receipts.title" = "Przechowuj paragony bezpiecznie";
+"onboarding.receipts.message" = "Zapisuj paragony, zdjęcia produktów, numery seryjne i dokumenty gwarancyjne lokalnie na iPhonie.";
+"onboarding.reminders.title" = "Nie przegap końca gwarancji";
+"onboarding.reminders.message" = "Ustaw lokalne przypomnienia przed końcem ochrony, bez konta i bez serwera.";
+"onboarding.export.title" = "Eksportuj archiwum gwarancji";
+"onboarding.export.message" = "Twórz czytelne pliki PDF dla produktu, gdy potrzebujesz dowodu do serwisu lub sprzedaży.";
+"onboarding.getStarted" = "Zaczynamy";
+
+"home.title" = "Start";
+"home.empty.title" = "Sejf jest pusty";
+"home.empty.message" = "Dodaj pierwszy zakup, aby śledzić gwarancje, paragony i dokumenty.";
+"home.stat.items" = "Wszystkie rzeczy";
+"home.stat.expiring" = "Wkrótce koniec";
+"home.stat.expired" = "Wygasłe";
+"home.stat.value" = "Łączna wartość";
+"home.upcoming" = "Najbliższe końce gwarancji";
+"home.noUpcoming" = "Brak nadchodzących końców aktywnych gwarancji.";
+
+"items.title" = "Rzeczy";
+"items.search.placeholder" = "Szukaj nazwy, marki, sklepu, numeru";
+"items.empty.title" = "Brak rzeczy";
+"items.empty.message" = "Dodaj produkty i dokumenty, aby zbudować archiwum gwarancji.";
+"items.noResults.title" = "Brak wyników wyszukiwania";
+"items.noResults.message" = "Spróbuj innego wyszukiwania lub filtra.";
+
+"item.add" = "Dodaj rzecz";
+"item.add.title" = "Dodaj rzecz";
+"item.edit.title" = "Edytuj rzecz";
+"item.name" = "Nazwa";
+"item.brand" = "Marka";
+"item.model" = "Model";
+"item.serialNumber" = "Numer seryjny";
+"item.store" = "Sklep";
+"item.purchaseDate" = "Data zakupu";
+"item.warrantyDuration" = "Czas gwarancji";
+"item.warrantyExpiration" = "Data końca gwarancji";
+"item.price" = "Cena";
+"item.currency" = "Waluta";
+"item.category" = "Kategoria";
+"item.notes" = "Notatki";
+
+"form.section.basic" = "Podstawowe";
+"form.section.warranty" = "Gwarancja";
+"form.section.purchase" = "Zakup";
+"form.section.images" = "Zdjęcia i dokumenty";
+
+"duration.noWarranty" = "Bez gwarancji";
+"duration.6" = "6 miesięcy";
+"duration.12" = "12 miesięcy";
+"duration.24" = "24 miesiące";
+"duration.36" = "36 miesięcy";
+"duration.custom" = "Własna data";
+
+"category.electronics" = "Elektronika";
+"category.home" = "Dom";
+"category.kitchen" = "Kuchnia";
+"category.car" = "Samochód";
+"category.tools" = "Narzędzia";
+"category.furniture" = "Meble";
+"category.documents" = "Dokumenty";
+"category.other" = "Inne";
+
+"status.active" = "Aktywna";
+"status.expiringSoon" = "Wkrótce wygasa";
+"status.expired" = "Wygasła";
+"status.noWarranty" = "Bez gwarancji";
+
+"filter.all" = "Wszystko";
+"filter.active" = "Aktywna gwarancja";
+"filter.expiringSoon" = "Wkrótce wygasa";
+"filter.expired" = "Wygasłe";
+"filter.noWarranty" = "Bez gwarancji";
+
+"sort.title" = "Sortuj";
+"sort.newest" = "Najnowsze";
+"sort.warrantyExpiration" = "Koniec gwarancji";
+"sort.price" = "Cena";
+"sort.name" = "Nazwa";
+
+"image.choose" = "Wybierz obraz";
+"image.replace" = "Zmień obraz";
+"image.remove" = "Usuń obraz";
+"image.product" = "Zdjęcie produktu";
+"image.receipt" = "Zdjęcie paragonu";
+"image.warrantyDocument" = "Dokument gwarancji";
+
+"validation.title" = "Sprawdź formularz";
+"validation.nameRequired" = "Nazwa rzeczy jest wymagana.";
+"delete.item.title" = "Usunąć rzecz?";
+"delete.item.message" = "To usunie rzecz i jej lokalnie zapisane obrazy.";
+
+"detail.section.details" = "Szczegóły";
+"detail.section.documents" = "Dokumenty";
+"detail.expiringWarning" = "Ta gwarancja wkrótce wygasa.";
+"detail.exportPDF" = "Eksportuj PDF";
+"detail.addReminder" = "Dodaj przypomnienie";
+
+"receipts.title" = "Paragony";
+"receipts.search.placeholder" = "Szukaj sklepu lub rzeczy";
+"receipts.empty.title" = "Brak paragonów";
+"receipts.empty.message" = "Zdjęcia paragonów dodane do rzeczy pojawią się tutaj.";
+
+"reminders.title" = "Przypomnienia";
+"reminders.permission" = "Zgoda na powiadomienia";
+"reminders.enable" = "Włącz przypomnienia";
+"reminders.pending" = "Oczekujące przypomnienia";
+"reminders.upcoming" = "Nadchodzące gwarancje";
+"reminders.empty.title" = "Brak przypomnień";
+"reminders.empty.message" = "Dodaj daty gwarancji, aby ustawić lokalne powiadomienia.";
+"reminders.status.enabled" = "Powiadomienia są włączone.";
+"reminders.status.denied" = "Powiadomienia są wyłączone w ustawieniach systemu.";
+"reminders.status.notDetermined" = "Zezwól na powiadomienia, aby otrzymywać przypomnienia.";
+
+"settings.title" = "Ustawienia";
+"settings.section.language" = "Język";
+"settings.section.defaults" = "Domyślne";
+"settings.section.appearance" = "Wygląd";
+"settings.section.data" = "Zarządzanie danymi";
+"settings.section.pro" = "Paywall";
+"settings.section.privacy" = "Prywatność";
+"settings.language" = "Język";
+"settings.defaultCurrency" = "Domyślna waluta";
+"settings.reminder30" = "30 dni przed końcem";
+"settings.reminder7" = "7 dni przed końcem";
+"settings.reminder1" = "1 dzień przed końcem";
+"settings.appearanceInfo" = "Używa systemowego jasnego lub ciemnego wyglądu.";
+"settings.seedDemo" = "Wstaw dane demo";
+"settings.exportJSON" = "Eksportuj demo JSON";
+"settings.showOnboarding" = "Pokaż onboarding";
+"settings.deleteAll" = "Usuń wszystkie dane";
+"settings.deleteAll.title" = "Usunąć wszystkie dane?";
+"settings.deleteAll.message" = "To usunie wszystkie lokalne rzeczy, obrazy i przypomnienia.";
+"settings.openPaywall" = "Otwórz Paywall";
+"settings.proUnlocked" = "Pro odblokowane";
+"settings.debugUnlockPro" = "Odblokuj Pro lokalnie";
+"settings.privacyNote" = "All data is stored on your device. No AI. No external server.";
+"settings.dataStaysOnDevice" = "Dane pozostają na Twoim urządzeniu.";
+
+"paywall.navigationTitle" = "Sejf gwarancji Pro";
+"paywall.title" = "Sejf gwarancji Pro";
+"paywall.subtitle" = "Odblokuj pełny lokalny workflow archiwum.";
+"paywall.free" = "Free";
+"paywall.free.items" = "Do 10 rzeczy";
+"paywall.free.reminders" = "Podstawowe przypomnienia";
+"paywall.pro" = "Pro";
+"paywall.pro.unlimited" = "Bez limitu rzeczy";
+"paywall.pro.pdf" = "Eksport PDF";
+"paywall.pro.receipts" = "Galeria paragonów";
+"paywall.pro.filters" = "Zaawansowane filtry";
+"paywall.pro.icloud" = "Przyszła synchronizacja iCloud";
+"paywall.productsUnavailable" = "Produkty StoreKit nie są jeszcze skonfigurowane.";
+"paywall.productIDs" = "Placeholder IDs: warrantyvault.pro.monthly, warrantyvault.pro.yearly";
+
+"notification.expiring.title" = "Gwarancja wkrótce wygasa";
+"notification.expiring.body" = "Gwarancja %@ wygasa za %d dni.";
+
+"pdf.title" = "Archiwum gwarancji";
+"pdf.receipt" = "Paragon";
+
+"appearance.system" = "System";
+"appearance.light" = "Jasny";
+"appearance.dark" = "Ciemny";
+"settings.appearance" = "Wygląd";
+"settings.section.about" = "O aplikacji";
+"settings.appVersion" = "Wersja aplikacji";
+"item.saved" = "Zapisano";
+
+"liveActivity.title" = "Live Activity";
+"liveActivity.start" = "Uruchom Live Activity";
+"liveActivity.stop" = "Zatrzymaj Live Activity";
+"liveActivity.status.expiringSoon" = "Gwarancja wkrótce wygasa";
+"liveActivity.daysLeft" = "Dni pozostało";
+"liveActivity.checkReceipt" = "Sprawdź paragon przed końcem gwarancji.";
+"liveActivity.started" = "Live Activity uruchomiona.";
+"liveActivity.stopped" = "Live Activity zatrzymana.";
+"liveActivity.failed" = "Nie udało się uruchomić Live Activity.";
+"liveActivity.unavailable" = "Live Activity nie jest dostępna na tym urządzeniu.";
+"liveActivity.disabled" = "Live Activities są wyłączone w ustawieniach systemu.";
+"liveActivity.noEligibleItem" = "Ten element nie kwalifikuje się do Live Activity.";
+
+"debug.title" = "Developer / QA";
+"debug.unlocked.title" = "Menu debug odblokowane";
+"debug.unlocked.message" = "Sekcja Developer / QA jest teraz dostępna.";
+"debug.section.data" = "Dane";
+"debug.section.paywall" = "Paywall";
+"debug.section.notifications" = "Powiadomienia";
+"debug.section.liveActivity" = "Live Activity";
+"debug.section.pdf" = "PDF";
+"debug.section.localization" = "Lokalizacja";
+"debug.section.appearance" = "Wygląd";
+"debug.section.diagnostics" = "Diagnostyka";
+"debug.section.reset" = "Reset";
+"debug.seedDemoData" = "Dodaj dane demo";
+"debug.seedDemoData.subtitle" = "Zastępuje istniejące elementy Demo.";
+"debug.clearAllData" = "Wyczyść wszystkie dane";
+"debug.resetOnboarding" = "Zresetuj onboarding";
+"debug.togglePro" = "Przełącz Pro lokalnie";
+"debug.resetPro" = "Zresetuj Pro";
+"debug.triggerPaywall" = "Pokaż paywall";
+"debug.testNotifications" = "Testuj powiadomienia";
+"debug.testLiveActivity" = "Testuj Live Activity";
+"debug.exportTestPDF" = "Eksportuj testowy PDF";
+"debug.showAppPaths" = "Pokaż ścieżki aplikacji";
+"debug.resetAllSettings" = "Zresetuj ustawienia aplikacji";
+"debug.createExpiring" = "Utwórz rzecz z kończącą się gwarancją";
+"debug.createExpired" = "Utwórz rzecz z wygasłą gwarancją";
+"debug.createNoWarranty" = "Utwórz rzecz bez gwarancji";
+"debug.message.title" = "Debug";
+"debug.done" = "Gotowe.";
+"debug.created" = "Utworzono element testowy.";
+"debug.seeded" = "Dane demo dodane.";
+"debug.cleared" = "Wszystkie dane wyczyszczone.";
+"debug.resetDone" = "Reset zakończony.";
+"debug.confirm.title" = "Potwierdź akcję";
+"debug.confirm.message" = "Ta akcja debug zmieni lokalne dane aplikacji.";
+"debug.seedConfirm.message" = "Istniejące elementy Demo zostaną usunięte i utworzone ponownie.";
+"debug.resetSettings.message" = "Ustawienia aplikacji zostaną zresetowane. Elementy nie zostaną usunięte.";
+"debug.notifications.scheduled" = "Powiadomienie testowe zaplanowane za 5 sekund.";
+"debug.notifications.denied" = "Odmówiono zgody na powiadomienia.";
+"debug.notifications.failed" = "Nie udało się zaplanować powiadomienia testowego.";

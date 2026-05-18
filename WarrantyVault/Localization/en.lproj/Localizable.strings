@@ -1,0 +1,243 @@
+"app.name" = "Warranty Vault";
+
+"language.system" = "System Default";
+"language.english" = "English";
+"language.polish" = "Polski";
+"language.ukrainian" = "Українська";
+"language.russian" = "Русский";
+
+"tab.home" = "Home";
+"tab.items" = "Items";
+"tab.receipts" = "Receipts";
+"tab.reminders" = "Reminders";
+"tab.settings" = "Settings";
+
+"common.next" = "Next";
+"common.cancel" = "Cancel";
+"common.save" = "Save";
+"common.delete" = "Delete";
+"common.ok" = "OK";
+"common.none" = "None";
+"common.edit" = "Edit";
+"common.close" = "Close";
+
+"onboarding.receipts.title" = "Keep receipts safe";
+"onboarding.receipts.message" = "Store receipts, product photos, serial numbers, and warranty documents locally on your iPhone.";
+"onboarding.reminders.title" = "Never miss warranty expiration";
+"onboarding.reminders.message" = "Schedule local reminders before coverage ends, with no external account or server.";
+"onboarding.export.title" = "Export your warranty archive";
+"onboarding.export.message" = "Create clean PDFs for a product whenever you need proof for service or resale.";
+"onboarding.getStarted" = "Get Started";
+
+"home.title" = "Home";
+"home.empty.title" = "Your vault is empty";
+"home.empty.message" = "Add your first purchase to track warranty dates, receipts, and documents.";
+"home.stat.items" = "All items";
+"home.stat.expiring" = "Expiring soon";
+"home.stat.expired" = "Expired";
+"home.stat.value" = "Total value";
+"home.upcoming" = "Upcoming expirations";
+"home.noUpcoming" = "No active warranty expirations are coming up.";
+
+"items.title" = "Items";
+"items.search.placeholder" = "Search name, brand, store, serial number";
+"items.empty.title" = "No items yet";
+"items.empty.message" = "Add products and documents to start building your warranty archive.";
+"items.noResults.title" = "No search results";
+"items.noResults.message" = "Try another search term or filter.";
+
+"item.add" = "Add Item";
+"item.add.title" = "Add Item";
+"item.edit.title" = "Edit Item";
+"item.name" = "Item name";
+"item.brand" = "Brand";
+"item.model" = "Model";
+"item.serialNumber" = "Serial number";
+"item.store" = "Store";
+"item.purchaseDate" = "Purchase date";
+"item.warrantyDuration" = "Warranty duration";
+"item.warrantyExpiration" = "Warranty expiration date";
+"item.price" = "Price";
+"item.currency" = "Currency";
+"item.category" = "Category";
+"item.notes" = "Notes";
+
+"form.section.basic" = "Basic";
+"form.section.warranty" = "Warranty";
+"form.section.purchase" = "Purchase";
+"form.section.images" = "Photos and documents";
+
+"duration.noWarranty" = "No warranty";
+"duration.6" = "6 months";
+"duration.12" = "12 months";
+"duration.24" = "24 months";
+"duration.36" = "36 months";
+"duration.custom" = "Custom date";
+
+"category.electronics" = "Electronics";
+"category.home" = "Home";
+"category.kitchen" = "Kitchen";
+"category.car" = "Car";
+"category.tools" = "Tools";
+"category.furniture" = "Furniture";
+"category.documents" = "Documents";
+"category.other" = "Other";
+
+"status.active" = "Active";
+"status.expiringSoon" = "Expiring soon";
+"status.expired" = "Expired";
+"status.noWarranty" = "No warranty";
+
+"filter.all" = "All";
+"filter.active" = "Active Warranty";
+"filter.expiringSoon" = "Expiring Soon";
+"filter.expired" = "Expired";
+"filter.noWarranty" = "No Warranty";
+
+"sort.title" = "Sort";
+"sort.newest" = "Newest";
+"sort.warrantyExpiration" = "Warranty Expiration";
+"sort.price" = "Price";
+"sort.name" = "Name";
+
+"image.choose" = "Choose image";
+"image.replace" = "Replace image";
+"image.remove" = "Remove image";
+"image.product" = "Product photo";
+"image.receipt" = "Receipt photo";
+"image.warrantyDocument" = "Warranty document";
+
+"validation.title" = "Check the form";
+"validation.nameRequired" = "Item name is required.";
+"delete.item.title" = "Delete item?";
+"delete.item.message" = "This removes the item and its locally stored images.";
+
+"detail.section.details" = "Details";
+"detail.section.documents" = "Documents";
+"detail.expiringWarning" = "This warranty expires soon.";
+"detail.exportPDF" = "Export PDF";
+"detail.addReminder" = "Add Reminder";
+
+"receipts.title" = "Receipts";
+"receipts.search.placeholder" = "Search store or item";
+"receipts.empty.title" = "No receipts yet";
+"receipts.empty.message" = "Receipt photos attached to items will appear here.";
+
+"reminders.title" = "Reminders";
+"reminders.permission" = "Notification permission";
+"reminders.enable" = "Enable Reminders";
+"reminders.pending" = "Pending reminders";
+"reminders.upcoming" = "Upcoming warranties";
+"reminders.empty.title" = "No reminders yet";
+"reminders.empty.message" = "Add warranty dates to items to schedule local notifications.";
+"reminders.status.enabled" = "Notifications are enabled.";
+"reminders.status.denied" = "Notifications are disabled in system settings.";
+"reminders.status.notDetermined" = "Allow notifications to receive warranty reminders.";
+
+"settings.title" = "Settings";
+"settings.section.language" = "Language";
+"settings.section.defaults" = "Defaults";
+"settings.section.appearance" = "Appearance";
+"settings.section.data" = "Data management";
+"settings.section.pro" = "Paywall";
+"settings.section.privacy" = "Privacy";
+"settings.language" = "Language";
+"settings.defaultCurrency" = "Default currency";
+"settings.reminder30" = "30 days before expiration";
+"settings.reminder7" = "7 days before expiration";
+"settings.reminder1" = "1 day before expiration";
+"settings.appearanceInfo" = "Uses the system light or dark appearance.";
+"settings.seedDemo" = "Insert demo data";
+"settings.exportJSON" = "Export demo JSON";
+"settings.showOnboarding" = "Show onboarding";
+"settings.deleteAll" = "Delete all data";
+"settings.deleteAll.title" = "Delete all data?";
+"settings.deleteAll.message" = "This removes all local items, images, and reminders.";
+"settings.openPaywall" = "Open Paywall";
+"settings.proUnlocked" = "Pro unlocked";
+"settings.debugUnlockPro" = "Unlock Pro locally";
+"settings.privacyNote" = "All data is stored on your device. No AI. No external server.";
+"settings.dataStaysOnDevice" = "Data stays on your device.";
+
+"paywall.navigationTitle" = "Warranty Vault Pro";
+"paywall.title" = "Warranty Vault Pro";
+"paywall.subtitle" = "Unlock the full local archive workflow.";
+"paywall.free" = "Free";
+"paywall.free.items" = "Up to 10 items";
+"paywall.free.reminders" = "Basic reminders";
+"paywall.pro" = "Pro";
+"paywall.pro.unlimited" = "Unlimited items";
+"paywall.pro.pdf" = "PDF export";
+"paywall.pro.receipts" = "Receipt gallery";
+"paywall.pro.filters" = "Advanced filters";
+"paywall.pro.icloud" = "Future iCloud sync";
+"paywall.productsUnavailable" = "StoreKit products are not configured yet.";
+"paywall.productIDs" = "Placeholder IDs: warrantyvault.pro.monthly, warrantyvault.pro.yearly";
+
+"notification.expiring.title" = "Warranty expiring soon";
+"notification.expiring.body" = "%@ warranty expires in %d days.";
+
+"pdf.title" = "Warranty Archive";
+"pdf.receipt" = "Receipt";
+
+"appearance.system" = "System";
+"appearance.light" = "Light";
+"appearance.dark" = "Dark";
+"settings.appearance" = "Appearance";
+"settings.section.about" = "About";
+"settings.appVersion" = "App Version";
+"item.saved" = "Saved";
+
+"liveActivity.title" = "Live Activity";
+"liveActivity.start" = "Start Live Activity";
+"liveActivity.stop" = "Stop Live Activity";
+"liveActivity.status.expiringSoon" = "Warranty ends soon";
+"liveActivity.daysLeft" = "Days left";
+"liveActivity.checkReceipt" = "Check your receipt before warranty ends.";
+"liveActivity.started" = "Live Activity started.";
+"liveActivity.stopped" = "Live Activity stopped.";
+"liveActivity.failed" = "Could not start Live Activity.";
+"liveActivity.unavailable" = "Live Activity is not available on this device.";
+"liveActivity.disabled" = "Live Activities are disabled in system settings.";
+"liveActivity.noEligibleItem" = "This item is not eligible for Live Activity.";
+
+"debug.title" = "Developer / QA";
+"debug.unlocked.title" = "Debug menu unlocked";
+"debug.unlocked.message" = "Developer / QA section is now available.";
+"debug.section.data" = "Data";
+"debug.section.paywall" = "Paywall";
+"debug.section.notifications" = "Notifications";
+"debug.section.liveActivity" = "Live Activity";
+"debug.section.pdf" = "PDF";
+"debug.section.localization" = "Localization";
+"debug.section.appearance" = "Appearance";
+"debug.section.diagnostics" = "Diagnostics";
+"debug.section.reset" = "Reset";
+"debug.seedDemoData" = "Seed demo data";
+"debug.seedDemoData.subtitle" = "Replaces existing Demo items.";
+"debug.clearAllData" = "Clear all data";
+"debug.resetOnboarding" = "Reset onboarding";
+"debug.togglePro" = "Toggle Pro locally";
+"debug.resetPro" = "Reset Pro unlock";
+"debug.triggerPaywall" = "Trigger paywall";
+"debug.testNotifications" = "Test notifications";
+"debug.testLiveActivity" = "Test Live Activity";
+"debug.exportTestPDF" = "Export test PDF";
+"debug.showAppPaths" = "Show app paths";
+"debug.resetAllSettings" = "Reset all app settings";
+"debug.createExpiring" = "Create expiring warranty item";
+"debug.createExpired" = "Create expired warranty item";
+"debug.createNoWarranty" = "Create no-warranty item";
+"debug.message.title" = "Debug";
+"debug.done" = "Done.";
+"debug.created" = "Test item created.";
+"debug.seeded" = "Demo data seeded.";
+"debug.cleared" = "All data cleared.";
+"debug.resetDone" = "Reset completed.";
+"debug.confirm.title" = "Confirm action";
+"debug.confirm.message" = "This debug action will change local app data.";
+"debug.seedConfirm.message" = "Existing Demo items will be removed and recreated.";
+"debug.resetSettings.message" = "App settings will be reset. Items will not be deleted.";
+"debug.notifications.scheduled" = "Test notification scheduled for 5 seconds from now.";
+"debug.notifications.denied" = "Notification permission was denied.";
+"debug.notifications.failed" = "Could not schedule test notification.";

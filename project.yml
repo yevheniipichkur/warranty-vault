@@ -1,0 +1,88 @@
+name: WarrantyVault
+options:
+  bundleIdPrefix: com.yourname
+  deploymentTarget:
+    iOS: "17.0"
+  minimumXcodeGenVersion: "2.42.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+    APP_BUNDLE_ID: com.yourname.warrantyvault
+    CURRENT_PROJECT_VERSION: "1"
+    MARKETING_VERSION: "1.0.0"
+    CODE_SIGN_STYLE: Automatic
+targets:
+  WarrantyVault:
+    type: application
+    platform: iOS
+    sources:
+      - path: WarrantyVault
+        excludes:
+          - App/Info.plist
+          - Localization
+          - Resources
+    resources:
+      - path: WarrantyVault/Resources
+      - path: WarrantyVault/Localization
+    dependencies:
+      - target: WarrantyVaultLiveActivity
+        embed: true
+    info:
+      path: WarrantyVault/App/Info.plist
+    settings:
+      base:
+        INFOPLIST_FILE: WarrantyVault/App/Info.plist
+        PRODUCT_NAME: WarrantyVault
+        PRODUCT_BUNDLE_IDENTIFIER: "$(APP_BUNDLE_ID)"
+        PROVISIONING_PROFILE_SPECIFIER: "$(APP_PROVISIONING_PROFILE_SPECIFIER)"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        TARGETED_DEVICE_FAMILY: "1"
+        SUPPORTS_MACCATALYST: false
+        ENABLE_USER_SCRIPT_SANDBOXING: false
+  WarrantyVaultLiveActivity:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: WarrantyVaultLiveActivity
+        excludes:
+          - Info.plist
+      - path: WarrantyVault/LiveActivity/WarrantyActivityAttributes.swift
+    resources:
+      - path: WarrantyVault/Localization
+    info:
+      path: WarrantyVaultLiveActivity/Info.plist
+    settings:
+      base:
+        INFOPLIST_FILE: WarrantyVaultLiveActivity/Info.plist
+        PRODUCT_NAME: WarrantyVaultLiveActivity
+        PRODUCT_BUNDLE_IDENTIFIER: "$(APP_BUNDLE_ID).liveactivity"
+        PROVISIONING_PROFILE_SPECIFIER: "$(LIVE_ACTIVITY_PROVISIONING_PROFILE_SPECIFIER)"
+        APPLICATION_EXTENSION_API_ONLY: true
+        SKIP_INSTALL: true
+  WarrantyVaultTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests/WarrantyVaultTests
+    dependencies:
+      - target: WarrantyVault
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yourname.warrantyvault.tests
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/WarrantyVault.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/WarrantyVault"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+schemes:
+  WarrantyVault:
+    build:
+      targets:
+        WarrantyVault: all
+        WarrantyVaultTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - WarrantyVaultTests
+    archive:
+      config: Release
