@@ -34,7 +34,14 @@ ARCHIVE_PATH="${ARCHIVE_PATH:-build/archive/WarrantyVault.xcarchive}"
 EXPORT_PATH="${EXPORT_PATH:-build/ipa}"
 EXPORT_OPTIONS="${EXPORT_OPTIONS:-ExportOptions.plist}"
 EXPORT_METHOD="${EXPORT_METHOD:-development}"
-BUNDLE_ID_VALUE="${BUNDLE_ID:-com.yourname.warrantyvault}"
+BUNDLE_ID_VALUE="${BUNDLE_ID:-com.yevheniipichkur.warrantyvault}"
+
+XCODE_EXPORT_METHOD="$EXPORT_METHOD"
+if [[ "$XCODE_EXPORT_METHOD" == "ad-hoc" ]]; then
+  XCODE_EXPORT_METHOD="release-testing"
+elif [[ "$XCODE_EXPORT_METHOD" == "development" ]]; then
+  XCODE_EXPORT_METHOD="debugging"
+fi
 
 mkdir -p build/logs build/archive "$EXPORT_PATH"
 
@@ -75,7 +82,7 @@ if [[ ! -f "$EXPORT_OPTIONS" ]]; then
 <plist version="1.0">
 <dict>
   <key>method</key>
-  <string>${EXPORT_METHOD}</string>
+  <string>${XCODE_EXPORT_METHOD}</string>
   <key>teamID</key>
   <string>${APPLE_TEAM_ID}</string>
   <key>signingStyle</key>

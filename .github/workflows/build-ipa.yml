@@ -20,6 +20,7 @@ jobs:
   build:
     runs-on: macos-latest
     env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       SCHEME: WarrantyVault
       PROJECT: WarrantyVault.xcodeproj
       SIMULATOR_DESTINATION: platform=iOS Simulator,name=iPhone 16
@@ -56,7 +57,8 @@ jobs:
 
       - name: Run tests
         run: |
-          BUNDLE_ID_VALUE="${BUNDLE_ID_SECRET:-com.yourname.warrantyvault}"
+          set -o pipefail
+          BUNDLE_ID_VALUE="${BUNDLE_ID_SECRET:-com.yevheniipichkur.warrantyvault}"
           xcodebuild \
             -project "$PROJECT" \
             -scheme "$SCHEME" \
@@ -69,8 +71,9 @@ jobs:
       - name: Simulator build when signing secrets are missing
         if: ${{ env.CERTIFICATE_BASE64 == '' || env.PROVISIONING_PROFILE_BASE64 == '' || env.APPLE_TEAM_ID == '' || env.BUNDLE_ID_SECRET == '' }}
         run: |
+          set -o pipefail
           echo "Signing secrets are missing. Building simulator app only; no signed IPA will be produced."
-          BUNDLE_ID_VALUE="${BUNDLE_ID_SECRET:-com.yourname.warrantyvault}"
+          BUNDLE_ID_VALUE="${BUNDLE_ID_SECRET:-com.yevheniipichkur.warrantyvault}"
           xcodebuild \
             -project "$PROJECT" \
             -scheme "$SCHEME" \
@@ -128,13 +131,21 @@ jobs:
       - name: Create ExportOptions.plist
         if: ${{ env.CERTIFICATE_BASE64 != '' && env.PROVISIONING_PROFILE_BASE64 != '' && env.APPLE_TEAM_ID != '' && env.BUNDLE_ID_SECRET != '' }}
         run: |
+          XCODE_EXPORT_METHOD="$EXPORT_METHOD"
+          if [[ "$XCODE_EXPORT_METHOD" == "ad-hoc" ]]; then
+            XCODE_EXPORT_METHOD="release-testing"
+          elif [[ "$XCODE_EXPORT_METHOD" == "development" ]]; then
+            XCODE_EXPORT_METHOD="debugging"
+          fi
+          echo "Using xcodebuild export method: $XCODE_EXPORT_METHOD"
+
           cat > ExportOptions.plist <<EOF
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "https://www.apple.com/DTDs/PropertyList-1.0.dtd">
           <plist version="1.0">
           <dict>
             <key>method</key>
-            <string>${EXPORT_METHOD}</string>
+            <string>${XCODE_EXPORT_METHOD}</string>
             <key>teamID</key>
             <string>${APPLE_TEAM_ID}</string>
             <key>signingStyle</key>
@@ -155,6 +166,7 @@ jobs:
       - name: Archive and export signed IPA
         if: ${{ env.CERTIFICATE_BASE64 != '' && env.PROVISIONING_PROFILE_BASE64 != '' && env.APPLE_TEAM_ID != '' && env.BUNDLE_ID_SECRET != '' }}
         run: |
+          set -o pipefail
           xcodebuild \
             -project "$PROJECT" \
             -scheme "$SCHEME" \
@@ -173,6 +185,21 @@ jobs:
             -archivePath build/archive/WarrantyVault.xcarchive \
             -exportPath build/ipa \
             -exportOptionsPlist ExportOptions.plist | tee build/logs/export.log
+
+          echo "Export output:"
+          find build/ipa -maxdepth 3 -type f -print || true
+
+          IPA_PATH="$(find build/ipa -name '*.ipa' -print -quit)"
+          if [[ -z "$IPA_PATH" ]]; then
+            echo "::error::xcodebuild exportArchive finished, but no .ipa was produced."
+            echo "ExportOptions.plist:"
+            cat ExportOptions.plist
+            echo "build/ipa contents:"
+            find build/ipa -maxdepth 3 -print || true
+            exit 1
+          fi
+
+          echo "IPA_PATH=$IPA_PATH" >> "$GITHUB_ENV"
 
       - name: Upload signed IPA
         if: ${{ env.CERTIFICATE_BASE64 != '' && env.PROVISIONING_PROFILE_BASE64 != '' && env.APPLE_TEAM_ID != '' && env.BUNDLE_ID_SECRET != '' }}

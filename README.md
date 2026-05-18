@@ -100,6 +100,8 @@ open WarrantyVault.xcodeproj
 5. Если signing secrets заполнены, workflow соберёт signed IPA.
 6. Если secrets не заполнены, workflow соберёт simulator build и logs, но не будет выдавать fake IPA.
 
+Для ручного запуска выбирайте `ad-hoc`. Workflow внутри преобразует это в современный `xcodebuild` export method `release-testing`, который нужен новым версиям Xcode.
+
 Workflow делает:
 
 ```text
