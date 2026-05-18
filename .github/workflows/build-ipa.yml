@@ -181,13 +181,16 @@ jobs:
             CODE_SIGN_IDENTITY="Apple Distribution" \
             APP_PROVISIONING_PROFILE_SPECIFIER="$PROVISIONING_PROFILE_NAME" \
             LIVE_ACTIVITY_PROVISIONING_PROFILE_SPECIFIER="$LIVE_ACTIVITY_PROVISIONING_PROFILE_NAME" \
-            clean archive | tee build/logs/archive.log
+            clean archive 2>&1 | tee build/logs/archive.log
+
+          echo "=== ExportOptions.plist ==="
+          cat ExportOptions.plist
 
           xcodebuild \
             -exportArchive \
             -archivePath build/archive/WarrantyVault.xcarchive \
             -exportPath build/ipa \
-            -exportOptionsPlist ExportOptions.plist | tee build/logs/export.log
+            -exportOptionsPlist ExportOptions.plist 2>&1 | tee build/logs/export.log
 
           echo "Export output:"
           find build/ipa -maxdepth 3 -type f -print || true
