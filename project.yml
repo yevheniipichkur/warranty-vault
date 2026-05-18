@@ -29,6 +29,7 @@ targets:
     dependencies:
       - target: WarrantyVaultLiveActivity
         embed: true
+      - sdk: PhotosUI.framework
     info:
       path: WarrantyVault/App/Info.plist
     settings:
