@@ -29,6 +29,7 @@ jobs:
       CERTIFICATE_BASE64: ${{ secrets.CERTIFICATE_BASE64 }}
       CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
       PROVISIONING_PROFILE_BASE64: ${{ secrets.PROVISIONING_PROFILE_BASE64 }}
+      LIVE_ACTIVITY_PROVISIONING_PROFILE_BASE64: ${{ secrets.LIVE_ACTIVITY_PROVISIONING_PROFILE_BASE64 }}
       KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
 
     steps:
@@ -90,6 +91,8 @@ jobs:
           CERTIFICATE_PATH="$RUNNER_TEMP/signing_certificate.p12"
           PROFILE_PATH="$RUNNER_TEMP/profile.mobileprovision"
           PROFILE_PLIST="$RUNNER_TEMP/profile.plist"
+          LIVE_ACTIVITY_PROFILE_PATH="$RUNNER_TEMP/liveactivity.mobileprovision"
+          LIVE_ACTIVITY_PROFILE_PLIST="$RUNNER_TEMP/liveactivity.plist"
           KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
 
           echo -n "$CERTIFICATE_BASE64" | base64 -D > "$CERTIFICATE_PATH"
@@ -109,8 +112,18 @@ jobs:
           cp "$PROFILE_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$PROFILE_UUID.mobileprovision"
 
           echo "PROVISIONING_PROFILE_NAME=$PROFILE_NAME" >> "$GITHUB_ENV"
-          echo "LIVE_ACTIVITY_PROVISIONING_PROFILE_NAME=$PROFILE_NAME" >> "$GITHUB_ENV"
           echo "PROVISIONING_PROFILE_UUID=$PROFILE_UUID" >> "$GITHUB_ENV"
+
+          if [[ -n "${LIVE_ACTIVITY_PROVISIONING_PROFILE_BASE64:-}" ]]; then
+            echo -n "$LIVE_ACTIVITY_PROVISIONING_PROFILE_BASE64" | base64 -D > "$LIVE_ACTIVITY_PROFILE_PATH"
+            security cms -D -i "$LIVE_ACTIVITY_PROFILE_PATH" > "$LIVE_ACTIVITY_PROFILE_PLIST"
+            LIVE_ACTIVITY_PROFILE_UUID=$(/usr/libexec/PlistBuddy -c "Print UUID" "$LIVE_ACTIVITY_PROFILE_PLIST")
+            LIVE_ACTIVITY_PROFILE_NAME=$(/usr/libexec/PlistBuddy -c "Print Name" "$LIVE_ACTIVITY_PROFILE_PLIST")
+            cp "$LIVE_ACTIVITY_PROFILE_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$LIVE_ACTIVITY_PROFILE_UUID.mobileprovision"
+            echo "LIVE_ACTIVITY_PROVISIONING_PROFILE_NAME=$LIVE_ACTIVITY_PROFILE_NAME" >> "$GITHUB_ENV"
+          else
+            echo "LIVE_ACTIVITY_PROVISIONING_PROFILE_NAME=$PROFILE_NAME" >> "$GITHUB_ENV"
+          fi
 
       - name: Create ExportOptions.plist
         if: ${{ env.CERTIFICATE_BASE64 != '' && env.PROVISIONING_PROFILE_BASE64 != '' && env.APPLE_TEAM_ID != '' && env.BUNDLE_ID_SECRET != '' }}

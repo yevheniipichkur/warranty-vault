@@ -144,6 +144,7 @@ BUNDLE_ID
 CERTIFICATE_BASE64
 CERTIFICATE_PASSWORD
 PROVISIONING_PROFILE_BASE64
+LIVE_ACTIVITY_PROVISIONING_PROFILE_BASE64
 KEYCHAIN_PASSWORD
 ```
 
@@ -167,6 +168,8 @@ com.example.warrantyvault.liveactivity
 ```
 
 Для подписанной сборки extension тоже должен быть покрыт provisioning profile. Иногда подходит wildcard/development profile, но для production/Ad Hoc часто нужен отдельный App ID/profile для extension.
+
+`LIVE_ACTIVITY_PROVISIONING_PROFILE_BASE64` опционален только если ваш основной provisioning profile покрывает extension. Для обычного explicit App ID чаще нужен отдельный `.mobileprovision` для `BUNDLE_ID.liveactivity`.
 
 ## 10. Как установить IPA на iPhone для теста
 
