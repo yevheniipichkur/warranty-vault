@@ -201,6 +201,29 @@ jobs:
 
           echo "IPA_PATH=$IPA_PATH" >> "$GITHUB_ENV"
 
+      - name: Print diagnostics on failure
+        if: failure()
+        run: |
+          echo "## WarrantyVault build diagnostics" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+
+          for log in build/logs/test.log build/logs/archive.log build/logs/export.log; do
+            if [[ -f "$log" ]]; then
+              echo "### $log" >> "$GITHUB_STEP_SUMMARY"
+              echo '```text' >> "$GITHUB_STEP_SUMMARY"
+              tail -n 160 "$log" >> "$GITHUB_STEP_SUMMARY"
+              echo '```' >> "$GITHUB_STEP_SUMMARY"
+              echo "" >> "$GITHUB_STEP_SUMMARY"
+            fi
+          done
+
+          echo "### Files" >> "$GITHUB_STEP_SUMMARY"
+          echo '```text' >> "$GITHUB_STEP_SUMMARY"
+          find build -maxdepth 4 -print >> "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+          echo "Diagnostics were written to the GitHub Actions summary."
+
       - name: Upload signed IPA
         if: ${{ env.CERTIFICATE_BASE64 != '' && env.PROVISIONING_PROFILE_BASE64 != '' && env.APPLE_TEAM_ID != '' && env.BUNDLE_ID_SECRET != '' }}
         uses: actions/upload-artifact@v4
