@@ -155,6 +155,15 @@ base64 -i Certificates.p12 | pbcopy
 base64 -i YourProfile.mobileprovision | pbcopy
 ```
 
+В проекте уже указаны значения по умолчанию:
+
+```text
+APPLE_TEAM_ID = G66CMCY8H2
+BUNDLE_ID = com.yevheniipichkur.warrantyvault
+```
+
+Их можно не добавлять в GitHub Secrets, если вы используете именно этот Apple Developer Team и этот bundle id.
+
 `BUNDLE_ID` должен быть вашим реальным bundle id, например:
 
 ```text

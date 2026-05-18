@@ -13,7 +13,7 @@ jobs:
     env:
       SCHEME: WarrantyVault
       PROJECT: WarrantyVault.xcodeproj
-      APP_BUNDLE_ID: com.yourname.warrantyvault
+      APP_BUNDLE_ID: com.yevheniipichkur.warrantyvault
       SIMULATOR_DESTINATION: platform=iOS Simulator,name=iPhone 16
 
     steps:
