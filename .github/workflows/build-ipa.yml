@@ -6,11 +6,12 @@ on:
       export_method:
         description: "Export method for signed IPA"
         required: true
-        default: "development"
+        default: "ad-hoc"
         type: choice
         options:
-          - development
           - ad-hoc
+          - app-store
+          - development
   push:
     branches:
       - main
@@ -31,7 +32,12 @@ jobs:
       CERTIFICATE_PASSWORD: ${{ secrets.CERTIFICATE_PASSWORD }}
       PROVISIONING_PROFILE_BASE64: ${{ secrets.PROVISIONING_PROFILE_BASE64 }}
       LIVE_ACTIVITY_PROVISIONING_PROFILE_BASE64: ${{ secrets.LIVE_ACTIVITY_PROVISIONING_PROFILE_BASE64 }}
+      APP_STORE_PROVISIONING_PROFILE_BASE64: ${{ secrets.APP_STORE_PROVISIONING_PROFILE_BASE64 }}
+      APP_STORE_LIVE_ACTIVITY_PROVISIONING_PROFILE_BASE64: ${{ secrets.APP_STORE_LIVE_ACTIVITY_PROVISIONING_PROFILE_BASE64 }}
       KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+      ASC_API_KEY_ID: ${{ secrets.ASC_API_KEY_ID }}
+      ASC_API_ISSUER_ID: ${{ secrets.ASC_API_ISSUER_ID }}
+      ASC_API_KEY_BASE64: ${{ secrets.ASC_API_KEY_BASE64 }}
 
     steps:
       - name: Checkout
@@ -101,7 +107,17 @@ jobs:
           KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
 
           echo -n "$CERTIFICATE_BASE64" | base64 -D > "$CERTIFICATE_PATH"
-          echo -n "$PROVISIONING_PROFILE_BASE64" | base64 -D > "$PROFILE_PATH"
+
+          # Select provisioning profile based on export method
+          if [[ "$EXPORT_METHOD" == "app-store" && -n "${APP_STORE_PROVISIONING_PROFILE_BASE64:-}" ]]; then
+            echo "Using App Store provisioning profiles"
+            echo -n "$APP_STORE_PROVISIONING_PROFILE_BASE64" | base64 -D > "$PROFILE_PATH"
+            LA_PROFILE_DATA="${APP_STORE_LIVE_ACTIVITY_PROVISIONING_PROFILE_BASE64:-}"
+          else
+            echo "Using Ad Hoc provisioning profiles"
+            echo -n "$PROVISIONING_PROFILE_BASE64" | base64 -D > "$PROFILE_PATH"
+            LA_PROFILE_DATA="${LIVE_ACTIVITY_PROVISIONING_PROFILE_BASE64:-}"
+          fi
 
           security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
           security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
@@ -119,8 +135,8 @@ jobs:
           echo "PROVISIONING_PROFILE_NAME=$PROFILE_NAME" >> "$GITHUB_ENV"
           echo "PROVISIONING_PROFILE_UUID=$PROFILE_UUID" >> "$GITHUB_ENV"
 
-          if [[ -n "${LIVE_ACTIVITY_PROVISIONING_PROFILE_BASE64:-}" ]]; then
-            echo -n "$LIVE_ACTIVITY_PROVISIONING_PROFILE_BASE64" | base64 -D > "$LIVE_ACTIVITY_PROFILE_PATH"
+          if [[ -n "${LA_PROFILE_DATA:-}" ]]; then
+            echo -n "$LA_PROFILE_DATA" | base64 -D > "$LIVE_ACTIVITY_PROFILE_PATH"
             security cms -D -i "$LIVE_ACTIVITY_PROFILE_PATH" > "$LIVE_ACTIVITY_PROFILE_PLIST"
             LIVE_ACTIVITY_PROFILE_UUID=$(/usr/libexec/PlistBuddy -c "Print UUID" "$LIVE_ACTIVITY_PROFILE_PLIST")
             LIVE_ACTIVITY_PROFILE_NAME=$(/usr/libexec/PlistBuddy -c "Print Name" "$LIVE_ACTIVITY_PROFILE_PLIST")
@@ -138,6 +154,8 @@ jobs:
             XCODE_EXPORT_METHOD="release-testing"
           elif [[ "$XCODE_EXPORT_METHOD" == "development" ]]; then
             XCODE_EXPORT_METHOD="debugging"
+          elif [[ "$XCODE_EXPORT_METHOD" == "app-store" ]]; then
+            XCODE_EXPORT_METHOD="app-store-connect"
           fi
           echo "Using xcodebuild export method: $XCODE_EXPORT_METHOD"
 
@@ -207,6 +225,20 @@ jobs:
 
           echo "IPA_PATH=$IPA_PATH" >> "$GITHUB_ENV"
 
+      - name: Upload to TestFlight
+        if: ${{ env.EXPORT_METHOD == 'app-store' && env.IPA_PATH != '' && env.ASC_API_KEY_ID != '' && env.ASC_API_ISSUER_ID != '' && env.ASC_API_KEY_BASE64 != '' }}
+        run: |
+          mkdir -p ~/.private_keys
+          echo -n "$ASC_API_KEY_BASE64" | base64 -D > ~/.private_keys/AuthKey_${ASC_API_KEY_ID}.p8
+
+          xcrun altool \
+            --upload-app \
+            --type ios \
+            --file "$IPA_PATH" \
+            --apiKey "$ASC_API_KEY_ID" \
+            --apiIssuer "$ASC_API_ISSUER_ID" \
+            --verbose 2>&1 | tee build/logs/upload.log
+
       - name: Print diagnostics on failure
         if: failure()
         run: |
@@ -241,7 +273,7 @@ jobs:
           echo "## WarrantyVault build diagnostics" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
 
-          for log in build/logs/test.log build/logs/archive.log build/logs/export.log; do
+          for log in build/logs/test.log build/logs/archive.log build/logs/export.log build/logs/upload.log; do
             if [[ -f "$log" ]]; then
               echo "### $log" >> "$GITHUB_STEP_SUMMARY"
               echo '```text' >> "$GITHUB_STEP_SUMMARY"
@@ -254,9 +286,11 @@ jobs:
           emit_matches "WarrantyVault test.log errors" "build/logs/test.log"
           emit_matches "WarrantyVault archive.log errors" "build/logs/archive.log"
           emit_matches "WarrantyVault export.log errors" "build/logs/export.log"
+          emit_matches "WarrantyVault upload.log errors" "build/logs/upload.log"
           emit_annotation "WarrantyVault test.log tail" "build/logs/test.log"
           emit_annotation "WarrantyVault archive.log tail" "build/logs/archive.log"
           emit_annotation "WarrantyVault export.log tail" "build/logs/export.log"
+          emit_annotation "WarrantyVault upload.log tail" "build/logs/upload.log"
 
           echo "### Files" >> "$GITHUB_STEP_SUMMARY"
           echo '```text' >> "$GITHUB_STEP_SUMMARY"
@@ -265,8 +299,8 @@ jobs:
 
           echo "Diagnostics were written to the GitHub Actions summary."
 
-      - name: Upload signed IPA
-        if: ${{ env.CERTIFICATE_BASE64 != '' && env.PROVISIONING_PROFILE_BASE64 != '' && env.APPLE_TEAM_ID != '' && env.BUNDLE_ID_SECRET != '' }}
+      - name: Upload signed IPA artifact
+        if: ${{ env.IPA_PATH != '' }}
         uses: actions/upload-artifact@v4
         with:
           name: WarrantyVault-signed-ipa
