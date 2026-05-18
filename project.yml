@@ -66,19 +66,17 @@ targets:
     platform: iOS
     sources:
       - path: Tests/WarrantyVaultTests
-    dependencies:
-      - target: WarrantyVault
+      - path: WarrantyVault/Models
+      - path: WarrantyVault/Utilities
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.yourname.warrantyvault.tests
+        PRODUCT_BUNDLE_IDENTIFIER: com.yevheniipichkur.warrantyvault.tests
         GENERATE_INFOPLIST_FILE: YES
-        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/WarrantyVault.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/WarrantyVault"
-        BUNDLE_LOADER: "$(TEST_HOST)"
 schemes:
   WarrantyVault:
     build:
       targets:
-        WarrantyVault: all
+        WarrantyVault: [run, archive, profile, analyze]
         WarrantyVaultTests: [test]
     run:
       config: Debug

@@ -1,6 +1,5 @@
 import XCTest
 import SwiftUI
-@testable import WarrantyVault
 
 final class WarrantyCalculatorTests: XCTestCase {
     func testTwelveMonthExpirationCalculation() throws {
