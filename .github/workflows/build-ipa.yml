@@ -206,6 +206,19 @@ jobs:
       - name: Print diagnostics on failure
         if: failure()
         run: |
+          emit_annotation() {
+            local title="$1"
+            local log="$2"
+            if [[ -f "$log" ]]; then
+              local message
+              message="$(tail -n 80 "$log")"
+              message="${message//'%'/'%25'}"
+              message="${message//$'\r'/'%0D'}"
+              message="${message//$'\n'/'%0A'}"
+              echo "::error file=$log,title=$title::$message"
+            fi
+          }
+
           echo "## WarrantyVault build diagnostics" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
 
@@ -218,6 +231,10 @@ jobs:
               echo "" >> "$GITHUB_STEP_SUMMARY"
             fi
           done
+
+          emit_annotation "WarrantyVault test.log tail" "build/logs/test.log"
+          emit_annotation "WarrantyVault archive.log tail" "build/logs/archive.log"
+          emit_annotation "WarrantyVault export.log tail" "build/logs/export.log"
 
           echo "### Files" >> "$GITHUB_STEP_SUMMARY"
           echo '```text' >> "$GITHUB_STEP_SUMMARY"
