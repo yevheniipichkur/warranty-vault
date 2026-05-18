@@ -68,7 +68,7 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             APP_BUNDLE_ID="$BUNDLE_ID_VALUE" \
             DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
-            clean test | tee build/logs/test.log
+            clean test 2>&1 | tee build/logs/test.log
 
       - name: Simulator build when signing secrets are missing
         if: ${{ env.CERTIFICATE_BASE64 == '' || env.PROVISIONING_PROFILE_BASE64 == '' || env.APPLE_TEAM_ID == '' || env.BUNDLE_ID_SECRET == '' }}
@@ -219,6 +219,21 @@ jobs:
             fi
           }
 
+          emit_matches() {
+            local title="$1"
+            local log="$2"
+            if [[ -f "$log" ]]; then
+              local message
+              message="$(grep -n -i -E "error:|fatal error|testing failed|test failed|failed:|cannot |no such module|provisioning|code sign|requires a provisioning profile|no profiles|doesn't include" "$log" | tail -n 120 || true)"
+              if [[ -n "$message" ]]; then
+                message="${message//'%'/'%25'}"
+                message="${message//$'\r'/'%0D'}"
+                message="${message//$'\n'/'%0A'}"
+                echo "::error file=$log,title=$title::$message"
+              fi
+            fi
+          }
+
           echo "## WarrantyVault build diagnostics" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
 
@@ -232,6 +247,9 @@ jobs:
             fi
           done
 
+          emit_matches "WarrantyVault test.log errors" "build/logs/test.log"
+          emit_matches "WarrantyVault archive.log errors" "build/logs/archive.log"
+          emit_matches "WarrantyVault export.log errors" "build/logs/export.log"
           emit_annotation "WarrantyVault test.log tail" "build/logs/test.log"
           emit_annotation "WarrantyVault archive.log tail" "build/logs/archive.log"
           emit_annotation "WarrantyVault export.log tail" "build/logs/export.log"
