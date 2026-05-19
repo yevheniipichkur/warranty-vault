@@ -36,8 +36,11 @@ struct SettingsView: View {
             }
 
             Section("settings.section.defaults") {
-                TextField("settings.defaultCurrency", text: $defaultCurrency)
-                    .textInputAutocapitalization(.characters)
+                Picker("settings.defaultCurrency", selection: $defaultCurrency) {
+                    ForEach(CurrencyFormatterProvider.commonCurrencies, id: \.self) { code in
+                        Text(CurrencyFormatterProvider.displayName(for: code)).tag(code)
+                    }
+                }
                 Toggle("settings.reminder30", isOn: $reminderDefault30)
                 Toggle("settings.reminder7", isOn: $reminderDefault7)
                 Toggle("settings.reminder1", isOn: $reminderDefault1)

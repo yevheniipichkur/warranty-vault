@@ -160,8 +160,12 @@ struct ItemFormView: View {
                             }
                             PremiumDivider()
                             PremiumInputRow(titleKey: "item.currency", systemImage: "banknote") {
-                                TextField("item.currency", text: $currency)
-                                    .textInputAutocapitalization(.characters)
+                                Picker("item.currency", selection: $currency) {
+                                    ForEach(CurrencyFormatterProvider.commonCurrencies, id: \.self) { code in
+                                        Text(CurrencyFormatterProvider.displayName(for: code)).tag(code)
+                                    }
+                                }
+                                .labelsHidden()
                             }
                             PremiumDivider()
                             PremiumInputRow(titleKey: "item.category", systemImage: category.symbolName) {

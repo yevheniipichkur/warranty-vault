@@ -66,14 +66,17 @@ struct PaywallView: View {
                     VStack(spacing: 10) {
                         if subscriptionManager.products.isEmpty {
                             GlassCard {
-                                VStack(spacing: 8) {
+                                VStack(alignment: .leading, spacing: 8) {
                                     Text("paywall.productsUnavailable")
                                         .font(.headline)
-                                    Text("paywall.productIDs")
-                                        .font(.footnote)
-                                        .foregroundStyle(.secondary)
-                                        .multilineTextAlignment(.center)
+                                    if !subscriptionManager.loadDiagnostic.isEmpty {
+                                        Text(subscriptionManager.loadDiagnostic)
+                                            .font(.caption)
+                                            .foregroundStyle(.secondary)
+                                            .multilineTextAlignment(.leading)
+                                    }
                                 }
+                                .frame(maxWidth: .infinity, alignment: .leading)
                             }
                         } else {
                             ForEach(subscriptionManager.products, id: \.id) { product in

@@ -15,6 +15,7 @@ final class SubscriptionManager: ObservableObject {
     @Published private(set) var proEntitlementActive = false
     @Published private var debugUnlockPro: Bool
     @Published var lastErrorMessage: String?
+    @Published private(set) var loadDiagnostic: String = ""
 
     private static let debugUnlockStorageKey = "debugUnlockPro"
 
@@ -40,12 +41,20 @@ final class SubscriptionManager: ObservableObject {
     }
 
     func loadProducts() async {
+        loadDiagnostic = "Requesting \(Self.productIDs.count) product(s)…"
         do {
-            products = try await Product.products(for: Self.productIDs)
+            let loaded = try await Product.products(for: Self.productIDs)
+            products = loaded
             lastErrorMessage = nil
+            if loaded.isEmpty {
+                loadDiagnostic = "⚠️ StoreKit returned 0 products for IDs: \(Self.productIDs.joined(separator: ", "))"
+            } else {
+                loadDiagnostic = "✓ Loaded \(loaded.count)/\(Self.productIDs.count): \(loaded.map(\.id).joined(separator: ", "))"
+            }
         } catch {
             products = []
             lastErrorMessage = error.localizedDescription
+            loadDiagnostic = "❌ Error: \(error.localizedDescription)"
         }
     }
 
