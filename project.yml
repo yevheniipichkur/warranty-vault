@@ -26,6 +26,7 @@ targets:
       - target: WarrantyVaultLiveActivity
         embed: true
       - sdk: PhotosUI.framework
+      - sdk: StoreKit.framework
       - sdk: AVFoundation.framework
       - sdk: EventKit.framework
     settings:

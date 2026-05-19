@@ -145,6 +145,7 @@
 "settings.section.data" = "Керування даними";
 "settings.section.pro" = "Paywall";
 "settings.section.proFeatures" = "Функції Pro";
+"settings.section.storekit" = "Діагностика StoreKit";
 "settings.section.privacy" = "Приватність";
 "settings.language" = "Мова";
 "settings.defaultCurrency" = "Типова валюта";
@@ -159,6 +160,7 @@
 "settings.deleteAll.title" = "Видалити всі дані?";
 "settings.deleteAll.message" = "Це видалить усі локальні речі, зображення та нагадування.";
 "settings.openPaywall" = "Відкрити Paywall";
+"settings.storekitRefresh" = "Оновити продукти StoreKit";
 "settings.proUnlocked" = "Pro розблоковано";
 "settings.debugUnlockPro" = "Локально розблокувати Pro";
 "settings.privacyNote" = "All data is stored on your device. No AI. No external server.";

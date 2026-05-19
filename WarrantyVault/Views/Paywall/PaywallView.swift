@@ -75,6 +75,27 @@ struct PaywallView: View {
                                             .foregroundStyle(.secondary)
                                             .multilineTextAlignment(.leading)
                                     }
+                                    if !subscriptionManager.diagnosticLines.isEmpty {
+                                        Divider()
+                                            .padding(.vertical, 4)
+                                        ForEach(subscriptionManager.diagnosticLines, id: \.self) { line in
+                                            Text(line)
+                                                .font(.caption2.monospaced())
+                                                .foregroundStyle(.secondary)
+                                                .textSelection(.enabled)
+                                        }
+                                    }
+
+                                    Button {
+                                        Task {
+                                            await subscriptionManager.loadProducts()
+                                            await subscriptionManager.refreshEntitlements()
+                                        }
+                                    } label: {
+                                        Label("settings.storekitRefresh", systemImage: "arrow.clockwise")
+                                            .font(.caption.weight(.semibold))
+                                    }
+                                    .buttonStyle(.bordered)
                                 }
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             }

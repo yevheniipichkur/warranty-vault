@@ -16,6 +16,7 @@ final class SubscriptionManager: ObservableObject {
     @Published private var debugUnlockPro: Bool
     @Published var lastErrorMessage: String?
     @Published private(set) var loadDiagnostic: String = ""
+    @Published private(set) var diagnosticLines: [String] = []
 
     private static let debugUnlockStorageKey = "debugUnlockPro"
 
@@ -41,20 +42,30 @@ final class SubscriptionManager: ObservableObject {
     }
 
     func loadProducts() async {
-        loadDiagnostic = "Requesting \(Self.productIDs.count) product(s)…"
+        diagnosticLines = await makeDiagnosticLines()
+        loadDiagnostic = "Requesting \(Self.productIDs.count) product(s)..."
         do {
-            let loaded = try await Product.products(for: Self.productIDs)
-            products = loaded
-            lastErrorMessage = nil
-            if loaded.isEmpty {
-                loadDiagnostic = "⚠️ StoreKit returned 0 products for IDs: \(Self.productIDs.joined(separator: ", "))"
-            } else {
-                loadDiagnostic = "✓ Loaded \(loaded.count)/\(Self.productIDs.count): \(loaded.map(\.id).joined(separator: ", "))"
+            for attempt in 1...3 {
+                let loaded = try await Product.products(for: Self.productIDs)
+                products = loaded
+                lastErrorMessage = nil
+
+                if !loaded.isEmpty {
+                    loadDiagnostic = "Loaded \(loaded.count)/\(Self.productIDs.count): \(loaded.map(\.id).joined(separator: ", "))"
+                    return
+                }
+
+                if attempt < 3 {
+                    loadDiagnostic = "StoreKit returned 0 products on attempt \(attempt)/3. Retrying..."
+                    try? await Task.sleep(nanoseconds: UInt64(attempt) * 1_500_000_000)
+                }
             }
+
+            loadDiagnostic = "StoreKit returned 0 products for IDs: \(Self.productIDs.joined(separator: ", "))"
         } catch {
             products = []
             lastErrorMessage = error.localizedDescription
-            loadDiagnostic = "❌ Error: \(error.localizedDescription)"
+            loadDiagnostic = "Error: \(error.localizedDescription)"
         }
     }
 
@@ -91,6 +102,38 @@ final class SubscriptionManager: ObservableObject {
             }
         } catch {
             lastErrorMessage = error.localizedDescription
+        }
+    }
+
+    private func makeDiagnosticLines() async -> [String] {
+        let bundleID = Bundle.main.bundleIdentifier ?? "unknown"
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown"
+        let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "unknown"
+        let receiptName = Bundle.main.appStoreReceiptURL?.lastPathComponent ?? "none"
+        let canMakePayments = SKPaymentQueue.canMakePayments() ? "yes" : "no"
+        let environment = await appTransactionEnvironment()
+
+        return [
+            "Bundle ID: \(bundleID)",
+            "Version: \(version) (\(build))",
+            "Receipt: \(receiptName)",
+            "StoreKit environment: \(environment)",
+            "Can make payments: \(canMakePayments)",
+            "Requested IDs: \(Self.productIDs.joined(separator: ", "))"
+        ]
+    }
+
+    private func appTransactionEnvironment() async -> String {
+        do {
+            let result = try await AppTransaction.shared
+            switch result {
+            case .verified(let transaction):
+                return String(describing: transaction.environment)
+            case .unverified(let transaction, let error):
+                return "\(String(describing: transaction.environment)) (unverified: \(error.localizedDescription))"
+            }
+        } catch {
+            return "unavailable: \(error.localizedDescription)"
         }
     }
 }

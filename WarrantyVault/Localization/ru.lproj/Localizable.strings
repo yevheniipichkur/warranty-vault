@@ -145,6 +145,7 @@
 "settings.section.data" = "Данные";
 "settings.section.pro" = "Paywall";
 "settings.section.proFeatures" = "Функции Pro";
+"settings.section.storekit" = "Диагностика StoreKit";
 "settings.section.privacy" = "Приватность";
 "settings.language" = "Язык";
 "settings.defaultCurrency" = "Валюта по умолчанию";
@@ -159,6 +160,7 @@
 "settings.deleteAll.title" = "Удалить все данные?";
 "settings.deleteAll.message" = "Все локальные товары, изображения и напоминания будут удалены.";
 "settings.openPaywall" = "Открыть Paywall";
+"settings.storekitRefresh" = "Обновить продукты StoreKit";
 "settings.proUnlocked" = "Pro разблокирован";
 "settings.debugUnlockPro" = "Локально разблокировать Pro";
 "settings.privacyNote" = "All data is stored on your device. No AI. No external server.";

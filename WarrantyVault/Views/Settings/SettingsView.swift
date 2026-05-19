@@ -93,6 +93,31 @@ struct SettingsView: View {
                 }
             }
 
+            Section("settings.section.storekit") {
+                Button {
+                    Task {
+                        await subscriptionManager.loadProducts()
+                        await subscriptionManager.refreshEntitlements()
+                    }
+                } label: {
+                    Label("settings.storekitRefresh", systemImage: "arrow.clockwise")
+                }
+
+                if !subscriptionManager.loadDiagnostic.isEmpty {
+                    Text(subscriptionManager.loadDiagnostic)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .textSelection(.enabled)
+                }
+
+                ForEach(subscriptionManager.diagnosticLines, id: \.self) { line in
+                    Text(line)
+                        .font(.caption2.monospaced())
+                        .foregroundStyle(.secondary)
+                        .textSelection(.enabled)
+                }
+            }
+
             Section("settings.section.proFeatures") {
                 SettingsFeatureRow(
                     titleKey: "feature.scanner.title",

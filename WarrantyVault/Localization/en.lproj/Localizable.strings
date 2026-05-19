@@ -145,6 +145,7 @@
 "settings.section.data" = "Data management";
 "settings.section.pro" = "Paywall";
 "settings.section.proFeatures" = "Pro features";
+"settings.section.storekit" = "StoreKit diagnostics";
 "settings.section.privacy" = "Privacy";
 "settings.language" = "Language";
 "settings.defaultCurrency" = "Default currency";
@@ -159,6 +160,7 @@
 "settings.deleteAll.title" = "Delete all data?";
 "settings.deleteAll.message" = "This removes all local items, images, and reminders.";
 "settings.openPaywall" = "Open Paywall";
+"settings.storekitRefresh" = "Refresh StoreKit products";
 "settings.proUnlocked" = "Pro unlocked";
 "settings.debugUnlockPro" = "Unlock Pro locally";
 "settings.privacyNote" = "All data is stored on your device. No AI. No external server.";
