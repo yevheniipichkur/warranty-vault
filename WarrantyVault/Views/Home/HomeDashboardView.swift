@@ -32,8 +32,6 @@ struct HomeDashboardView: View {
                     )
                     .padding(.top, 48)
                 } else {
-                    ProtectionCenterView(viewModel: viewModel)
-
                     if !viewModel.needsAttention.isEmpty {
                         HomeItemSection(titleKey: "home.needsAttention", systemImage: "exclamationmark.shield.fill", items: viewModel.needsAttention)
                             .animatedCard(delay: 0.03)
@@ -68,81 +66,6 @@ struct HomeDashboardView: View {
                 ItemFormView()
             }
             .presentationCornerRadius(28)
-        }
-    }
-}
-
-private struct ProtectionCenterView: View {
-    let viewModel: HomeDashboardViewModel
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            SectionHeader(titleKey: "home.protectionCenter", systemImage: "shield.checkered")
-
-            LazyVGrid(columns: [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)], spacing: 10) {
-                ActionInsightCard(
-                    value: "\(viewModel.openReturnWindowCount)",
-                    titleKey: "home.returnWindows",
-                    symbolName: "arrow.uturn.backward.circle.fill",
-                    tint: DesignSystem.Colors.premiumAmber
-                )
-
-                ActionInsightCard(
-                    value: "\(viewModel.missingReceiptCount)",
-                    titleKey: "home.missingReceipts",
-                    symbolName: "doc.text.magnifyingglass",
-                    tint: DesignSystem.Colors.premiumRed
-                )
-
-                ActionInsightCard(
-                    value: "\(viewModel.repairRecordCount)",
-                    titleKey: "home.repairsLogged",
-                    symbolName: "stethoscope",
-                    tint: DesignSystem.Colors.premiumTeal
-                )
-
-                ActionInsightCard(
-                    value: "\(viewModel.activeCount)",
-                    titleKey: "home.coveredItems",
-                    symbolName: "checkmark.shield.fill",
-                    tint: DesignSystem.Colors.premiumMint
-                )
-            }
-        }
-    }
-}
-
-private struct ActionInsightCard: View {
-    let value: String
-    let titleKey: String
-    let symbolName: String
-    let tint: Color
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Image(systemName: symbolName)
-                .font(.subheadline.weight(.bold))
-                .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(tint)
-                .frame(width: 30, height: 30)
-                .background(tint.opacity(0.12), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-
-            Text(value)
-                .font(.title3.weight(.bold))
-                .monospacedDigit()
-
-            Text(LocalizedStringKey(titleKey))
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(.secondary)
-                .lineLimit(2)
-                .minimumScaleFactor(0.78)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(14)
-        .background(Color.secondary.opacity(0.07), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
-        .overlay {
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .strokeBorder(tint.opacity(0.14), lineWidth: 0.8)
         }
     }
 }
