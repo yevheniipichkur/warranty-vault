@@ -7,7 +7,7 @@ struct WarrantyVaultLiveActivity: Widget {
         ActivityConfiguration(for: WarrantyActivityAttributes.self) { context in
             LockScreenWarrantyActivityView(context: context)
                 .activityBackgroundTint(Color(uiColor: .secondarySystemBackground))
-                .activitySystemActionForegroundColor(.warrantyAmber)
+                .activitySystemActionForegroundColor(Color.warrantyAmber)
         } dynamicIsland: { context in
             DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
@@ -37,19 +37,19 @@ struct WarrantyVaultLiveActivity: Widget {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                         ProgressView(value: progressValue(daysLeft: context.state.daysLeft))
-                            .tint(.warrantyAmber)
+                            .tint(Color.warrantyAmber)
                     }
                 }
             } compactLeading: {
                 Image(systemName: "checkmark.shield.fill")
-                    .foregroundStyle(.warrantyAmber)
+                    .foregroundStyle(Color.warrantyAmber)
             } compactTrailing: {
                 Text("\(context.state.daysLeft)\(context.state.dayShortText)")
                     .font(.caption.weight(.semibold))
                     .monospacedDigit()
             } minimal: {
                 Image(systemName: "shield.fill")
-                    .foregroundStyle(.warrantyAmber)
+                    .foregroundStyle(Color.warrantyAmber)
             }
         }
     }
@@ -67,14 +67,14 @@ private struct LockScreenWarrantyActivityView: View {
         HStack(spacing: 14) {
             Image(systemName: "checkmark.shield.fill")
                 .font(.title2.weight(.semibold))
-                .foregroundStyle(.warrantyAmber)
+                .foregroundStyle(Color.warrantyAmber)
                 .frame(width: 44, height: 44)
                 .background(Color.warrantyAmber.opacity(0.14), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
 
             VStack(alignment: .leading, spacing: 5) {
                 Text(context.state.statusText)
                     .font(.caption.weight(.semibold))
-                    .foregroundStyle(.warrantyAmber)
+                    .foregroundStyle(Color.warrantyAmber)
                 Text(context.state.itemName)
                     .font(.headline)
                     .lineLimit(1)
