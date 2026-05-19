@@ -19,7 +19,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-16
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       SCHEME: WarrantyVault
@@ -47,6 +47,7 @@ jobs:
         run: |
           xcodebuild -version
           xcrun --version
+          xcodebuild -showsdks | grep iphoneos || true
 
       - name: Install XcodeGen
         run: |
