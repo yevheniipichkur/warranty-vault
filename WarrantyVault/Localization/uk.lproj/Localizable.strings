@@ -144,6 +144,7 @@
 "settings.section.appearance" = "Вигляд";
 "settings.section.data" = "Керування даними";
 "settings.section.pro" = "Paywall";
+"settings.section.proFeatures" = "Функції Pro";
 "settings.section.privacy" = "Приватність";
 "settings.language" = "Мова";
 "settings.defaultCurrency" = "Типова валюта";
@@ -174,9 +175,37 @@
 "paywall.pro.pdf" = "Експорт PDF";
 "paywall.pro.receipts" = "Галерея чеків";
 "paywall.pro.filters" = "Розширені фільтри";
-"paywall.pro.icloud" = "Майбутня синхронізація iCloud";
+"paywall.pro.scanner" = "Сканер кодів і серійних номерів";
+"paywall.pro.calendar" = "Експорт у календар";
+"paywall.pro.icloud" = "Підготовка синхронізації iCloud";
 "paywall.productsUnavailable" = "Продукти StoreKit ще не налаштовані.";
 "paywall.productIDs" = "Placeholder IDs: warrantyvault.pro.monthly, warrantyvault.pro.yearly";
+
+"feature.scanner.title" = "Сканер кодів";
+"feature.scanner.subtitle" = "Скануйте серійні номери та коди товарів під час додавання речі.";
+"feature.calendar.title" = "Експорт у календар";
+"feature.calendar.subtitle" = "Додавайте дати завершення гарантії в Apple Calendar.";
+"feature.icloud.title" = "Синхронізація iCloud";
+
+"scanner.title" = "Сканувати код";
+"scanner.scanSerial" = "Сканувати серійний номер";
+"scanner.positionCode" = "Розмістіть штрихкод або QR із серійним номером у кадрі камери.";
+"scanner.cameraDenied" = "Доступ до камери вимкнено. Увімкніть його в Налаштуваннях, щоб сканувати коди.";
+"scanner.cameraUnavailable" = "Камера недоступна на цьому пристрої.";
+
+"calendar.title" = "Календар";
+"calendar.add" = "Додати в календар";
+"calendar.added" = "Дату гарантії додано в календар.";
+"calendar.permissionDenied" = "Доступ до календаря заборонено.";
+"calendar.noWarranty" = "У цієї речі немає дати завершення гарантії.";
+"calendar.failed" = "Не вдалося додати дату гарантії в календар.";
+"calendar.event.title" = "Гарантія завершується: %@";
+"calendar.event.notesHeader" = "Створено у Warranty Vault";
+
+"icloud.title" = "Синхронізація iCloud";
+"icloud.status.setupRequired" = "Функція Pro. Потребує ввімкнення iCloud перед релізом.";
+"icloud.status.noAccount" = "Увійдіть в iCloud на цьому пристрої.";
+"icloud.setupMessage" = "Синхронізацію iCloud підготовлено як функцію Pro, але реальна синхронізація потребує ввімкнення iCloud/CloudKit для App ID і повторного створення provisioning profiles. Вона не вмикається автоматично, щоб не зламати поточну підписану збірку.";
 
 "notification.expiring.title" = "Гарантія скоро завершується";
 "notification.expiring.body" = "Гарантія %@ завершується за %d дн.";

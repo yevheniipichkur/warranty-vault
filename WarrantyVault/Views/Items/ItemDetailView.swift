@@ -17,6 +17,8 @@ struct ItemDetailView: View {
     @State private var sharedURL: URL?
     @State private var reminderScheduled = false
     @State private var isShowingLiveActivityMessage = false
+    @State private var isShowingCalendarMessage = false
+    @State private var calendarMessageKey = "calendar.added"
 
     var body: some View {
         ScrollView {
@@ -83,6 +85,7 @@ struct ItemDetailView: View {
                 DetailActionGrid(
                     reminderScheduled: reminderScheduled,
                     showsLiveActivity: canShowLiveActivityButton,
+                    showsCalendar: canShowCalendarButton,
                     liveActivityIsRunning: liveActivityManager.activeActivityID != nil,
                     exportAction: exportPDF,
                     reminderAction: {
@@ -99,6 +102,11 @@ struct ItemDetailView: View {
                                 await liveActivityManager.endWarrantyActivity()
                             }
                             isShowingLiveActivityMessage = true
+                        }
+                    },
+                    calendarAction: {
+                        Task {
+                            await addToCalendar()
                         }
                     }
                 )
@@ -154,6 +162,11 @@ struct ItemDetailView: View {
         } message: {
             Text(LocalizedStringKey(liveActivityManager.lastMessageKey ?? "liveActivity.started"))
         }
+        .alert("calendar.title", isPresented: $isShowingCalendarMessage) {
+            Button("common.ok", role: .cancel) {}
+        } message: {
+            Text(LocalizedStringKey(calendarMessageKey))
+        }
         .confirmationDialog("delete.item.title", isPresented: $isShowingDeleteConfirmation, titleVisibility: .visible) {
             Button("common.delete", role: .destructive) {
                 deleteItem()
@@ -179,6 +192,30 @@ struct ItemDetailView: View {
         item.hasWarranty && item.warrantyExpirationDate != nil && item.warrantyStatus != .expired
     }
 
+    private var canShowCalendarButton: Bool {
+        item.hasWarranty && item.warrantyExpirationDate != nil
+    }
+
+    private func addToCalendar() async {
+        guard subscriptionManager.hasPro else {
+            isShowingPaywall = true
+            return
+        }
+
+        do {
+            try await CalendarExportService().addWarrantyEvent(for: item, language: languageManager.selectedLanguage)
+            calendarMessageKey = "calendar.added"
+        } catch CalendarExportError.permissionDenied {
+            calendarMessageKey = "calendar.permissionDenied"
+        } catch CalendarExportError.noWarrantyDate {
+            calendarMessageKey = "calendar.noWarranty"
+        } catch {
+            calendarMessageKey = "calendar.failed"
+        }
+
+        isShowingCalendarMessage = true
+    }
+
     private func deleteItem() {
         ImageStorageService.deleteImage(at: item.productImagePath)
         ImageStorageService.deleteImage(at: item.receiptImagePath)
@@ -193,10 +230,12 @@ struct ItemDetailView: View {
 private struct DetailActionGrid: View {
     let reminderScheduled: Bool
     let showsLiveActivity: Bool
+    let showsCalendar: Bool
     let liveActivityIsRunning: Bool
     let exportAction: () -> Void
     let reminderAction: () -> Void
     let liveActivityAction: () -> Void
+    let calendarAction: () -> Void
 
     private var columns: [GridItem] {
         [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)]
@@ -218,6 +257,15 @@ private struct DetailActionGrid: View {
                 action: reminderAction
             )
 
+            if showsCalendar {
+                DetailActionButton(
+                    titleKey: "calendar.add",
+                    systemImage: "calendar.badge.plus",
+                    tint: DesignSystem.Colors.premiumMint,
+                    action: calendarAction
+                )
+            }
+
             if showsLiveActivity {
                 DetailActionButton(
                     titleKey: liveActivityIsRunning ? "liveActivity.stop" : "liveActivity.start",
@@ -225,7 +273,6 @@ private struct DetailActionGrid: View {
                     tint: DesignSystem.Colors.premiumTeal,
                     action: liveActivityAction
                 )
-                .gridCellColumns(2)
             }
         }
     }

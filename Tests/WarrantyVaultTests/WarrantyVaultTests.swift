@@ -66,6 +66,15 @@ final class SubscriptionRulesTests: XCTestCase {
     func testProUserCanAddBeyondFreeLimit() {
         XCTAssertTrue(SubscriptionRules.canAddItem(currentCount: 42, isPro: true))
     }
+
+    func testSelectedAdvancedFeaturesRequirePro() {
+        XCTAssertFalse(SubscriptionRules.isFeatureAvailable(.iCloudSync, isPro: false))
+        XCTAssertFalse(SubscriptionRules.isFeatureAvailable(.barcodeScanner, isPro: false))
+        XCTAssertFalse(SubscriptionRules.isFeatureAvailable(.calendarExport, isPro: false))
+        XCTAssertTrue(SubscriptionRules.isFeatureAvailable(.iCloudSync, isPro: true))
+        XCTAssertTrue(SubscriptionRules.isFeatureAvailable(.barcodeScanner, isPro: true))
+        XCTAssertTrue(SubscriptionRules.isFeatureAvailable(.calendarExport, isPro: true))
+    }
 }
 
 final class LanguageSelectionTests: XCTestCase {

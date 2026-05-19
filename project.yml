@@ -26,11 +26,15 @@ targets:
       - target: WarrantyVaultLiveActivity
         embed: true
       - sdk: PhotosUI.framework
+      - sdk: AVFoundation.framework
+      - sdk: EventKit.framework
     settings:
       base:
         GENERATE_INFOPLIST_FILE: YES
         INFOPLIST_KEY_CFBundleDisplayName: Warranty Vault
         INFOPLIST_KEY_CFBundleIconName: AppIcon
+        INFOPLIST_KEY_NSCameraUsageDescription: "Scan barcodes and serial numbers to fill warranty item details faster."
+        INFOPLIST_KEY_NSCalendarsWriteOnlyAccessUsageDescription: "Add warranty expiration dates to your calendar."
         INFOPLIST_KEY_NSPhotoLibraryUsageDescription: "Select receipt, product, and warranty document images to store locally in Warranty Vault."
         INFOPLIST_KEY_NSSupportsLiveActivities: YES
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES

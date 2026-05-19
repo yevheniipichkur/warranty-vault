@@ -144,6 +144,7 @@
 "settings.section.appearance" = "Wygląd";
 "settings.section.data" = "Zarządzanie danymi";
 "settings.section.pro" = "Paywall";
+"settings.section.proFeatures" = "Funkcje Pro";
 "settings.section.privacy" = "Prywatność";
 "settings.language" = "Język";
 "settings.defaultCurrency" = "Domyślna waluta";
@@ -174,9 +175,37 @@
 "paywall.pro.pdf" = "Eksport PDF";
 "paywall.pro.receipts" = "Galeria paragonów";
 "paywall.pro.filters" = "Zaawansowane filtry";
-"paywall.pro.icloud" = "Przyszła synchronizacja iCloud";
+"paywall.pro.scanner" = "Skaner kodów i numerów seryjnych";
+"paywall.pro.calendar" = "Eksport do kalendarza";
+"paywall.pro.icloud" = "Przygotowanie synchronizacji iCloud";
 "paywall.productsUnavailable" = "Produkty StoreKit nie są jeszcze skonfigurowane.";
 "paywall.productIDs" = "Placeholder IDs: warrantyvault.pro.monthly, warrantyvault.pro.yearly";
+
+"feature.scanner.title" = "Skaner kodów";
+"feature.scanner.subtitle" = "Skanuj numery seryjne i kody produktu podczas dodawania rzeczy.";
+"feature.calendar.title" = "Eksport do kalendarza";
+"feature.calendar.subtitle" = "Dodawaj daty końca gwarancji do Apple Calendar.";
+"feature.icloud.title" = "Synchronizacja iCloud";
+
+"scanner.title" = "Skanuj kod";
+"scanner.scanSerial" = "Skanuj numer seryjny";
+"scanner.positionCode" = "Ustaw kod kreskowy lub QR z numerem seryjnym w kadrze aparatu.";
+"scanner.cameraDenied" = "Dostęp do aparatu jest wyłączony. Włącz go w Ustawieniach, aby skanować kody.";
+"scanner.cameraUnavailable" = "Aparat nie jest dostępny na tym urządzeniu.";
+
+"calendar.title" = "Kalendarz";
+"calendar.add" = "Dodaj do kalendarza";
+"calendar.added" = "Data gwarancji została dodana do kalendarza.";
+"calendar.permissionDenied" = "Odmówiono dostępu do kalendarza.";
+"calendar.noWarranty" = "Ten przedmiot nie ma daty końca gwarancji.";
+"calendar.failed" = "Nie udało się dodać daty gwarancji do kalendarza.";
+"calendar.event.title" = "Koniec gwarancji: %@";
+"calendar.event.notesHeader" = "Utworzone przez Warranty Vault";
+
+"icloud.title" = "Synchronizacja iCloud";
+"icloud.status.setupRequired" = "Funkcja Pro. Wymaga włączenia iCloud przed wydaniem.";
+"icloud.status.noAccount" = "Zaloguj się do iCloud na tym urządzeniu.";
+"icloud.setupMessage" = "Synchronizacja iCloud jest przygotowana jako funkcja Pro, ale prawdziwa synchronizacja wymaga włączenia iCloud/CloudKit dla App ID i ponownego wygenerowania profili provisioning. Nie jest włączona automatycznie, żeby nie zepsuć obecnej podpisanej kompilacji.";
 
 "notification.expiring.title" = "Gwarancja wkrótce wygasa";
 "notification.expiring.body" = "Gwarancja %@ wygasa za %d dni.";

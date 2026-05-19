@@ -29,6 +29,7 @@ struct ItemFormView: View {
     @State private var showingPaywall = false
     @State private var showingDeleteConfirmation = false
     @State private var showingSaveSuccess = false
+    @State private var showingBarcodeScanner = false
 
     init(item: WarrantyItem? = nil) {
         self.item = item
@@ -69,8 +70,26 @@ struct ItemFormView: View {
                         }
                         PremiumDivider()
                         PremiumInputRow(titleKey: "item.serialNumber", systemImage: "number") {
-                            TextField("item.serialNumber", text: $serialNumber)
-                                .textInputAutocapitalization(.characters)
+                            HStack(spacing: 8) {
+                                TextField("item.serialNumber", text: $serialNumber)
+                                    .textInputAutocapitalization(.characters)
+
+                                Button {
+                                    if subscriptionManager.hasPro {
+                                        showingBarcodeScanner = true
+                                    } else {
+                                        showingPaywall = true
+                                    }
+                                } label: {
+                                    Image(systemName: subscriptionManager.hasPro ? "barcode.viewfinder" : "lock.fill")
+                                        .font(.headline.weight(.semibold))
+                                        .foregroundStyle(DesignSystem.Colors.premiumBlue)
+                                        .frame(width: 34, height: 34)
+                                        .background(DesignSystem.Colors.premiumBlue.opacity(0.10), in: RoundedRectangle(cornerRadius: 11, style: .continuous))
+                                }
+                                .buttonStyle(.plain)
+                                .accessibilityLabel(Text("scanner.scanSerial"))
+                            }
                         }
                     }
                     .animatedCard(delay: 0.02)
@@ -212,6 +231,24 @@ struct ItemFormView: View {
         }
         .sheet(isPresented: $showingPaywall) {
             PaywallView()
+        }
+        .sheet(isPresented: $showingBarcodeScanner) {
+            NavigationStack {
+                BarcodeScannerView { code in
+                    serialNumber = code
+                    showingBarcodeScanner = false
+                }
+                .ignoresSafeArea()
+                .navigationTitle("scanner.title")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("common.cancel") {
+                            showingBarcodeScanner = false
+                        }
+                    }
+                }
+            }
         }
     }
 

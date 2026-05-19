@@ -144,6 +144,7 @@
 "settings.section.appearance" = "Оформление";
 "settings.section.data" = "Данные";
 "settings.section.pro" = "Paywall";
+"settings.section.proFeatures" = "Функции Pro";
 "settings.section.privacy" = "Приватность";
 "settings.language" = "Язык";
 "settings.defaultCurrency" = "Валюта по умолчанию";
@@ -174,9 +175,37 @@
 "paywall.pro.pdf" = "Экспорт PDF";
 "paywall.pro.receipts" = "Галерея чеков";
 "paywall.pro.filters" = "Расширенные фильтры";
-"paywall.pro.icloud" = "Будущая синхронизация iCloud";
+"paywall.pro.scanner" = "Сканер кодов и серийных номеров";
+"paywall.pro.calendar" = "Экспорт в календарь";
+"paywall.pro.icloud" = "Подготовка iCloud Sync";
 "paywall.productsUnavailable" = "Продукты StoreKit ещё не настроены.";
 "paywall.productIDs" = "Placeholder IDs: warrantyvault.pro.monthly, warrantyvault.pro.yearly";
+
+"feature.scanner.title" = "Сканер кодов";
+"feature.scanner.subtitle" = "Сканируйте серийные номера и коды товара при добавлении покупки.";
+"feature.calendar.title" = "Экспорт в календарь";
+"feature.calendar.subtitle" = "Добавляйте даты окончания гарантии в Apple Calendar.";
+"feature.icloud.title" = "Синхронизация iCloud";
+
+"scanner.title" = "Сканировать код";
+"scanner.scanSerial" = "Сканировать серийный номер";
+"scanner.positionCode" = "Поместите штрихкод или QR с серийным номером в кадр камеры.";
+"scanner.cameraDenied" = "Доступ к камере отключён. Включите его в Настройках, чтобы сканировать коды.";
+"scanner.cameraUnavailable" = "Камера недоступна на этом устройстве.";
+
+"calendar.title" = "Календарь";
+"calendar.add" = "Добавить в календарь";
+"calendar.added" = "Дата гарантии добавлена в календарь.";
+"calendar.permissionDenied" = "Доступ к календарю запрещён.";
+"calendar.noWarranty" = "У этого товара нет даты окончания гарантии.";
+"calendar.failed" = "Не удалось добавить дату гарантии в календарь.";
+"calendar.event.title" = "Гарантия заканчивается: %@";
+"calendar.event.notesHeader" = "Создано в Warranty Vault";
+
+"icloud.title" = "Синхронизация iCloud";
+"icloud.status.setupRequired" = "Pro-функция. Требует включения iCloud перед релизом.";
+"icloud.status.noAccount" = "Войдите в iCloud на этом устройстве.";
+"icloud.setupMessage" = "Синхронизация iCloud подготовлена как Pro-функция, но реальная синхронизация требует включить iCloud/CloudKit для App ID и заново создать provisioning profiles. Она не включена автоматически, чтобы не сломать текущую подписанную сборку.";
 
 "notification.expiring.title" = "Гарантия скоро истекает";
 "notification.expiring.body" = "Гарантия %@ истекает через %d дн.";

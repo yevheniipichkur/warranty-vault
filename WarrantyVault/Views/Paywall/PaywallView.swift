@@ -26,7 +26,7 @@ struct PaywallView: View {
 
                     HStack(alignment: .top, spacing: 12) {
                         PlanCard(titleKey: "paywall.free", featureKeys: ["paywall.free.items", "paywall.free.reminders"])
-                        PlanCard(titleKey: "paywall.pro", featureKeys: ["paywall.pro.unlimited", "paywall.pro.pdf", "paywall.pro.receipts", "paywall.pro.filters", "paywall.pro.icloud"])
+                        PlanCard(titleKey: "paywall.pro", featureKeys: ["paywall.pro.unlimited", "paywall.pro.pdf", "paywall.pro.receipts", "paywall.pro.filters", "paywall.pro.scanner", "paywall.pro.calendar", "paywall.pro.icloud"])
                     }
 
                     VStack(spacing: 10) {

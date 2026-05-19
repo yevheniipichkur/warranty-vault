@@ -22,6 +22,9 @@ Warranty Vault — локальный “сейф гарантий”. Все д
 - Галерея чеков.
 - Локальные напоминания.
 - PDF export одного товара.
+- Pro: сканер штрихкодов/серийных номеров через камеру.
+- Pro: экспорт даты окончания гарантии в Apple Calendar.
+- Pro: подготовленный раздел iCloud Sync. Реальная синхронизация требует включить iCloud/CloudKit capability и обновить provisioning profiles.
 - StoreKit 2 placeholder для Pro-подписки.
 - Free limit: до 10 items.
 - Локализация: English, Polski, Українська, Русский.
@@ -39,8 +42,23 @@ Warranty Vault — локальный “сейф гарантий”. Все д
 - GitHub Actions workflow для macOS runner.
 - Скрипты `Scripts/generate_project.sh` и `Scripts/build_ipa.sh`.
 - Unit tests для расчёта гарантии, статусов, free limit, языка, темы и фильтров.
+- Pro gates для PDF, receipt gallery, advanced filters, scanner, calendar export и iCloud Sync.
 - Оригинальная AppIcon, сгенерированная без сторонних copyrighted assets.
 - SwiftUI vector illustrations для onboarding и empty states.
+
+### Pro-функции и iCloud
+
+Сканер кодов и экспорт в календарь уже добавлены как Pro-функции и используют системные iOS API: `AVFoundation` и `EventKit`.
+
+iCloud Sync в интерфейсе подготовлен как Pro-функция, но CloudKit entitlement намеренно не включён автоматически. Если просто добавить iCloud entitlement в проект без обновления Apple Developer App ID и provisioning profiles, текущая signed IPA сборка может упасть. Для реального iCloud Sync нужно:
+
+```text
+Apple Developer → Identifiers → App ID → iCloud / CloudKit
+создать или выбрать iCloud container
+перегенерировать provisioning profiles
+обновить GitHub Secrets с новыми profiles
+после этого включать CloudKit-backed SwiftData/CloudKit sync в проекте
+```
 
 ## 4. Что нужно для разработки
 

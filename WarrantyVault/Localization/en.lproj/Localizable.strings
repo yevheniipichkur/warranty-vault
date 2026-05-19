@@ -144,6 +144,7 @@
 "settings.section.appearance" = "Appearance";
 "settings.section.data" = "Data management";
 "settings.section.pro" = "Paywall";
+"settings.section.proFeatures" = "Pro features";
 "settings.section.privacy" = "Privacy";
 "settings.language" = "Language";
 "settings.defaultCurrency" = "Default currency";
@@ -174,9 +175,37 @@
 "paywall.pro.pdf" = "PDF export";
 "paywall.pro.receipts" = "Receipt gallery";
 "paywall.pro.filters" = "Advanced filters";
-"paywall.pro.icloud" = "Future iCloud sync";
+"paywall.pro.scanner" = "Barcode and serial scanner";
+"paywall.pro.calendar" = "Calendar export";
+"paywall.pro.icloud" = "iCloud sync setup";
 "paywall.productsUnavailable" = "StoreKit products are not configured yet.";
 "paywall.productIDs" = "Placeholder IDs: warrantyvault.pro.monthly, warrantyvault.pro.yearly";
+
+"feature.scanner.title" = "Barcode scanner";
+"feature.scanner.subtitle" = "Scan serial numbers and product codes while adding an item.";
+"feature.calendar.title" = "Calendar export";
+"feature.calendar.subtitle" = "Add warranty expiration dates to Apple Calendar.";
+"feature.icloud.title" = "iCloud Sync";
+
+"scanner.title" = "Scan Code";
+"scanner.scanSerial" = "Scan serial number";
+"scanner.positionCode" = "Position the barcode or serial QR code inside the camera view.";
+"scanner.cameraDenied" = "Camera access is disabled. Enable it in Settings to scan codes.";
+"scanner.cameraUnavailable" = "Camera is not available on this device.";
+
+"calendar.title" = "Calendar";
+"calendar.add" = "Add to Calendar";
+"calendar.added" = "Warranty date was added to Calendar.";
+"calendar.permissionDenied" = "Calendar access was denied.";
+"calendar.noWarranty" = "This item does not have a warranty expiration date.";
+"calendar.failed" = "Could not add this warranty date to Calendar.";
+"calendar.event.title" = "Warranty ends: %@";
+"calendar.event.notesHeader" = "Created by Warranty Vault";
+
+"icloud.title" = "iCloud Sync";
+"icloud.status.setupRequired" = "Pro feature. Requires iCloud capability before release.";
+"icloud.status.noAccount" = "Sign in to iCloud on this device.";
+"icloud.setupMessage" = "iCloud Sync is prepared as a Pro feature, but real sync requires enabling iCloud/CloudKit for the App ID and regenerating provisioning profiles. It is not enabled automatically to avoid breaking the current signed build.";
 
 "notification.expiring.title" = "Warranty expiring soon";
 "notification.expiring.body" = "%@ warranty expires in %d days.";
