@@ -62,6 +62,38 @@ jobs:
       - name: Prepare build folders
         run: mkdir -p build/logs build/ipa build/simulator
 
+      - name: Verify AppIcon PNGs have no alpha channel
+        run: |
+          python3 - <<'PYEOF'
+          import struct, sys
+          from pathlib import Path
+
+          appiconset = Path("WarrantyVault/Resources/Assets.xcassets/AppIcon.appiconset")
+          pngs = sorted(appiconset.glob("*.png"))
+          if not pngs:
+              print("::error::No PNG files found in AppIcon.appiconset")
+              sys.exit(1)
+
+          failed = False
+          for p in pngs:
+              data = p.read_bytes()
+              # PNG IHDR: bytes 24=bit_depth, 25=color_type
+              # color_type 2=RGB, 6=RGBA, 4=Gray+A
+              color_type = data[25]
+              has_alpha = color_type in (4, 6)
+              w = struct.unpack(">I", data[16:20])[0]
+              h = struct.unpack(">I", data[20:24])[0]
+              status = "RGBA - HAS ALPHA" if has_alpha else "RGB  - OK"
+              print(f"  {'::error::' if has_alpha else ''}  {p.name}: {w}x{h} color_type={color_type} ({status})")
+              if has_alpha:
+                  failed = True
+
+          if failed:
+              print("::error::One or more AppIcon PNG files have alpha channel. App Store will reject the IPA.")
+              sys.exit(1)
+          print("All AppIcon PNGs are RGB (no alpha channel)")
+          PYEOF
+
       - name: Run tests
         run: |
           set -o pipefail
