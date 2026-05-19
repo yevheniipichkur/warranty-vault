@@ -161,6 +161,7 @@
 "settings.deleteAll.message" = "Все локальные товары, изображения и напоминания будут удалены.";
 "settings.openPaywall" = "Открыть Paywall";
 "settings.storekitRefresh" = "Обновить продукты StoreKit";
+"settings.storekitSync" = "Синхронизировать App Store";
 "settings.proUnlocked" = "Pro разблокирован";
 "settings.debugUnlockPro" = "Локально разблокировать Pro";
 "settings.privacyNote" = "All data is stored on your device. No AI. No external server.";

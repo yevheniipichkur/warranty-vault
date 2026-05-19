@@ -103,6 +103,14 @@ struct SettingsView: View {
                     Label("settings.storekitRefresh", systemImage: "arrow.clockwise")
                 }
 
+                Button {
+                    Task {
+                        await subscriptionManager.syncAppStoreAccount()
+                    }
+                } label: {
+                    Label("settings.storekitSync", systemImage: "arrow.triangle.2.circlepath")
+                }
+
                 if !subscriptionManager.loadDiagnostic.isEmpty {
                     Text(subscriptionManager.loadDiagnostic)
                         .font(.caption)

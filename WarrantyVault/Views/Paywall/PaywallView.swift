@@ -96,6 +96,16 @@ struct PaywallView: View {
                                             .font(.caption.weight(.semibold))
                                     }
                                     .buttonStyle(.bordered)
+
+                                    Button {
+                                        Task {
+                                            await subscriptionManager.syncAppStoreAccount()
+                                        }
+                                    } label: {
+                                        Label("settings.storekitSync", systemImage: "arrow.triangle.2.circlepath")
+                                            .font(.caption.weight(.semibold))
+                                    }
+                                    .buttonStyle(.bordered)
                                 }
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             }

@@ -161,6 +161,7 @@
 "settings.deleteAll.message" = "Це видалить усі локальні речі, зображення та нагадування.";
 "settings.openPaywall" = "Відкрити Paywall";
 "settings.storekitRefresh" = "Оновити продукти StoreKit";
+"settings.storekitSync" = "Синхронізувати App Store";
 "settings.proUnlocked" = "Pro розблоковано";
 "settings.debugUnlockPro" = "Локально розблокувати Pro";
 "settings.privacyNote" = "All data is stored on your device. No AI. No external server.";

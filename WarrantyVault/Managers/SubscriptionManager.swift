@@ -42,13 +42,13 @@ final class SubscriptionManager: ObservableObject {
     }
 
     func loadProducts() async {
-        diagnosticLines = await makeDiagnosticLines()
         loadDiagnostic = "Requesting \(Self.productIDs.count) product(s)..."
         do {
             for attempt in 1...3 {
                 let loaded = try await Product.products(for: Self.productIDs)
                 products = loaded
                 lastErrorMessage = nil
+                diagnosticLines = await makeDiagnosticLines()
 
                 if !loaded.isEmpty {
                     loadDiagnostic = "Loaded \(loaded.count)/\(Self.productIDs.count): \(loaded.map(\.id).joined(separator: ", "))"
@@ -65,7 +65,22 @@ final class SubscriptionManager: ObservableObject {
         } catch {
             products = []
             lastErrorMessage = error.localizedDescription
+            diagnosticLines = await makeDiagnosticLines()
             loadDiagnostic = "Error: \(error.localizedDescription)"
+        }
+    }
+
+    func syncAppStoreAccount() async {
+        loadDiagnostic = "Syncing App Store account..."
+        do {
+            try await AppStore.sync()
+            lastErrorMessage = nil
+            await refreshEntitlements()
+            await loadProducts()
+        } catch {
+            lastErrorMessage = error.localizedDescription
+            diagnosticLines = await makeDiagnosticLines()
+            loadDiagnostic = "App Store sync failed: \(error.localizedDescription)"
         }
     }
 

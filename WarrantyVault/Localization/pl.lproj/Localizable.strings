@@ -161,6 +161,7 @@
 "settings.deleteAll.message" = "To usunie wszystkie lokalne rzeczy, obrazy i przypomnienia.";
 "settings.openPaywall" = "Otwórz Paywall";
 "settings.storekitRefresh" = "Odśwież produkty StoreKit";
+"settings.storekitSync" = "Synchronizuj App Store";
 "settings.proUnlocked" = "Pro odblokowane";
 "settings.debugUnlockPro" = "Odblokuj Pro lokalnie";
 "settings.privacyNote" = "All data is stored on your device. No AI. No external server.";

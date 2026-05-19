@@ -161,6 +161,7 @@
 "settings.deleteAll.message" = "This removes all local items, images, and reminders.";
 "settings.openPaywall" = "Open Paywall";
 "settings.storekitRefresh" = "Refresh StoreKit products";
+"settings.storekitSync" = "Sync App Store account";
 "settings.proUnlocked" = "Pro unlocked";
 "settings.debugUnlockPro" = "Unlock Pro locally";
 "settings.privacyNote" = "All data is stored on your device. No AI. No external server.";
