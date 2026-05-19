@@ -356,7 +356,7 @@ struct ItemFormView: View {
             await NotificationManager.shared.rescheduleReminders(for: savedItem)
         }
 
-        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
         showingSaveSuccess = true
         Task { @MainActor in
             try? await Task.sleep(nanoseconds: 650_000_000)

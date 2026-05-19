@@ -2,6 +2,7 @@ import SwiftData
 import SwiftUI
 
 struct ItemsListView: View {
+    @Environment(\.modelContext) private var modelContext
     @Query(sort: \WarrantyItem.createdAt, order: .reverse) private var items: [WarrantyItem]
 
     @State private var searchText = ""
@@ -93,6 +94,13 @@ struct ItemsListView: View {
                                     .animatedCard(delay: 0.03)
                             }
                             .buttonStyle(.plain)
+                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                Button(role: .destructive) {
+                                    deleteItem(item)
+                                } label: {
+                                    Label("common.delete", systemImage: "trash")
+                                }
+                            }
                         }
                     }
                     .padding(.horizontal, 20)
@@ -132,6 +140,16 @@ struct ItemsListView: View {
             .presentationCornerRadius(28)
         }
     }
+
+    private func deleteItem(_ item: WarrantyItem) {
+        UINotificationFeedbackGenerator().notificationOccurred(.warning)
+        ImageStorageService.deleteImage(at: item.productImagePath)
+        ImageStorageService.deleteImage(at: item.receiptImagePath)
+        ImageStorageService.deleteImage(at: item.warrantyDocumentImagePath)
+        NotificationManager.shared.removeReminders(for: item.id)
+        modelContext.delete(item)
+        try? modelContext.save()
+    }
 }
 
 private struct GroupedItemsList: View {
@@ -155,6 +173,7 @@ private struct GroupedItemsList: View {
 }
 
 private struct ItemGroup: View {
+    @Environment(\.modelContext) private var modelContext
     let titleKey: String
     let systemImage: String
     let items: [WarrantyItem]
@@ -170,7 +189,24 @@ private struct ItemGroup: View {
                         .animatedCard(delay: 0.02)
                 }
                 .buttonStyle(.plain)
+                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    Button(role: .destructive) {
+                        deleteItem(item)
+                    } label: {
+                        Label("common.delete", systemImage: "trash")
+                    }
+                }
             }
         }
+    }
+
+    private func deleteItem(_ item: WarrantyItem) {
+        UINotificationFeedbackGenerator().notificationOccurred(.warning)
+        ImageStorageService.deleteImage(at: item.productImagePath)
+        ImageStorageService.deleteImage(at: item.receiptImagePath)
+        ImageStorageService.deleteImage(at: item.warrantyDocumentImagePath)
+        NotificationManager.shared.removeReminders(for: item.id)
+        modelContext.delete(item)
+        try? modelContext.save()
     }
 }

@@ -159,6 +159,7 @@ private struct HeroMetric: View {
 }
 
 private struct HomeItemSection: View {
+    @Environment(\.modelContext) private var modelContext
     let titleKey: String
     let systemImage: String
     let items: [WarrantyItem]
@@ -174,7 +175,24 @@ private struct HomeItemSection: View {
                     ItemCard(item: item)
                 }
                 .buttonStyle(.plain)
+                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    Button(role: .destructive) {
+                        deleteItem(item)
+                    } label: {
+                        Label("common.delete", systemImage: "trash")
+                    }
+                }
             }
         }
+    }
+
+    private func deleteItem(_ item: WarrantyItem) {
+        UINotificationFeedbackGenerator().notificationOccurred(.warning)
+        ImageStorageService.deleteImage(at: item.productImagePath)
+        ImageStorageService.deleteImage(at: item.receiptImagePath)
+        ImageStorageService.deleteImage(at: item.warrantyDocumentImagePath)
+        NotificationManager.shared.removeReminders(for: item.id)
+        modelContext.delete(item)
+        try? modelContext.save()
     }
 }
