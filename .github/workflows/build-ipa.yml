@@ -226,6 +226,19 @@ jobs:
 
           echo "IPA_PATH=$IPA_PATH" >> "$GITHUB_ENV"
 
+      - name: Inspect compiled bundle plists
+        if: ${{ env.IPA_PATH != '' }}
+        run: |
+          ARCHIVE="build/archive/WarrantyVault.xcarchive"
+          APP="$ARCHIVE/Products/Applications/WarrantyVault.app"
+          echo "=== Main app Info.plist ==="
+          plutil -p "$APP/Info.plist" 2>/dev/null | grep -E "CFBundleIconName|CFBundleName|CFBundleVersion|CFBundleDisplayName" || echo "(none found)"
+          echo "=== App icon files in bundle ==="
+          find "$APP" -maxdepth 1 \( -name "*.png" -o -name "AppIcon*" \) -print | head -20 || true
+          find "$APP" -name "Assets.car" -print | head -5 || true
+          echo "=== Live Activity Info.plist ==="
+          plutil -p "$APP/PlugIns/WarrantyVaultLiveActivity.appex/Info.plist" 2>/dev/null | grep -E "CFBundleDisplayName|NSExtension|NSExtensionPointIdentifier" || echo "(none found)"
+
       - name: Upload to TestFlight
         if: ${{ env.EXPORT_METHOD == 'app-store' && env.IPA_PATH != '' && env.ASC_API_KEY_ID != '' && env.ASC_API_ISSUER_ID != '' && env.ASC_API_KEY_BASE64 != '' }}
         run: |

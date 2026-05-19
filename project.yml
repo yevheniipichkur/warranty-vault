@@ -37,7 +37,6 @@ targets:
         CFBundleIconName: AppIcon
     settings:
       base:
-        INFOPLIST_FILE: WarrantyVault/App/Info.plist
         GENERATE_INFOPLIST_FILE: NO
         PRODUCT_NAME: WarrantyVault
         PRODUCT_BUNDLE_IDENTIFIER: "$(APP_BUNDLE_ID)"
@@ -59,11 +58,11 @@ targets:
     info:
       path: WarrantyVaultLiveActivity/Info.plist
       properties:
+        CFBundleDisplayName: Warranty Activity
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
     settings:
       base:
-        INFOPLIST_FILE: WarrantyVaultLiveActivity/Info.plist
         GENERATE_INFOPLIST_FILE: NO
         PRODUCT_NAME: WarrantyVaultLiveActivity
         PRODUCT_BUNDLE_IDENTIFIER: "$(APP_BUNDLE_ID).liveactivity"
