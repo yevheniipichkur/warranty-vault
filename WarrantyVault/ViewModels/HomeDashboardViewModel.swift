@@ -20,11 +20,28 @@ struct HomeDashboardViewModel {
     }
 
     var attentionCount: Int {
-        expiringSoonCount + expiredCount
+        expiringSoonCount + expiredCount + missingReceiptCount + openReturnWindowCount
     }
 
     var totalValue: Double {
         items.reduce(0) { $0 + $1.price }
+    }
+
+    var missingReceiptCount: Int {
+        items.filter { ($0.receiptImagePath ?? "").isEmpty }.count
+    }
+
+    var openReturnWindowCount: Int {
+        items.filter {
+            switch $0.returnWindowStatus {
+            case .available, .expiresToday: true
+            case .expired, .none: false
+            }
+        }.count
+    }
+
+    var repairRecordCount: Int {
+        items.reduce(0) { $0 + $1.repairRecords.count }
     }
 
     var needsAttention: [WarrantyItem] {

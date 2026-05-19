@@ -289,3 +289,57 @@
 "debug.notifications.scheduled" = "Powiadomienie testowe zaplanowane za 5 sekund.";
 "debug.notifications.denied" = "Odmówiono zgody na powiadomienia.";
 "debug.notifications.failed" = "Nie udało się zaplanować powiadomienia testowego.";
+
+"item.returnWindow" = "Okno zwrotu";
+"item.returnDeadline" = "Termin zwrotu";
+"item.room" = "Miejsce";
+"returnWindow.title" = "Okno zwrotu";
+"returnWindow.none" = "Brak okna zwrotu";
+"returnWindow.14" = "14 dni";
+"returnWindow.30" = "30 dni";
+"returnWindow.60" = "60 dni";
+"returnWindow.custom" = "Własna data";
+"returnWindow.daysLeft" = "Pozostało %d dni na zwrot tego produktu.";
+"returnWindow.endsToday" = "Termin zwrotu kończy się dziś.";
+"returnWindow.expiredMessage" = "Okres zwrotu już minął.";
+"returnWindow.noneMessage" = "Nie zapisano terminu zwrotu.";
+"returnStatus.available" = "Można zwrócić";
+"returnStatus.today" = "Kończy się dziś";
+"returnStatus.expired" = "Zamknięte";
+"returnStatus.none" = "Nie ustawiono";
+
+"room.unassigned" = "Nieprzypisane";
+"room.kitchen" = "Kuchnia";
+"room.livingRoom" = "Salon";
+"room.bedroom" = "Sypialnia";
+"room.office" = "Biuro";
+"room.garage" = "Garaż";
+"room.car" = "Auto";
+"room.storage" = "Schowek";
+
+"repair.history" = "Historia napraw";
+"repair.add" = "Dodaj naprawę";
+"repair.date" = "Data naprawy";
+"repair.serviceCenter" = "Serwis";
+"repair.cost" = "Koszt naprawy";
+"repair.empty.title" = "Brak napraw";
+"repair.empty.message" = "Zapisuj wizyty serwisowe, koszty i notatki do wsparcia lub odsprzedaży.";
+"repair.serviceUnknown" = "Serwis";
+
+"detail.exportWarrantyPack" = "Pakiet gwarancji";
+"pdf.warrantyDocument" = "Dokument gwarancyjny";
+"notification.return.title" = "Termin zwrotu wkrótce minie";
+"notification.return.body" = "Okres zwrotu %@ wkrótce się kończy.";
+
+"home.protectionCenter" = "Centrum ochrony";
+"home.returnWindows" = "Otwarte zwroty";
+"home.missingReceipts" = "Brak paragonów";
+"home.repairsLogged" = "Naprawy";
+"home.coveredItems" = "Na gwarancji";
+
+"paywall.pro.returnWindow" = "Przypomnienia o zwrocie";
+"paywall.pro.repairHistory" = "Historia napraw";
+"paywall.pro.warrantyPack" = "Eksport pakietu gwarancji";
+"paywall.benefit.returnWindow.body" = "Pilnuj terminów zwrotu, zanim stracisz możliwość odzyskania pieniędzy.";
+"paywall.benefit.repair.body" = "Trzymaj wizyty serwisowe, koszty i notatki przy produkcie.";
+"paywall.benefit.pack.body" = "Udostępnij jeden PDF dla serwisu: paragon, gwarancję i historię.";

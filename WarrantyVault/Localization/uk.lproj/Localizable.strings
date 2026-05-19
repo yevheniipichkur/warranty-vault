@@ -289,3 +289,57 @@
 "debug.notifications.scheduled" = "Тестове сповіщення заплановано через 5 секунд.";
 "debug.notifications.denied" = "Дозвіл на сповіщення відхилено.";
 "debug.notifications.failed" = "Не вдалося запланувати тестове сповіщення.";
+
+"item.returnWindow" = "Термін повернення";
+"item.returnDeadline" = "Дата повернення";
+"item.room" = "Місце";
+"returnWindow.title" = "Термін повернення";
+"returnWindow.none" = "Без терміну повернення";
+"returnWindow.14" = "14 днів";
+"returnWindow.30" = "30 днів";
+"returnWindow.60" = "60 днів";
+"returnWindow.custom" = "Власна дата";
+"returnWindow.daysLeft" = "Залишилось %d дн. для повернення товару.";
+"returnWindow.endsToday" = "Термін повернення завершується сьогодні.";
+"returnWindow.expiredMessage" = "Термін повернення вже минув.";
+"returnWindow.noneMessage" = "Термін повернення не збережено.";
+"returnStatus.available" = "Можна повернути";
+"returnStatus.today" = "Сьогодні";
+"returnStatus.expired" = "Закрито";
+"returnStatus.none" = "Не задано";
+
+"room.unassigned" = "Не вказано";
+"room.kitchen" = "Кухня";
+"room.livingRoom" = "Вітальня";
+"room.bedroom" = "Спальня";
+"room.office" = "Офіс";
+"room.garage" = "Гараж";
+"room.car" = "Авто";
+"room.storage" = "Зберігання";
+
+"repair.history" = "Історія ремонтів";
+"repair.add" = "Додати ремонт";
+"repair.date" = "Дата ремонту";
+"repair.serviceCenter" = "Сервісний центр";
+"repair.cost" = "Вартість ремонту";
+"repair.empty.title" = "Ремонтів поки немає";
+"repair.empty.message" = "Зберігайте сервісні візити, витрати й нотатки для підтримки або продажу.";
+"repair.serviceUnknown" = "Сервісний центр";
+
+"detail.exportWarrantyPack" = "Пакет гарантії";
+"pdf.warrantyDocument" = "Гарантійний документ";
+"notification.return.title" = "Термін повернення скоро завершиться";
+"notification.return.body" = "Термін повернення %@ скоро завершиться.";
+
+"home.protectionCenter" = "Центр захисту";
+"home.returnWindows" = "Відкриті повернення";
+"home.missingReceipts" = "Немає чеків";
+"home.repairsLogged" = "Ремонти";
+"home.coveredItems" = "Під гарантією";
+
+"paywall.pro.returnWindow" = "Нагадування про повернення";
+"paywall.pro.repairHistory" = "Історія ремонтів";
+"paywall.pro.warrantyPack" = "Експорт пакета гарантії";
+"paywall.benefit.returnWindow.body" = "Відстежуйте терміни повернення, поки гроші ще можна повернути.";
+"paywall.benefit.repair.body" = "Тримайте сервісні візити, витрати й нотатки поруч із товаром.";
+"paywall.benefit.pack.body" = "Надсилайте один PDF для сервісу: чек, гарантію та історію.";

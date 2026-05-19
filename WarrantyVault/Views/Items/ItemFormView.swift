@@ -19,9 +19,12 @@ struct ItemFormView: View {
     @State private var purchaseDate: Date
     @State private var warrantyDuration: WarrantyDurationOption
     @State private var warrantyExpirationDate: Date
+    @State private var returnWindowOption: ReturnWindowOption
+    @State private var returnDeadlineDate: Date
     @State private var price: Double
     @State private var currency: String
     @State private var category: WarrantyCategory
+    @State private var room: ItemRoom
     @State private var notes: String
     @State private var productImagePath: String?
     @State private var receiptImagePath: String?
@@ -43,9 +46,12 @@ struct ItemFormView: View {
         _purchaseDate = State(initialValue: item?.purchaseDate ?? .now)
         _warrantyDuration = State(initialValue: item == nil ? .twelveMonths : (item?.hasWarranty == false ? .noWarranty : .customDate))
         _warrantyExpirationDate = State(initialValue: item?.warrantyExpirationDate ?? Calendar.current.date(byAdding: .month, value: 12, to: .now) ?? .now)
+        _returnWindowOption = State(initialValue: item?.returnDeadlineDate == nil ? .none : .customDate)
+        _returnDeadlineDate = State(initialValue: item?.returnDeadlineDate ?? Calendar.current.date(byAdding: .day, value: 30, to: item?.purchaseDate ?? .now) ?? .now)
         _price = State(initialValue: item?.price ?? 0)
         _currency = State(initialValue: item?.currency ?? UserDefaults.standard.string(forKey: "defaultCurrency") ?? "USD")
         _category = State(initialValue: WarrantyCategory(rawValue: item?.category ?? WarrantyCategory.other.rawValue) ?? .other)
+        _room = State(initialValue: ItemRoom(rawValue: item?.room ?? ItemRoom.unassigned.rawValue) ?? .unassigned)
         _notes = State(initialValue: item?.notes ?? "")
         _productImagePath = State(initialValue: item?.productImagePath)
         _receiptImagePath = State(initialValue: item?.receiptImagePath)
@@ -84,6 +90,24 @@ struct ItemFormView: View {
                             PremiumDivider()
                             PremiumInputRow(titleKey: "item.warrantyExpiration", systemImage: "shield.lefthalf.filled") {
                                 DatePicker("", selection: $warrantyExpirationDate, displayedComponents: .date)
+                                .labelsHidden()
+                            }
+                        }
+
+                        PremiumDivider()
+                        PremiumInputRow(titleKey: "item.returnWindow", systemImage: "arrow.uturn.backward.circle") {
+                            Picker("item.returnWindow", selection: $returnWindowOption) {
+                                ForEach(ReturnWindowOption.allCases) { option in
+                                    Text(LocalizedStringKey(option.titleKey)).tag(option)
+                                }
+                            }
+                            .labelsHidden()
+                        }
+
+                        if returnWindowOption != .none {
+                            PremiumDivider()
+                            PremiumInputRow(titleKey: "item.returnDeadline", systemImage: "calendar.badge.exclamationmark") {
+                                DatePicker("", selection: $returnDeadlineDate, displayedComponents: .date)
                                     .labelsHidden()
                             }
                         }
@@ -176,6 +200,16 @@ struct ItemFormView: View {
                                 }
                                 .labelsHidden()
                             }
+                            PremiumDivider()
+                            PremiumInputRow(titleKey: "item.room", systemImage: room.symbolName) {
+                                Picker("item.room", selection: $room) {
+                                    ForEach(ItemRoom.allCases) { room in
+                                        Label(LocalizedStringKey(room.titleKey), systemImage: room.symbolName)
+                                            .tag(room)
+                                    }
+                                }
+                                .labelsHidden()
+                            }
                         }
 
                         LightweightFormCard {
@@ -248,6 +282,8 @@ struct ItemFormView: View {
         }
         .onChange(of: purchaseDate) { _, _ in updateCalculatedExpirationIfNeeded() }
         .onChange(of: warrantyDuration) { _, _ in updateCalculatedExpirationIfNeeded() }
+        .onChange(of: purchaseDate) { _, _ in updateCalculatedReturnDeadlineIfNeeded() }
+        .onChange(of: returnWindowOption) { _, _ in updateCalculatedReturnDeadlineIfNeeded() }
         .alert("validation.title", isPresented: $showingValidationAlert) {
             Button("common.ok", role: .cancel) {}
         } message: {
@@ -292,6 +328,14 @@ struct ItemFormView: View {
         ) ?? warrantyExpirationDate
     }
 
+    private func updateCalculatedReturnDeadlineIfNeeded() {
+        guard returnWindowOption != .customDate else { return }
+        returnDeadlineDate = ReturnWindowCalculator.deadlineDate(
+            purchaseDate: purchaseDate,
+            option: returnWindowOption
+        ) ?? returnDeadlineDate
+    }
+
     private func save() {
         let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedName.isEmpty else {
@@ -307,6 +351,7 @@ struct ItemFormView: View {
         let normalizedCurrency = currency.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         let hasWarranty = warrantyDuration != .noWarranty
         let expirationDate = hasWarranty ? warrantyExpirationDate : nil
+        let returnDate = returnWindowOption == .none ? nil : returnDeadlineDate
         let savedItem: WarrantyItem
 
         if let item {
@@ -325,6 +370,8 @@ struct ItemFormView: View {
             item.productImagePath = productImagePath
             item.receiptImagePath = receiptImagePath
             item.warrantyDocumentImagePath = warrantyDocumentImagePath
+            item.returnDeadlineDate = returnDate
+            item.room = room.rawValue
             item.updatedAt = .now
             savedItem = item
         } else {
@@ -343,7 +390,9 @@ struct ItemFormView: View {
                 notes: notes,
                 productImagePath: productImagePath,
                 receiptImagePath: receiptImagePath,
-                warrantyDocumentImagePath: warrantyDocumentImagePath
+                warrantyDocumentImagePath: warrantyDocumentImagePath,
+                returnDeadlineDate: returnDate,
+                room: room.rawValue
             )
             modelContext.insert(newItem)
             savedItem = newItem

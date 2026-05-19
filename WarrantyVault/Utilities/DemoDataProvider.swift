@@ -16,7 +16,9 @@ enum DemoDataProvider {
                 warrantyExpirationDate: calendar.date(byAdding: .month, value: 12, to: now.addingTimeInterval(-120 * day)),
                 price: 999,
                 currency: "USD",
-                category: WarrantyCategory.electronics.rawValue
+                category: WarrantyCategory.electronics.rawValue,
+                returnDeadlineDate: now.addingTimeInterval(-90 * day),
+                room: ItemRoom.office.rawValue
             ),
             WarrantyItem(
                 name: "\(namePrefix)MacBook",
@@ -28,7 +30,9 @@ enum DemoDataProvider {
                 warrantyExpirationDate: calendar.date(byAdding: .month, value: 24, to: now.addingTimeInterval(-260 * day)),
                 price: 1299,
                 currency: "USD",
-                category: WarrantyCategory.electronics.rawValue
+                category: WarrantyCategory.electronics.rawValue,
+                returnDeadlineDate: now.addingTimeInterval(-230 * day),
+                room: ItemRoom.office.rawValue
             ),
             WarrantyItem(
                 name: "\(namePrefix)AirPods",
@@ -39,7 +43,9 @@ enum DemoDataProvider {
                 warrantyExpirationDate: now.addingTimeInterval(18 * day),
                 price: 249,
                 currency: "USD",
-                category: WarrantyCategory.electronics.rawValue
+                category: WarrantyCategory.electronics.rawValue,
+                returnDeadlineDate: now.addingTimeInterval(-310 * day),
+                room: ItemRoom.bedroom.rawValue
             ),
             WarrantyItem(
                 name: "\(namePrefix)Washing machine",
@@ -50,7 +56,8 @@ enum DemoDataProvider {
                 warrantyExpirationDate: calendar.date(byAdding: .month, value: 36, to: now.addingTimeInterval(-520 * day)),
                 price: 699,
                 currency: "USD",
-                category: WarrantyCategory.home.rawValue
+                category: WarrantyCategory.home.rawValue,
+                room: ItemRoom.storage.rawValue
             ),
             WarrantyItem(
                 name: "\(namePrefix)Car battery",
@@ -60,7 +67,8 @@ enum DemoDataProvider {
                 warrantyExpirationDate: now.addingTimeInterval(-12 * day),
                 price: 140,
                 currency: "USD",
-                category: WarrantyCategory.car.rawValue
+                category: WarrantyCategory.car.rawValue,
+                room: ItemRoom.car.rawValue
             ),
             WarrantyItem(
                 name: "\(namePrefix)Coffee machine",
@@ -71,7 +79,19 @@ enum DemoDataProvider {
                 warrantyExpirationDate: calendar.date(byAdding: .month, value: 24, to: now.addingTimeInterval(-80 * day)),
                 price: 429,
                 currency: "USD",
-                category: WarrantyCategory.kitchen.rawValue
+                category: WarrantyCategory.kitchen.rawValue,
+                returnDeadlineDate: now.addingTimeInterval(10 * day),
+                room: ItemRoom.kitchen.rawValue
+            )
+        ]
+
+        items[3].repairRecords = [
+            RepairRecord(
+                date: now.addingTimeInterval(-40 * day),
+                serviceCenter: "Home Service",
+                cost: 79,
+                currency: "USD",
+                notes: "Door seal inspection and cleaning."
             )
         ]
 

@@ -289,3 +289,57 @@
 "debug.notifications.scheduled" = "Test notification scheduled for 5 seconds from now.";
 "debug.notifications.denied" = "Notification permission was denied.";
 "debug.notifications.failed" = "Could not schedule test notification.";
+
+"item.returnWindow" = "Return window";
+"item.returnDeadline" = "Return deadline";
+"item.room" = "Room";
+"returnWindow.title" = "Return window";
+"returnWindow.none" = "No return window";
+"returnWindow.14" = "14 days";
+"returnWindow.30" = "30 days";
+"returnWindow.60" = "60 days";
+"returnWindow.custom" = "Custom date";
+"returnWindow.daysLeft" = "%d days left to return this item.";
+"returnWindow.endsToday" = "Return window ends today.";
+"returnWindow.expiredMessage" = "The return period has ended.";
+"returnWindow.noneMessage" = "No return period is saved.";
+"returnStatus.available" = "Can return";
+"returnStatus.today" = "Ends today";
+"returnStatus.expired" = "Closed";
+"returnStatus.none" = "Not set";
+
+"room.unassigned" = "Unassigned";
+"room.kitchen" = "Kitchen";
+"room.livingRoom" = "Living room";
+"room.bedroom" = "Bedroom";
+"room.office" = "Office";
+"room.garage" = "Garage";
+"room.car" = "Car";
+"room.storage" = "Storage";
+
+"repair.history" = "Repair history";
+"repair.add" = "Add repair";
+"repair.date" = "Repair date";
+"repair.serviceCenter" = "Service center";
+"repair.cost" = "Repair cost";
+"repair.empty.title" = "No repairs logged";
+"repair.empty.message" = "Save service visits and repair costs for resale or support.";
+"repair.serviceUnknown" = "Service center";
+
+"detail.exportWarrantyPack" = "Warranty Pack";
+"pdf.warrantyDocument" = "Warranty document";
+"notification.return.title" = "Return window ending soon";
+"notification.return.body" = "%@ return period ends soon.";
+
+"home.protectionCenter" = "Protection center";
+"home.returnWindows" = "Open returns";
+"home.missingReceipts" = "Missing receipts";
+"home.repairsLogged" = "Repairs logged";
+"home.coveredItems" = "Covered items";
+
+"paywall.pro.returnWindow" = "Return-window reminders";
+"paywall.pro.repairHistory" = "Repair history";
+"paywall.pro.warrantyPack" = "Warranty Pack export";
+"paywall.benefit.returnWindow.body" = "Track return deadlines before money leaves the table.";
+"paywall.benefit.repair.body" = "Keep service visits, costs, and notes with the item.";
+"paywall.benefit.pack.body" = "Share a single service-ready PDF with receipt, warranty, and history.";

@@ -8,6 +8,8 @@ enum ProFeature: CaseIterable {
     case iCloudSync
     case barcodeScanner
     case calendarExport
+    case repairHistory
+    case warrantyPack
 }
 
 enum SubscriptionRules {
@@ -19,7 +21,7 @@ enum SubscriptionRules {
 
     static func isFeatureAvailable(_ feature: ProFeature, isPro: Bool) -> Bool {
         switch feature {
-        case .unlimitedItems, .pdfExport, .receiptGallery, .advancedFilters, .iCloudSync, .barcodeScanner, .calendarExport:
+        case .unlimitedItems, .pdfExport, .receiptGallery, .advancedFilters, .iCloudSync, .barcodeScanner, .calendarExport, .repairHistory, .warrantyPack:
             isPro
         }
     }

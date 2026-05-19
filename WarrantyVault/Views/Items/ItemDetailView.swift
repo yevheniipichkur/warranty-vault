@@ -14,6 +14,7 @@ struct ItemDetailView: View {
     @State private var isShowingEdit = false
     @State private var isShowingDeleteConfirmation = false
     @State private var isShowingPaywall = false
+    @State private var isShowingRepairForm = false
     @State private var sharedURL: URL?
     @State private var reminderScheduled = false
     @State private var isShowingLiveActivityMessage = false
@@ -47,6 +48,10 @@ struct ItemDetailView: View {
                     .animatedCard(delay: 0.04)
                 }
 
+                if item.returnDeadlineDate != nil {
+                    ReturnWindowCard(item: item)
+                }
+
                 PremiumCard {
                     VStack(alignment: .leading, spacing: 12) {
                         SectionHeader(titleKey: "detail.section.details", systemImage: "info.circle")
@@ -58,11 +63,23 @@ struct ItemDetailView: View {
                         DetailRow(titleKey: "item.warrantyExpiration", value: item.warrantyExpirationDate.map { DateFormatterProvider.string(from: $0, locale: locale) } ?? L10n.string("common.none", language: languageManager.selectedLanguage))
                         DetailRow(titleKey: "item.price", value: CurrencyFormatterProvider.string(from: item.price, currencyCode: item.currency, locale: locale))
                         DetailRow(titleKey: "item.category", valueKey: item.categoryType.titleKey)
+                        DetailRow(titleKey: "item.room", valueKey: item.roomType.titleKey)
                         if !item.notes.isEmpty {
                             DetailRow(titleKey: "item.notes", value: item.notes)
                         }
                     }
                 }
+
+                RepairHistorySection(
+                    item: item,
+                    addAction: {
+                        guard subscriptionManager.hasPro else {
+                            isShowingPaywall = true
+                            return
+                        }
+                        isShowingRepairForm = true
+                    }
+                )
 
                 if item.receiptImagePath != nil || item.warrantyDocumentImagePath != nil {
                     PremiumCard {
@@ -88,6 +105,13 @@ struct ItemDetailView: View {
                     showsCalendar: canShowCalendarButton,
                     liveActivityIsRunning: liveActivityManager.activeActivityID != nil,
                     exportAction: exportPDF,
+                    repairAction: {
+                        guard subscriptionManager.hasPro else {
+                            isShowingPaywall = true
+                            return
+                        }
+                        isShowingRepairForm = true
+                    },
                     reminderAction: {
                         Task {
                             await NotificationManager.shared.rescheduleReminders(for: item)
@@ -158,6 +182,15 @@ struct ItemDetailView: View {
         }
         .sheet(isPresented: $isShowingPaywall) {
             PaywallView()
+        }
+        .sheet(isPresented: $isShowingRepairForm) {
+            NavigationStack {
+                AddRepairRecordView(item: item) {
+                    try? modelContext.save()
+                    isShowingRepairForm = false
+                }
+            }
+            .presentationCornerRadius(28)
         }
         .alert("liveActivity.title", isPresented: $isShowingLiveActivityMessage) {
             Button("common.ok", role: .cancel) {}
@@ -235,6 +268,7 @@ private struct DetailActionGrid: View {
     let showsCalendar: Bool
     let liveActivityIsRunning: Bool
     let exportAction: () -> Void
+    let repairAction: () -> Void
     let reminderAction: () -> Void
     let liveActivityAction: () -> Void
     let calendarAction: () -> Void
@@ -246,10 +280,17 @@ private struct DetailActionGrid: View {
     var body: some View {
         LazyVGrid(columns: columns, spacing: 12) {
             DetailActionButton(
-                titleKey: "detail.exportPDF",
+                titleKey: "detail.exportWarrantyPack",
                 systemImage: "square.and.arrow.up",
                 tint: DesignSystem.Colors.premiumBlue,
                 action: exportAction
+            )
+
+            DetailActionButton(
+                titleKey: "repair.add",
+                systemImage: "stethoscope",
+                tint: DesignSystem.Colors.premiumTeal,
+                action: repairAction
             )
 
             DetailActionButton(
@@ -458,6 +499,258 @@ private struct WarrantyTimelineCard: View {
             .foregroundStyle(.primary)
             .lineLimit(2)
             .fixedSize(horizontal: false, vertical: true)
+    }
+}
+
+private struct ReturnWindowCard: View {
+    @Environment(\.locale) private var locale
+    let item: WarrantyItem
+
+    var body: some View {
+        PremiumCard(cornerRadius: 18, tint: tint) {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(alignment: .center, spacing: 10) {
+                    Label("returnWindow.title", systemImage: "arrow.uturn.backward.circle.fill")
+                        .font(.headline.weight(.semibold))
+                    Spacer()
+                    Text(LocalizedStringKey(statusTitleKey))
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(tint)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 6)
+                        .background(tint.opacity(0.12), in: Capsule())
+                }
+
+                if let returnDeadlineDate = item.returnDeadlineDate {
+                    DetailRow(
+                        titleKey: "item.returnDeadline",
+                        value: DateFormatterProvider.string(from: returnDeadlineDate, locale: locale)
+                    )
+                }
+
+                Text(message)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+    }
+
+    private var tint: Color {
+        switch item.returnWindowStatus {
+        case .available, .expiresToday: DesignSystem.Colors.premiumAmber
+        case .expired: DesignSystem.Colors.premiumRed
+        case .none: DesignSystem.Colors.neutralGlassTint
+        }
+    }
+
+    private var statusTitleKey: String {
+        item.returnWindowStatus.titleKey
+    }
+
+    private var message: LocalizedStringKey {
+        switch item.returnWindowStatus {
+        case .available(let daysLeft):
+            LocalizedStringKey(String(format: L10n.string("returnWindow.daysLeft", locale: locale), daysLeft))
+        case .expiresToday:
+            "returnWindow.endsToday"
+        case .expired:
+            "returnWindow.expiredMessage"
+        case .none:
+            "returnWindow.noneMessage"
+        }
+    }
+}
+
+private struct RepairHistorySection: View {
+    @Environment(\.locale) private var locale
+
+    let item: WarrantyItem
+    let addAction: () -> Void
+
+    var body: some View {
+        PremiumCard {
+            VStack(alignment: .leading, spacing: 14) {
+                HStack(spacing: 10) {
+                    SectionHeader(titleKey: "repair.history", systemImage: "stethoscope")
+                    Spacer()
+                    Button(action: addAction) {
+                        Image(systemName: "plus")
+                            .font(.subheadline.weight(.bold))
+                            .foregroundStyle(DesignSystem.Colors.premiumBlue)
+                            .frame(width: 34, height: 34)
+                            .background(DesignSystem.Colors.premiumBlue.opacity(0.11), in: Circle())
+                    }
+                    .accessibilityLabel(Text("repair.add"))
+                }
+
+                if item.repairRecords.isEmpty {
+                    HStack(spacing: 12) {
+                        FeatureIcon(symbolName: "wrench.and.screwdriver.fill", tint: DesignSystem.Colors.premiumTeal)
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("repair.empty.title")
+                                .font(.subheadline.weight(.semibold))
+                            Text("repair.empty.message")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                    .padding(12)
+                    .background(Color.secondary.opacity(0.07), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                } else {
+                    VStack(spacing: 10) {
+                        ForEach(item.repairRecords) { record in
+                            RepairRecordRow(record: record, locale: locale)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+private struct RepairRecordRow: View {
+    let record: RepairRecord
+    let locale: Locale
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            FeatureIcon(symbolName: "cross.case.fill", tint: DesignSystem.Colors.premiumMint)
+
+            VStack(alignment: .leading, spacing: 5) {
+                Text(record.serviceCenter.isEmpty ? L10n.string("repair.serviceUnknown", locale: locale) : record.serviceCenter)
+                    .font(.subheadline.weight(.semibold))
+
+                Text(DateFormatterProvider.string(from: record.date, locale: locale))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+
+                if !record.notes.isEmpty {
+                    Text(record.notes)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+
+            Spacer(minLength: 8)
+
+            if record.cost > 0 {
+                Text(CurrencyFormatterProvider.string(from: record.cost, currencyCode: record.currency, locale: locale))
+                    .font(.caption.weight(.semibold))
+                    .lineLimit(1)
+            }
+        }
+        .padding(12)
+        .background(Color.secondary.opacity(0.07), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+    }
+}
+
+private struct AddRepairRecordView: View {
+    @Environment(\.dismiss) private var dismiss
+
+    let item: WarrantyItem
+    let onSave: () -> Void
+
+    @State private var date = Date()
+    @State private var serviceCenter = ""
+    @State private var cost: Double = 0
+    @State private var currency: String
+    @State private var notes = ""
+
+    init(item: WarrantyItem, onSave: @escaping () -> Void) {
+        self.item = item
+        self.onSave = onSave
+        let defaultCurrency = UserDefaults.standard.string(forKey: "defaultCurrency") ?? "USD"
+        _currency = State(initialValue: item.currency.isEmpty ? defaultCurrency : item.currency)
+    }
+
+    var body: some View {
+        ScrollView {
+            LazyVStack(spacing: 14) {
+                LightweightFormCard {
+                    VStack(alignment: .leading, spacing: 12) {
+                        SectionHeader(titleKey: "repair.add", systemImage: "stethoscope")
+                        PremiumInputRow(titleKey: "repair.date", systemImage: "calendar") {
+                            DatePicker("", selection: $date, displayedComponents: .date)
+                                .labelsHidden()
+                        }
+                        PremiumDivider()
+                        PremiumInputRow(titleKey: "repair.serviceCenter", systemImage: "building.2") {
+                            TextField("repair.serviceCenter", text: $serviceCenter)
+                                .textInputAutocapitalization(.words)
+                        }
+                        PremiumDivider()
+                        PremiumInputRow(titleKey: "repair.cost", systemImage: "creditcard") {
+                            TextField("repair.cost", value: $cost, format: .number)
+                                .keyboardType(.decimalPad)
+                        }
+                        PremiumDivider()
+                        PremiumInputRow(titleKey: "item.currency", systemImage: "banknote") {
+                            Picker("item.currency", selection: $currency) {
+                                ForEach(CurrencyFormatterProvider.commonCurrencies, id: \.self) { code in
+                                    Text(CurrencyFormatterProvider.displayName(for: code)).tag(code)
+                                }
+                            }
+                            .labelsHidden()
+                        }
+                    }
+                }
+
+                LightweightFormCard {
+                    VStack(alignment: .leading, spacing: 12) {
+                        SectionHeader(titleKey: "item.notes", systemImage: "note.text")
+                        TextEditor(text: $notes)
+                            .frame(minHeight: 120)
+                            .scrollContentBackground(.hidden)
+                            .padding(10)
+                            .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    }
+                }
+            }
+            .padding(20)
+        }
+        .navigationTitle("repair.add")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button("common.cancel") {
+                    dismiss()
+                }
+            }
+            ToolbarItem(placement: .confirmationAction) {
+                Button("common.save") {
+                    save()
+                }
+            }
+        }
+    }
+
+    private func save() {
+        let record = RepairRecord(
+            date: date,
+            serviceCenter: serviceCenter.trimmingCharacters(in: .whitespacesAndNewlines),
+            cost: cost,
+            currency: currency,
+            notes: notes.trimmingCharacters(in: .whitespacesAndNewlines)
+        )
+        item.addRepairRecord(record)
+        onSave()
+    }
+}
+
+private struct FeatureIcon: View {
+    let symbolName: String
+    let tint: Color
+
+    var body: some View {
+        Image(systemName: symbolName)
+            .font(.subheadline.weight(.bold))
+            .symbolRenderingMode(.hierarchical)
+            .foregroundStyle(tint)
+            .frame(width: 32, height: 32)
+            .background(tint.opacity(0.12), in: RoundedRectangle(cornerRadius: 11, style: .continuous))
     }
 }
 

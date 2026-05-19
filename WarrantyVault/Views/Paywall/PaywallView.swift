@@ -12,11 +12,7 @@ struct PaywallView: View {
                 VStack(spacing: 24) {
                     // Hero
                     VStack(spacing: 14) {
-                        Image(systemName: "lock.open.fill")
-                            .font(.system(size: 48, weight: .bold))
-                            .foregroundStyle(DesignSystem.Colors.premiumAmber)
-                            .frame(width: 90, height: 90)
-                            .background(DesignSystem.Colors.premiumAmber.opacity(0.12), in: RoundedRectangle(cornerRadius: 26, style: .continuous))
+                        VaultIllustrationView(kind: .proVault)
 
                         Text("paywall.title")
                             .font(.title.weight(.bold))
@@ -53,6 +49,24 @@ struct PaywallView: View {
                             tint: DesignSystem.Colors.premiumAmber,
                             titleKey: "paywall.pro.calendar",
                             bodyKey: "paywall.benefit.calendar.body"
+                        )
+                        BenefitRow(
+                            symbol: "arrow.uturn.backward.circle",
+                            tint: DesignSystem.Colors.premiumAmber,
+                            titleKey: "paywall.pro.returnWindow",
+                            bodyKey: "paywall.benefit.returnWindow.body"
+                        )
+                        BenefitRow(
+                            symbol: "stethoscope",
+                            tint: DesignSystem.Colors.premiumTeal,
+                            titleKey: "paywall.pro.repairHistory",
+                            bodyKey: "paywall.benefit.repair.body"
+                        )
+                        BenefitRow(
+                            symbol: "doc.richtext.fill",
+                            tint: DesignSystem.Colors.premiumMint,
+                            titleKey: "paywall.pro.warrantyPack",
+                            bodyKey: "paywall.benefit.pack.body"
                         )
                     }
 

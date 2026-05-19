@@ -19,6 +19,9 @@ final class WarrantyItem: Identifiable {
     var productImagePath: String?
     var receiptImagePath: String?
     var warrantyDocumentImagePath: String?
+    var returnDeadlineDate: Date?
+    var room: String = ItemRoom.unassigned.rawValue
+    var repairHistoryJSON: String = "[]"
     var createdAt: Date
     var updatedAt: Date
 
@@ -39,6 +42,9 @@ final class WarrantyItem: Identifiable {
         productImagePath: String? = nil,
         receiptImagePath: String? = nil,
         warrantyDocumentImagePath: String? = nil,
+        returnDeadlineDate: Date? = nil,
+        room: String = ItemRoom.unassigned.rawValue,
+        repairHistoryJSON: String = "[]",
         createdAt: Date = .now,
         updatedAt: Date = .now
     ) {
@@ -58,6 +64,9 @@ final class WarrantyItem: Identifiable {
         self.productImagePath = productImagePath
         self.receiptImagePath = receiptImagePath
         self.warrantyDocumentImagePath = warrantyDocumentImagePath
+        self.returnDeadlineDate = returnDeadlineDate
+        self.room = room
+        self.repairHistoryJSON = repairHistoryJSON
         self.createdAt = createdAt
         self.updatedAt = updatedAt
     }
@@ -76,6 +85,47 @@ extension WarrantyItem {
         WarrantyCategory(rawValue: category) ?? .other
     }
 
+    var roomType: ItemRoom {
+        ItemRoom(rawValue: room) ?? .unassigned
+    }
+
+    var returnWindowStatus: ReturnWindowStatus {
+        ReturnWindowCalculator.status(deadlineDate: returnDeadlineDate)
+    }
+
+    var repairRecords: [RepairRecord] {
+        get {
+            guard let data = repairHistoryJSON.data(using: .utf8),
+                  let decoded = try? JSONDecoder().decode([RepairRecord].self, from: data)
+            else {
+                return []
+            }
+
+            return decoded.sorted { $0.date > $1.date }
+        }
+        set {
+            let sorted = newValue.sorted { $0.date > $1.date }
+            guard let data = try? JSONEncoder().encode(sorted),
+                  let json = String(data: data, encoding: .utf8)
+            else {
+                return
+            }
+
+            repairHistoryJSON = json
+            updatedAt = .now
+        }
+    }
+
+    func addRepairRecord(_ record: RepairRecord) {
+        var records = repairRecords
+        records.insert(record, at: 0)
+        repairRecords = records
+    }
+
+    func deleteRepairRecord(id: UUID) {
+        repairRecords = repairRecords.filter { $0.id != id }
+    }
+
     func matchesSearch(_ query: String) -> Bool {
         let normalizedQuery = query.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         guard !normalizedQuery.isEmpty else { return true }
@@ -86,7 +136,8 @@ extension WarrantyItem {
             modelName,
             serialNumber,
             store,
-            categoryType.rawValue
+            categoryType.rawValue,
+            roomType.rawValue
         ]
         .map { $0.lowercased() }
         .contains { $0.contains(normalizedQuery) }

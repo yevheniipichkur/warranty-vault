@@ -57,6 +57,47 @@ final class WarrantyStatusProviderTests: XCTestCase {
     }
 }
 
+final class ReturnWindowTests: XCTestCase {
+    func testReturnDeadlineCalculation() throws {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        let purchaseDate = calendar.date(from: DateComponents(year: 2026, month: 5, day: 1))!
+
+        let deadline = try XCTUnwrap(ReturnWindowCalculator.deadlineDate(
+            purchaseDate: purchaseDate,
+            option: .thirtyDays,
+            calendar: calendar
+        ))
+
+        let components = calendar.dateComponents([.year, .month, .day], from: deadline)
+        XCTAssertEqual(components.year, 2026)
+        XCTAssertEqual(components.month, 5)
+        XCTAssertEqual(components.day, 31)
+    }
+
+    func testReturnWindowStatus() {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        let today = Date(timeIntervalSince1970: 0)
+        let tomorrow = Date(timeIntervalSince1970: 86_400)
+
+        XCTAssertEqual(ReturnWindowCalculator.status(deadlineDate: tomorrow, today: today, calendar: calendar), .available(daysLeft: 1))
+        XCTAssertEqual(ReturnWindowCalculator.status(deadlineDate: nil, today: today, calendar: calendar), .none)
+    }
+}
+
+final class RepairRecordTests: XCTestCase {
+    func testWarrantyItemStoresRepairRecords() {
+        let item = WarrantyItem(name: "Washer")
+        let record = RepairRecord(serviceCenter: "Service", cost: 99, currency: "USD", notes: "Pump")
+
+        item.addRepairRecord(record)
+
+        XCTAssertEqual(item.repairRecords.count, 1)
+        XCTAssertEqual(item.repairRecords.first?.serviceCenter, "Service")
+    }
+}
+
 final class SubscriptionRulesTests: XCTestCase {
     func testFreeUserCanAddUpToTenItems() {
         XCTAssertTrue(SubscriptionRules.canAddItem(currentCount: 9, isPro: false))
@@ -71,9 +112,11 @@ final class SubscriptionRulesTests: XCTestCase {
         XCTAssertFalse(SubscriptionRules.isFeatureAvailable(.iCloudSync, isPro: false))
         XCTAssertFalse(SubscriptionRules.isFeatureAvailable(.barcodeScanner, isPro: false))
         XCTAssertFalse(SubscriptionRules.isFeatureAvailable(.calendarExport, isPro: false))
+        XCTAssertFalse(SubscriptionRules.isFeatureAvailable(.repairHistory, isPro: false))
         XCTAssertTrue(SubscriptionRules.isFeatureAvailable(.iCloudSync, isPro: true))
         XCTAssertTrue(SubscriptionRules.isFeatureAvailable(.barcodeScanner, isPro: true))
         XCTAssertTrue(SubscriptionRules.isFeatureAvailable(.calendarExport, isPro: true))
+        XCTAssertTrue(SubscriptionRules.isFeatureAvailable(.repairHistory, isPro: true))
     }
 }
 

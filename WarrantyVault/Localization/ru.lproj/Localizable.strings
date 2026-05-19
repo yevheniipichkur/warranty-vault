@@ -289,3 +289,57 @@
 "debug.notifications.scheduled" = "Тестовое уведомление запланировано через 5 секунд.";
 "debug.notifications.denied" = "Разрешение на уведомления отклонено.";
 "debug.notifications.failed" = "Не удалось запланировать тестовое уведомление.";
+
+"item.returnWindow" = "Срок возврата";
+"item.returnDeadline" = "Дата возврата";
+"item.room" = "Место";
+"returnWindow.title" = "Срок возврата";
+"returnWindow.none" = "Без срока возврата";
+"returnWindow.14" = "14 дней";
+"returnWindow.30" = "30 дней";
+"returnWindow.60" = "60 дней";
+"returnWindow.custom" = "Своя дата";
+"returnWindow.daysLeft" = "Осталось %d дн. для возврата товара.";
+"returnWindow.endsToday" = "Срок возврата заканчивается сегодня.";
+"returnWindow.expiredMessage" = "Срок возврата уже закончился.";
+"returnWindow.noneMessage" = "Срок возврата не сохранён.";
+"returnStatus.available" = "Можно вернуть";
+"returnStatus.today" = "Сегодня";
+"returnStatus.expired" = "Закрыт";
+"returnStatus.none" = "Не задан";
+
+"room.unassigned" = "Не указано";
+"room.kitchen" = "Кухня";
+"room.livingRoom" = "Гостиная";
+"room.bedroom" = "Спальня";
+"room.office" = "Офис";
+"room.garage" = "Гараж";
+"room.car" = "Авто";
+"room.storage" = "Хранение";
+
+"repair.history" = "История ремонтов";
+"repair.add" = "Добавить ремонт";
+"repair.date" = "Дата ремонта";
+"repair.serviceCenter" = "Сервисный центр";
+"repair.cost" = "Стоимость ремонта";
+"repair.empty.title" = "Ремонтов пока нет";
+"repair.empty.message" = "Сохраняйте сервисные визиты, стоимость и заметки для поддержки или продажи.";
+"repair.serviceUnknown" = "Сервисный центр";
+
+"detail.exportWarrantyPack" = "Пакет гарантии";
+"pdf.warrantyDocument" = "Гарантийный документ";
+"notification.return.title" = "Срок возврата скоро закончится";
+"notification.return.body" = "Срок возврата %@ скоро закончится.";
+
+"home.protectionCenter" = "Центр защиты";
+"home.returnWindows" = "Открытые возвраты";
+"home.missingReceipts" = "Нет чеков";
+"home.repairsLogged" = "Ремонты";
+"home.coveredItems" = "Под гарантией";
+
+"paywall.pro.returnWindow" = "Напоминания о возврате";
+"paywall.pro.repairHistory" = "История ремонтов";
+"paywall.pro.warrantyPack" = "Экспорт пакета гарантии";
+"paywall.benefit.returnWindow.body" = "Отслеживайте сроки возврата, пока деньги ещё можно вернуть.";
+"paywall.benefit.repair.body" = "Храните сервисные визиты, расходы и заметки рядом с товаром.";
+"paywall.benefit.pack.body" = "Отправляйте один PDF для сервиса: чек, гарантию и историю.";

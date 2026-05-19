@@ -44,7 +44,9 @@ struct PDFExportService {
                 ("item.store", item.store),
                 ("item.purchaseDate", DateFormatterProvider.string(from: item.purchaseDate)),
                 ("item.warrantyExpiration", item.warrantyExpirationDate.map { DateFormatterProvider.string(from: $0) } ?? L10n.string("common.none", language: language)),
+                ("item.returnDeadline", item.returnDeadlineDate.map { DateFormatterProvider.string(from: $0) } ?? L10n.string("common.none", language: language)),
                 ("item.price", CurrencyFormatterProvider.string(from: item.price, currencyCode: item.currency)),
+                ("item.room", L10n.string(item.roomType.titleKey, language: language)),
                 ("item.notes", item.notes)
             ]
 
@@ -55,11 +57,39 @@ struct PDFExportService {
                 y += row.0 == "item.notes" ? 58 : 30
             }
 
+            if !item.repairRecords.isEmpty {
+                y += 12
+                draw(text: L10n.string("repair.history", language: language), in: CGRect(x: margin, y: y, width: contentWidth, height: 28), font: headlineFont, color: .label)
+                y += 34
+
+                for record in item.repairRecords.prefix(6) {
+                    let title = record.serviceCenter.isEmpty ? L10n.string("repair.serviceUnknown", language: language) : record.serviceCenter
+                    let date = DateFormatterProvider.string(from: record.date)
+                    let cost = record.cost > 0 ? CurrencyFormatterProvider.string(from: record.cost, currencyCode: record.currency) : ""
+                    let value = [date, cost, record.notes].filter { !$0.isEmpty }.joined(separator: " • ")
+
+                    draw(text: title, in: CGRect(x: margin, y: y, width: 180, height: 24), font: captionFont, color: .secondaryLabel)
+                    draw(text: value, in: CGRect(x: margin + 190, y: y, width: contentWidth - 190, height: 54), font: bodyFont, color: .label)
+                    y += 46
+                }
+            }
+
             if let receipt = ImageStorageService.uiImage(for: item.receiptImagePath) {
                 y += 8
                 draw(text: L10n.string("pdf.receipt", language: language), in: CGRect(x: margin, y: y, width: contentWidth, height: 28), font: headlineFont, color: .label)
                 y += 32
-                _ = drawImage(receipt, y: y, margin: margin, contentWidth: contentWidth)
+                y = drawImage(receipt, y: y, margin: margin, contentWidth: contentWidth)
+            }
+
+            if let warrantyDocument = ImageStorageService.uiImage(for: item.warrantyDocumentImagePath) {
+                y += 18
+                if y > pageBounds.height - 260 {
+                    context.beginPage()
+                    y = 44
+                }
+                draw(text: L10n.string("pdf.warrantyDocument", language: language), in: CGRect(x: margin, y: y, width: contentWidth, height: 28), font: headlineFont, color: .label)
+                y += 32
+                _ = drawImage(warrantyDocument, y: y, margin: margin, contentWidth: contentWidth)
             }
         }
 

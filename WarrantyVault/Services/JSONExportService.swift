@@ -27,6 +27,9 @@ private struct ExportedWarrantyItem: Codable {
     let currency: String
     let category: String
     let notes: String
+    let returnDeadlineDate: Date?
+    let room: String
+    let repairs: [RepairRecord]
     let createdAt: Date
     let updatedAt: Date
 
@@ -44,6 +47,9 @@ private struct ExportedWarrantyItem: Codable {
         currency = item.currency
         category = item.category
         notes = item.notes
+        returnDeadlineDate = item.returnDeadlineDate
+        room = item.room
+        repairs = item.repairRecords
         createdAt = item.createdAt
         updatedAt = item.updatedAt
     }

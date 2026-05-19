@@ -43,6 +43,7 @@ final class NotificationManager: ObservableObject {
         removeReminders(for: item.id)
 
         guard item.hasWarranty, let expirationDate = item.warrantyExpirationDate else {
+            await scheduleReturnReminderIfNeeded(for: item)
             return
         }
 
@@ -75,6 +76,8 @@ final class NotificationManager: ObservableObject {
 
             try? await center.add(request)
         }
+
+        await scheduleReturnReminderIfNeeded(for: item)
     }
 
     func pendingRequests() async -> [UNNotificationRequest] {
@@ -90,7 +93,11 @@ final class NotificationManager: ObservableObject {
     }
 
     nonisolated static func identifiers(for itemID: UUID) -> [String] {
-        [30, 7, 1].map { identifier(for: itemID, days: $0) }
+        [30, 7, 1].map { identifier(for: itemID, days: $0) } + [returnIdentifier(for: itemID)]
+    }
+
+    nonisolated static func returnIdentifier(for itemID: UUID) -> String {
+        "return-window-\(itemID.uuidString)"
     }
 
     nonisolated static func defaultReminderOffsets(userDefaults: UserDefaults = .standard) -> [Int] {
@@ -106,5 +113,35 @@ final class NotificationManager: ObservableObject {
             }
             return userDefaults.bool(forKey: entry.key) ? entry.days : nil
         }
+    }
+
+    private func scheduleReturnReminderIfNeeded(for item: WarrantyItem) async {
+        guard let returnDeadlineDate = item.returnDeadlineDate,
+              let triggerDate = Calendar.current.date(byAdding: .day, value: -2, to: returnDeadlineDate),
+              triggerDate > Date()
+        else {
+            return
+        }
+
+        guard await requestAuthorizationIfNeeded() else {
+            return
+        }
+
+        let language = LanguageManager.shared.selectedLanguage
+        let content = UNMutableNotificationContent()
+        content.title = L10n.string("notification.return.title", language: language)
+        let format = L10n.string("notification.return.body", language: language)
+        content.body = String(format: format, item.name)
+        content.sound = .default
+
+        let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: triggerDate)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+        let request = UNNotificationRequest(
+            identifier: Self.returnIdentifier(for: item.id),
+            content: content,
+            trigger: trigger
+        )
+
+        try? await center.add(request)
     }
 }

@@ -79,6 +79,11 @@ struct WarrantyItemCard: View {
             if let expiration = item.warrantyExpirationDate {
                 DateInfoLine(symbolName: "shield", text: DateFormatterProvider.string(from: expiration, locale: locale))
             }
+
+            if let returnDeadline = item.returnDeadlineDate,
+               item.returnWindowStatus != .expired {
+                DateInfoLine(symbolName: "arrow.uturn.backward.circle", text: DateFormatterProvider.string(from: returnDeadline, locale: locale))
+            }
         }
         .padding(.top, 1)
     }
@@ -96,7 +101,11 @@ struct WarrantyItemCard: View {
     }
 
     private var subtitle: String {
-        [item.brand, item.store].filter { !$0.isEmpty }.joined(separator: " • ")
+        var parts = [item.brand, item.store].filter { !$0.isEmpty }
+        if item.roomType != .unassigned {
+            parts.append(L10n.string(item.roomType.titleKey, locale: locale))
+        }
+        return parts.joined(separator: " • ")
     }
 
     private var warrantyProgress: Double {
