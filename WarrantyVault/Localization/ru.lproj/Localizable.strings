@@ -164,9 +164,18 @@
 "settings.privacyNote" = "All data is stored on your device. No AI. No external server.";
 "settings.dataStaysOnDevice" = "Данные остаются на вашем устройстве.";
 
+"form.showAdvanced" = "Дополнительные поля";
+"form.hideAdvanced" = "Скрыть";
+
 "paywall.navigationTitle" = "Сейф гарантий Pro";
 "paywall.title" = "Сейф гарантий Pro";
 "paywall.subtitle" = "Разблокируйте полный локальный workflow архива.";
+"paywall.hero.message" = "Лимит 10 товаров заканчивается быстро. Pro убирает ограничение и добавляет инструменты, которые реально экономят время.";
+"paywall.freeTierNote" = "Бесплатный план: до 10 товаров и базовые напоминания.";
+"paywall.benefit.unlimited.body" = "Добавляйте любое количество покупок без ограничений.";
+"paywall.benefit.pdf.body" = "Создайте PDF, чтобы подтвердить гарантию в сервисном центре.";
+"paywall.benefit.scanner.body" = "Сканируйте штрихкоды и серийные номера вместо ручного ввода.";
+"paywall.benefit.calendar.body" = "Получайте уведомления до окончания гарантии прямо в Календаре.";
 "paywall.free" = "Free";
 "paywall.free.items" = "До 10 товаров";
 "paywall.free.reminders" = "Базовые напоминания";

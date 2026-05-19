@@ -164,9 +164,18 @@
 "settings.privacyNote" = "All data is stored on your device. No AI. No external server.";
 "settings.dataStaysOnDevice" = "Dane pozostają na Twoim urządzeniu.";
 
+"form.showAdvanced" = "Więcej pól";
+"form.hideAdvanced" = "Ukryj";
+
 "paywall.navigationTitle" = "Sejf gwarancji Pro";
 "paywall.title" = "Sejf gwarancji Pro";
 "paywall.subtitle" = "Odblokuj pełny lokalny workflow archiwum.";
+"paywall.hero.message" = "Limit 10 pozycji kończy się szybciej niż myślisz. Pro usuwa ograniczenie i dodaje narzędzia, które naprawdę oszczędzają czas.";
+"paywall.freeTierNote" = "Plan bezpłatny: do 10 pozycji i podstawowe przypomnienia.";
+"paywall.benefit.unlimited.body" = "Dodawaj dowolną liczbę zakupów bez limitu.";
+"paywall.benefit.pdf.body" = "Wygeneruj PDF, aby udowodnić gwarancję w serwisie.";
+"paywall.benefit.scanner.body" = "Skanuj kody kreskowe i numery seryjne zamiast wpisywać je ręcznie.";
+"paywall.benefit.calendar.body" = "Otrzymuj powiadomienia przed wygaśnięciem gwarancji bezpośrednio w Kalendarzu.";
 "paywall.free" = "Free";
 "paywall.free.items" = "Do 10 rzeczy";
 "paywall.free.reminders" = "Podstawowe przypomnienia";

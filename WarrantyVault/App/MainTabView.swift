@@ -1,28 +1,28 @@
 import SwiftUI
 
 struct MainTabView: View {
-    @State private var selection: AppTab = .home
-
     var body: some View {
-        ZStack(alignment: .bottom) {
-            Group {
-                switch selection {
-                case .home:
-                    NavigationStack { HomeDashboardView() }
-                case .items:
-                    NavigationStack { ItemsListView() }
-                case .receipts:
-                    NavigationStack { ReceiptsGalleryView() }
-                case .reminders:
-                    NavigationStack { RemindersView() }
-                case .settings:
-                    NavigationStack { SettingsView() }
+        TabView {
+            NavigationStack { HomeDashboardView() }
+                .tabItem {
+                    Label(LocalizedStringKey("tab.home"), systemImage: "house.fill")
                 }
-            }
-            .padding(.bottom, 76)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-            GlassTabBar(selection: $selection)
+            NavigationStack { ItemsListView() }
+                .tabItem {
+                    Label(LocalizedStringKey("tab.items"), systemImage: "shippingbox.fill")
+                }
+
+            NavigationStack { RemindersView() }
+                .tabItem {
+                    Label(LocalizedStringKey("tab.reminders"), systemImage: "bell.badge.fill")
+                }
+
+            NavigationStack { SettingsView() }
+                .tabItem {
+                    Label(LocalizedStringKey("tab.settings"), systemImage: "gearshape.fill")
+                }
         }
+        .tint(DesignSystem.Colors.premiumBlue)
     }
 }

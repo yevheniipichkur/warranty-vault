@@ -37,11 +37,15 @@ struct HomeDashboardView: View {
                             .animatedCard(delay: 0.03)
                     }
 
-                    HomeItemSection(titleKey: "home.upcoming", systemImage: "calendar.badge.clock", items: viewModel.upcomingExpirations, emptyKey: "home.noUpcoming")
-                        .animatedCard(delay: 0.06)
+                    if !viewModel.upcomingExpirations.isEmpty {
+                        HomeItemSection(titleKey: "home.upcoming", systemImage: "calendar.badge.clock", items: viewModel.upcomingExpirations)
+                            .animatedCard(delay: 0.06)
+                    }
 
-                    HomeItemSection(titleKey: "home.recentItems", systemImage: "clock.arrow.circlepath", items: viewModel.recentItems)
-                        .animatedCard(delay: 0.09)
+                    if !viewModel.recentItems.isEmpty {
+                        HomeItemSection(titleKey: "home.recentItems", systemImage: "clock.arrow.circlepath", items: viewModel.recentItems)
+                            .animatedCard(delay: 0.09)
+                    }
                 }
             }
             .padding(20)
@@ -158,28 +162,18 @@ private struct HomeItemSection: View {
     let titleKey: String
     let systemImage: String
     let items: [WarrantyItem]
-    var emptyKey: String?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             SectionHeader(titleKey: titleKey, systemImage: systemImage)
 
-            if items.isEmpty, let emptyKey {
-                PremiumCard(cornerRadius: DesignSystem.Radius.medium, padding: DesignSystem.Spacing.large, tint: DesignSystem.Colors.neutralGlassTint) {
-                    Text(LocalizedStringKey(emptyKey))
-                        .font(.body)
-                        .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+            ForEach(items) { item in
+                NavigationLink {
+                    ItemDetailView(item: item)
+                } label: {
+                    ItemCard(item: item)
                 }
-            } else {
-                ForEach(items) { item in
-                    NavigationLink {
-                        ItemDetailView(item: item)
-                    } label: {
-                        ItemCard(item: item)
-                    }
-                    .buttonStyle(.plain)
-                }
+                .buttonStyle(.plain)
             }
         }
     }

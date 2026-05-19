@@ -8,27 +8,61 @@ struct PaywallView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 18) {
-                    Image(systemName: "crown.fill")
-                        .font(.system(size: 54, weight: .bold))
-                        .foregroundStyle(DesignSystem.Colors.premiumAmber)
-                        .frame(width: 96, height: 96)
-                        .background(DesignSystem.Colors.premiumAmber.opacity(0.13), in: RoundedRectangle(cornerRadius: 28, style: .continuous))
+                VStack(spacing: 24) {
+                    // Hero
+                    VStack(spacing: 14) {
+                        Image(systemName: "lock.open.fill")
+                            .font(.system(size: 48, weight: .bold))
+                            .foregroundStyle(DesignSystem.Colors.premiumAmber)
+                            .frame(width: 90, height: 90)
+                            .background(DesignSystem.Colors.premiumAmber.opacity(0.12), in: RoundedRectangle(cornerRadius: 26, style: .continuous))
 
-                    VStack(spacing: 8) {
                         Text("paywall.title")
-                            .font(.largeTitle.weight(.bold))
-                        Text("paywall.subtitle")
+                            .font(.title.weight(.bold))
+                            .multilineTextAlignment(.center)
+
+                        Text("paywall.hero.message")
                             .font(.body)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
                     }
 
-                    HStack(alignment: .top, spacing: 12) {
-                        PlanCard(titleKey: "paywall.free", featureKeys: ["paywall.free.items", "paywall.free.reminders"])
-                        PlanCard(titleKey: "paywall.pro", featureKeys: ["paywall.pro.unlimited", "paywall.pro.pdf", "paywall.pro.receipts", "paywall.pro.filters", "paywall.pro.scanner", "paywall.pro.calendar", "paywall.pro.icloud"])
+                    // Benefits
+                    VStack(spacing: 12) {
+                        BenefitRow(
+                            symbol: "infinity",
+                            tint: DesignSystem.Colors.premiumBlue,
+                            titleKey: "paywall.pro.unlimited",
+                            bodyKey: "paywall.benefit.unlimited.body"
+                        )
+                        BenefitRow(
+                            symbol: "doc.richtext",
+                            tint: DesignSystem.Colors.premiumTeal,
+                            titleKey: "paywall.pro.pdf",
+                            bodyKey: "paywall.benefit.pdf.body"
+                        )
+                        BenefitRow(
+                            symbol: "barcode.viewfinder",
+                            tint: DesignSystem.Colors.premiumMint,
+                            titleKey: "paywall.pro.scanner",
+                            bodyKey: "paywall.benefit.scanner.body"
+                        )
+                        BenefitRow(
+                            symbol: "bell.badge",
+                            tint: DesignSystem.Colors.premiumAmber,
+                            titleKey: "paywall.pro.calendar",
+                            bodyKey: "paywall.benefit.calendar.body"
+                        )
                     }
 
+                    // Free plan note
+                    Text("paywall.freeTierNote")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 8)
+
+                    // Purchase buttons
                     VStack(spacing: 10) {
                         if subscriptionManager.products.isEmpty {
                             GlassCard {
@@ -49,7 +83,7 @@ struct PaywallView: View {
                                     }
                                 } label: {
                                     HStack {
-                                        VStack(alignment: .leading) {
+                                        VStack(alignment: .leading, spacing: 2) {
                                             Text(product.displayName)
                                                 .font(.headline)
                                             Text(product.description)
@@ -58,10 +92,15 @@ struct PaywallView: View {
                                         }
                                         Spacer()
                                         Text(product.displayPrice)
-                                            .font(.headline)
+                                            .font(.title3.weight(.bold))
+                                            .foregroundStyle(DesignSystem.Colors.premiumBlue)
                                     }
                                     .padding()
-                                    .glassBackground(cornerRadius: 18)
+                                    .background(DesignSystem.Colors.premiumBlue.opacity(0.08), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+                                    .overlay {
+                                        RoundedRectangle(cornerRadius: 18, style: .continuous)
+                                            .strokeBorder(DesignSystem.Colors.premiumBlue.opacity(0.2), lineWidth: 1)
+                                    }
                                 }
                                 .buttonStyle(.plain)
                             }
@@ -93,25 +132,36 @@ struct PaywallView: View {
     }
 }
 
-private struct PlanCard: View {
+private struct BenefitRow: View {
+    let symbol: String
+    let tint: Color
     let titleKey: String
-    let featureKeys: [String]
+    let bodyKey: String
 
     var body: some View {
-        GlassCard(cornerRadius: 20) {
-            VStack(alignment: .leading, spacing: 12) {
-                Text(LocalizedStringKey(titleKey))
-                    .font(.headline)
+        HStack(alignment: .top, spacing: 14) {
+            Image(systemName: symbol)
+                .font(.system(size: 20, weight: .semibold))
+                .foregroundStyle(tint)
+                .frame(width: 44, height: 44)
+                .background(tint.opacity(0.12), in: RoundedRectangle(cornerRadius: 13, style: .continuous))
 
-                ForEach(featureKeys, id: \.self) { key in
-                    Label(LocalizedStringKey(key), systemImage: "checkmark.circle.fill")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(2)
-                        .minimumScaleFactor(0.8)
-                }
+            VStack(alignment: .leading, spacing: 3) {
+                Text(LocalizedStringKey(titleKey))
+                    .font(.subheadline.weight(.semibold))
+                Text(LocalizedStringKey(bodyKey))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+
+            Spacer(minLength: 0)
+        }
+        .padding(14)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .strokeBorder(.primary.opacity(0.06), lineWidth: 0.7)
         }
     }
 }

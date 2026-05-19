@@ -164,9 +164,18 @@
 "settings.privacyNote" = "All data is stored on your device. No AI. No external server.";
 "settings.dataStaysOnDevice" = "Дані залишаються на вашому пристрої.";
 
+"form.showAdvanced" = "Додаткові поля";
+"form.hideAdvanced" = "Сховати";
+
 "paywall.navigationTitle" = "Сейф гарантій Pro";
 "paywall.title" = "Сейф гарантій Pro";
 "paywall.subtitle" = "Розблокуйте повний локальний workflow архіву.";
+"paywall.hero.message" = "Ліміт 10 речей заповнюється швидше, ніж здається. Pro прибирає обмеження і додає інструменти, що реально заощаджують час.";
+"paywall.freeTierNote" = "Безкоштовний план: до 10 речей і базові нагадування.";
+"paywall.benefit.unlimited.body" = "Додавайте будь-яку кількість покупок без обмежень.";
+"paywall.benefit.pdf.body" = "Згенеруйте PDF, щоб підтвердити гарантію у сервісному центрі.";
+"paywall.benefit.scanner.body" = "Скануйте штрихкоди та серійні номери замість ручного введення.";
+"paywall.benefit.calendar.body" = "Отримуйте сповіщення до закінчення гарантії прямо у Календарі.";
 "paywall.free" = "Free";
 "paywall.free.items" = "До 10 речей";
 "paywall.free.reminders" = "Базові нагадування";

@@ -164,9 +164,18 @@
 "settings.privacyNote" = "All data is stored on your device. No AI. No external server.";
 "settings.dataStaysOnDevice" = "Data stays on your device.";
 
+"form.showAdvanced" = "More details";
+"form.hideAdvanced" = "Less";
+
 "paywall.navigationTitle" = "Warranty Vault Pro";
 "paywall.title" = "Warranty Vault Pro";
 "paywall.subtitle" = "Unlock the full local archive workflow.";
+"paywall.hero.message" = "You hit the 10-item limit faster than you think. Pro removes the cap and adds tools that save real time.";
+"paywall.freeTierNote" = "Free plan includes up to 10 items and basic reminders.";
+"paywall.benefit.unlimited.body" = "Add every purchase — no limits, no worries.";
+"paywall.benefit.pdf.body" = "Generate a PDF to prove your warranty at the service center.";
+"paywall.benefit.scanner.body" = "Scan barcodes and serial numbers instead of typing them.";
+"paywall.benefit.calendar.body" = "Get notified before coverage ends — directly in your Calendar.";
 "paywall.free" = "Free";
 "paywall.free.items" = "Up to 10 items";
 "paywall.free.reminders" = "Basic reminders";
