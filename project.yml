@@ -22,9 +22,6 @@ targets:
       - path: WarrantyVault
         excludes:
           - App/Info.plist
-          - Localization
-    resources:
-      - path: WarrantyVault/Localization
     dependencies:
       - target: WarrantyVaultLiveActivity
         embed: true
