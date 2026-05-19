@@ -24,7 +24,7 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       SCHEME: WarrantyVault
       PROJECT: WarrantyVault.xcodeproj
-      SIMULATOR_DESTINATION: platform=iOS Simulator,OS=latest
+      SIMULATOR_DESTINATION: platform=iOS Simulator,name=iPad (A16),OS=26.4.1
       EXPORT_METHOD: ${{ github.event.inputs.export_method || 'ad-hoc' }}
       BUNDLE_ID_SECRET: ${{ secrets.BUNDLE_ID || 'com.yevheniipichkur.warrantyvault' }}
       APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID || 'G66CMCY8H2' }}
