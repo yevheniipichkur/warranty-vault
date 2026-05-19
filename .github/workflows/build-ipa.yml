@@ -19,7 +19,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-16
+    runs-on: macos-26
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       SCHEME: WarrantyVault
