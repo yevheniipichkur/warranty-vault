@@ -69,43 +69,52 @@ struct PaywallView: View {
                                 VStack(alignment: .leading, spacing: 8) {
                                     Text("paywall.productsUnavailable")
                                         .font(.headline)
+                                        .fixedSize(horizontal: false, vertical: true)
                                     if !subscriptionManager.loadDiagnostic.isEmpty {
                                         Text(subscriptionManager.loadDiagnostic)
                                             .font(.caption)
                                             .foregroundStyle(.secondary)
                                             .multilineTextAlignment(.leading)
+                                            .fixedSize(horizontal: false, vertical: true)
                                     }
                                     if !subscriptionManager.diagnosticLines.isEmpty {
                                         Divider()
                                             .padding(.vertical, 4)
                                         ForEach(subscriptionManager.diagnosticLines, id: \.self) { line in
-                                            Text(line)
-                                                .font(.caption2.monospaced())
-                                                .foregroundStyle(.secondary)
-                                                .textSelection(.enabled)
+                                            StoreKitDiagnosticLine(line: line)
                                         }
                                     }
 
-                                    Button {
-                                        Task {
-                                            await subscriptionManager.loadProducts()
-                                            await subscriptionManager.refreshEntitlements()
+                                    VStack(spacing: 8) {
+                                        Button {
+                                            Task {
+                                                await subscriptionManager.loadProducts()
+                                                await subscriptionManager.refreshEntitlements()
+                                            }
+                                        } label: {
+                                            Label("settings.storekitRefresh", systemImage: "arrow.clockwise")
+                                                .font(.caption.weight(.semibold))
+                                                .lineLimit(2)
+                                                .fixedSize(horizontal: false, vertical: true)
+                                                .frame(maxWidth: .infinity, alignment: .leading)
                                         }
-                                    } label: {
-                                        Label("settings.storekitRefresh", systemImage: "arrow.clockwise")
-                                            .font(.caption.weight(.semibold))
-                                    }
-                                    .buttonStyle(.bordered)
+                                        .buttonStyle(.bordered)
+                                        .controlSize(.small)
 
-                                    Button {
-                                        Task {
-                                            await subscriptionManager.syncAppStoreAccount()
+                                        Button {
+                                            Task {
+                                                await subscriptionManager.syncAppStoreAccount()
+                                            }
+                                        } label: {
+                                            Label("settings.storekitSync", systemImage: "arrow.triangle.2.circlepath")
+                                                .font(.caption.weight(.semibold))
+                                                .lineLimit(2)
+                                                .fixedSize(horizontal: false, vertical: true)
+                                                .frame(maxWidth: .infinity, alignment: .leading)
                                         }
-                                    } label: {
-                                        Label("settings.storekitSync", systemImage: "arrow.triangle.2.circlepath")
-                                            .font(.caption.weight(.semibold))
+                                        .buttonStyle(.bordered)
+                                        .controlSize(.small)
                                     }
-                                    .buttonStyle(.bordered)
                                 }
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             }
@@ -163,6 +172,51 @@ struct PaywallView: View {
                 await subscriptionManager.refreshEntitlements()
             }
         }
+    }
+}
+
+struct StoreKitDiagnosticLine: View {
+    let line: String
+
+    private var parts: (title: String, value: String) {
+        guard let separator = line.firstIndex(of: ":") else {
+            return ("", line)
+        }
+
+        let title = String(line[..<separator])
+        let valueStart = line.index(after: separator)
+        let value = String(line[valueStart...]).trimmingCharacters(in: .whitespaces)
+        return (title, value)
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            if !parts.title.isEmpty {
+                Text(verbatim: parts.title)
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(.secondary)
+            }
+
+            Text(verbatim: wrappable(parts.value))
+                .font(.caption2.monospaced())
+                .foregroundStyle(.secondary)
+                .lineLimit(nil)
+                .multilineTextAlignment(.leading)
+                .fixedSize(horizontal: false, vertical: true)
+                .textSelection(.enabled)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func wrappable(_ value: String) -> String {
+        let breakChar = "\u{200B}"
+        return value
+            .replacingOccurrences(of: ".", with: "." + breakChar)
+            .replacingOccurrences(of: "-", with: "-" + breakChar)
+            .replacingOccurrences(of: "_", with: "_" + breakChar)
+            .replacingOccurrences(of: "/", with: "/" + breakChar)
+            .replacingOccurrences(of: ",", with: "," + breakChar)
     }
 }
 

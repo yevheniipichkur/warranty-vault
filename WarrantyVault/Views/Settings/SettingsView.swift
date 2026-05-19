@@ -115,14 +115,13 @@ struct SettingsView: View {
                     Text(subscriptionManager.loadDiagnostic)
                         .font(.caption)
                         .foregroundStyle(.secondary)
+                        .lineLimit(nil)
+                        .fixedSize(horizontal: false, vertical: true)
                         .textSelection(.enabled)
                 }
 
                 ForEach(subscriptionManager.diagnosticLines, id: \.self) { line in
-                    Text(line)
-                        .font(.caption2.monospaced())
-                        .foregroundStyle(.secondary)
-                        .textSelection(.enabled)
+                    StoreKitDiagnosticLine(line: line)
                 }
             }
 
