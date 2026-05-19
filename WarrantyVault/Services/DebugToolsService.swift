@@ -88,6 +88,65 @@ enum DebugToolsService {
         return item
     }
 
+    static func createReturnWindowItem(context: ModelContext) -> WarrantyItem {
+        let item = WarrantyItem(
+            name: "\(demoPrefix)Return window camera",
+            brand: "North Studio",
+            modelName: "Lens Mini",
+            serialNumber: "DBG-RETURN-007",
+            store: "Demo Store",
+            purchaseDate: .now,
+            warrantyExpirationDate: Calendar.current.date(byAdding: .month, value: 12, to: .now),
+            hasWarranty: true,
+            price: 249,
+            currency: "USD",
+            category: WarrantyCategory.electronics.rawValue,
+            notes: "Created to test return-window reminders.",
+            returnDeadlineDate: Calendar.current.date(byAdding: .day, value: 7, to: .now),
+            room: ItemRoom.office.rawValue
+        )
+        context.insert(item)
+        try? context.save()
+        return item
+    }
+
+    static func createRepairHistoryItem(context: ModelContext) -> WarrantyItem {
+        let item = WarrantyItem(
+            name: "\(demoPrefix)Repair history washer",
+            brand: "CleanCo",
+            modelName: "Wash 700",
+            serialNumber: "DBG-REPAIR-010",
+            store: "Home Market",
+            purchaseDate: Calendar.current.date(byAdding: .month, value: -9, to: .now) ?? .now,
+            warrantyExpirationDate: Calendar.current.date(byAdding: .month, value: 15, to: .now),
+            hasWarranty: true,
+            price: 599,
+            currency: "USD",
+            category: WarrantyCategory.home.rawValue,
+            notes: "Created to test repair history and warranty pack export.",
+            room: ItemRoom.storage.rawValue
+        )
+        item.repairRecords = [
+            RepairRecord(
+                date: Calendar.current.date(byAdding: .day, value: -24, to: .now) ?? .now,
+                serviceCenter: "Demo Service",
+                cost: 89,
+                currency: "USD",
+                notes: "Pump diagnostics and hose replacement."
+            ),
+            RepairRecord(
+                date: Calendar.current.date(byAdding: .day, value: -8, to: .now) ?? .now,
+                serviceCenter: "Demo Service",
+                cost: 0,
+                currency: "USD",
+                notes: "Follow-up inspection under warranty."
+            )
+        ]
+        context.insert(item)
+        try? context.save()
+        return item
+    }
+
     static func resetOnboarding() {
         UserDefaults.standard.set(false, forKey: "hasCompletedOnboarding")
     }
@@ -160,8 +219,19 @@ enum DebugToolsService {
             price: 49,
             currency: "USD",
             category: WarrantyCategory.documents.rawValue,
-            notes: "Generated for PDF export testing."
+            notes: "Generated for PDF export testing.",
+            returnDeadlineDate: Calendar.current.date(byAdding: .day, value: 7, to: .now),
+            room: ItemRoom.office.rawValue
         )
+        item.repairRecords = [
+            RepairRecord(
+                date: .now,
+                serviceCenter: "Debug Lab",
+                cost: 12,
+                currency: "USD",
+                notes: "Warranty pack repair-history test line."
+            )
+        ]
         context.insert(item)
         try? context.save()
         return try PDFExportService().export(item: item, language: LanguageManager.shared.selectedLanguage)

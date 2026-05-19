@@ -2,6 +2,13 @@ import Combine
 import Foundation
 import StoreKit
 
+enum SubscriptionPurchaseOutcome: Equatable {
+    case success
+    case pending
+    case cancelled
+    case failed(String)
+}
+
 @MainActor
 final class SubscriptionManager: ObservableObject {
     static let shared = SubscriptionManager()
@@ -17,6 +24,7 @@ final class SubscriptionManager: ObservableObject {
     @Published var lastErrorMessage: String?
     @Published private(set) var loadDiagnostic: String = ""
     @Published private(set) var diagnosticLines: [String] = []
+    @Published private(set) var purchaseInProgressProductID: String?
 
     private static let debugUnlockStorageKey = "debugUnlockPro"
 
@@ -100,7 +108,10 @@ final class SubscriptionManager: ObservableObject {
         proEntitlementActive = isActive
     }
 
-    func purchase(_ product: Product) async {
+    func purchase(_ product: Product) async -> SubscriptionPurchaseOutcome {
+        purchaseInProgressProductID = product.id
+        defer { purchaseInProgressProductID = nil }
+
         do {
             let result = try await product.purchase()
 
@@ -109,14 +120,25 @@ final class SubscriptionManager: ObservableObject {
                 if case .verified(let transaction) = verificationResult {
                     await transaction.finish()
                     await refreshEntitlements()
+                    lastErrorMessage = nil
+                    return .success
+                } else {
+                    lastErrorMessage = "Purchase verification failed."
+                    return .failed(lastErrorMessage ?? "Purchase verification failed.")
                 }
-            case .pending, .userCancelled:
-                break
+            case .pending:
+                lastErrorMessage = nil
+                return .pending
+            case .userCancelled:
+                lastErrorMessage = nil
+                return .cancelled
             @unknown default:
-                break
+                lastErrorMessage = "Unknown purchase result."
+                return .failed(lastErrorMessage ?? "Unknown purchase result.")
             }
         } catch {
             lastErrorMessage = error.localizedDescription
+            return .failed(error.localizedDescription)
         }
     }
 

@@ -343,3 +343,19 @@
 "paywall.benefit.returnWindow.body" = "Track return deadlines before money leaves the table.";
 "paywall.benefit.repair.body" = "Keep service visits, costs, and notes with the item.";
 "paywall.benefit.pack.body" = "Share a single service-ready PDF with receipt, warranty, and history.";
+"paywall.success.title" = "Pro unlocked";
+"paywall.success.message" = "Your warranty vault now has unlimited items, warranty packs, repair history, and advanced tools.";
+"paywall.success.continue" = "Continue";
+"paywall.purchasePending" = "Purchase is pending approval.";
+"paywall.purchaseCancelled" = "Purchase was cancelled.";
+"paywall.purchaseFailed" = "Purchase failed. Please try again.";
+
+"debug.createReturnWindow" = "Create return-window item";
+"debug.createRepairHistory" = "Create repair-history item";
+"debug.previewPurchaseSuccess" = "Preview purchase animation";
+"debug.exportFailed" = "Export failed.";
+"debug.proEnabled" = "Local Pro enabled.";
+"debug.proDisabled" = "Local Pro disabled.";
+"debug.proReset" = "Local Pro reset.";
+"debug.storekitRefreshed" = "StoreKit products refreshed.";
+"debug.storekitSynced" = "App Store account sync requested.";

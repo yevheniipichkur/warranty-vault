@@ -343,3 +343,19 @@
 "paywall.benefit.returnWindow.body" = "Pilnuj terminów zwrotu, zanim stracisz możliwość odzyskania pieniędzy.";
 "paywall.benefit.repair.body" = "Trzymaj wizyty serwisowe, koszty i notatki przy produkcie.";
 "paywall.benefit.pack.body" = "Udostępnij jeden PDF dla serwisu: paragon, gwarancję i historię.";
+"paywall.success.title" = "Pro odblokowane";
+"paywall.success.message" = "Masz teraz nielimitowane produkty, pakiety gwarancyjne, historię napraw i narzędzia zaawansowane.";
+"paywall.success.continue" = "Kontynuuj";
+"paywall.purchasePending" = "Zakup oczekuje na zatwierdzenie.";
+"paywall.purchaseCancelled" = "Zakup anulowano.";
+"paywall.purchaseFailed" = "Zakup się nie powiódł. Spróbuj ponownie.";
+
+"debug.createReturnWindow" = "Utwórz element ze zwrotem";
+"debug.createRepairHistory" = "Utwórz element z naprawami";
+"debug.previewPurchaseSuccess" = "Podgląd animacji zakupu";
+"debug.exportFailed" = "Eksport nie powiódł się.";
+"debug.proEnabled" = "Lokalne Pro włączone.";
+"debug.proDisabled" = "Lokalne Pro wyłączone.";
+"debug.proReset" = "Lokalne Pro zresetowane.";
+"debug.storekitRefreshed" = "Produkty StoreKit odświeżone.";
+"debug.storekitSynced" = "Poproszono o synchronizację App Store.";

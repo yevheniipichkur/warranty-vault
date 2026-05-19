@@ -1,15 +1,25 @@
 import StoreKit
 import SwiftUI
+import UIKit
 
 struct PaywallView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @EnvironmentObject private var subscriptionManager: SubscriptionManager
     @AppStorage("debugMenuUnlocked") private var debugMenuUnlocked = false
+    @Binding private var forceSuccessCelebration: Bool
+    @State private var showPurchaseSuccess = false
+    @State private var purchaseMessageKey: String?
+
+    init(forceSuccessCelebration: Binding<Bool> = .constant(false)) {
+        _forceSuccessCelebration = forceSuccessCelebration
+    }
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 24) {
+        ZStack {
+            NavigationStack {
+                ScrollView {
+                    VStack(spacing: 24) {
                     // Hero
                     VStack(spacing: 14) {
                         VaultIllustrationView(kind: .proVault)
@@ -141,7 +151,7 @@ struct PaywallView: View {
                             ForEach(subscriptionManager.products, id: \.id) { product in
                                 Button {
                                     Task {
-                                        await subscriptionManager.purchase(product)
+                                        await purchase(product)
                                     }
                                 } label: {
                                     HStack {
@@ -153,9 +163,13 @@ struct PaywallView: View {
                                                 .foregroundStyle(.secondary)
                                         }
                                         Spacer()
-                                        Text(product.displayPrice)
-                                            .font(.title3.weight(.bold))
-                                            .foregroundStyle(DesignSystem.Colors.premiumBlue)
+                                        if subscriptionManager.purchaseInProgressProductID == product.id {
+                                            ProgressView()
+                                        } else {
+                                            Text(product.displayPrice)
+                                                .font(.title3.weight(.bold))
+                                                .foregroundStyle(DesignSystem.Colors.premiumBlue)
+                                        }
                                     }
                                     .padding()
                                     .background(DesignSystem.Colors.premiumBlue.opacity(0.08), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
@@ -165,6 +179,7 @@ struct PaywallView: View {
                                     }
                                 }
                                 .buttonStyle(.plain)
+                                .disabled(subscriptionManager.purchaseInProgressProductID != nil)
                             }
                         }
                     }
@@ -174,22 +189,69 @@ struct PaywallView: View {
                             .font(.footnote)
                             .foregroundStyle(.red)
                     }
+                    }
+                    .padding(20)
                 }
-                .padding(20)
-            }
-            .navigationTitle("paywall.navigationTitle")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("common.close") {
-                        dismiss()
+                .navigationTitle("paywall.navigationTitle")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("common.close") {
+                            dismiss()
+                        }
                     }
                 }
+                .task {
+                    await subscriptionManager.loadProducts()
+                    await subscriptionManager.refreshEntitlements()
+                }
+                .alert("debug.message.title", isPresented: Binding(
+                    get: { purchaseMessageKey != nil },
+                    set: { isPresented in
+                        if !isPresented {
+                            purchaseMessageKey = nil
+                        }
+                    }
+                )) {
+                    Button("common.ok", role: .cancel) {}
+                } message: {
+                    Text(LocalizedStringKey(purchaseMessageKey ?? "debug.done"))
+                }
+                .onChange(of: forceSuccessCelebration) { _, newValue in
+                    guard newValue else { return }
+                    withAnimation(MotionManager.softAnimation(reduceMotion: reduceMotion)) {
+                        showPurchaseSuccess = true
+                    }
+                    forceSuccessCelebration = false
+                }
             }
-            .task {
-                await subscriptionManager.loadProducts()
-                await subscriptionManager.refreshEntitlements()
+
+            if showPurchaseSuccess {
+                PurchaseSuccessOverlay {
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        showPurchaseSuccess = false
+                    }
+                    dismiss()
+                }
+                .zIndex(20)
             }
+        }
+    }
+
+    private func purchase(_ product: Product) async {
+        let outcome = await subscriptionManager.purchase(product)
+
+        switch outcome {
+        case .success:
+            withAnimation(MotionManager.softAnimation(reduceMotion: reduceMotion)) {
+                showPurchaseSuccess = true
+            }
+        case .pending:
+            purchaseMessageKey = "paywall.purchasePending"
+        case .cancelled:
+            purchaseMessageKey = "paywall.purchaseCancelled"
+        case .failed:
+            purchaseMessageKey = "paywall.purchaseFailed"
         }
     }
 }

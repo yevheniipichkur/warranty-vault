@@ -343,3 +343,19 @@
 "paywall.benefit.returnWindow.body" = "Відстежуйте терміни повернення, поки гроші ще можна повернути.";
 "paywall.benefit.repair.body" = "Тримайте сервісні візити, витрати й нотатки поруч із товаром.";
 "paywall.benefit.pack.body" = "Надсилайте один PDF для сервісу: чек, гарантію та історію.";
+"paywall.success.title" = "Pro розблоковано";
+"paywall.success.message" = "Тепер доступні необмежені товари, пакети гарантії, історія ремонтів і розширені інструменти.";
+"paywall.success.continue" = "Продовжити";
+"paywall.purchasePending" = "Покупка очікує підтвердження.";
+"paywall.purchaseCancelled" = "Покупку скасовано.";
+"paywall.purchaseFailed" = "Покупка не вдалася. Спробуйте ще раз.";
+
+"debug.createReturnWindow" = "Створити товар із поверненням";
+"debug.createRepairHistory" = "Створити товар з історією ремонтів";
+"debug.previewPurchaseSuccess" = "Переглянути анімацію покупки";
+"debug.exportFailed" = "Експорт не вдався.";
+"debug.proEnabled" = "Локальний Pro увімкнено.";
+"debug.proDisabled" = "Локальний Pro вимкнено.";
+"debug.proReset" = "Локальний Pro скинуто.";
+"debug.storekitRefreshed" = "Продукти StoreKit оновлено.";
+"debug.storekitSynced" = "Синхронізацію App Store запитано.";

@@ -21,6 +21,7 @@ struct DebugMenuView: View {
     @State private var diagnostics: DebugDiagnostics?
     @State private var sharedURL: URL?
     @State private var isShowingPaywall = false
+    @State private var isShowingPurchaseSuccessPreview = false
 
     var body: some View {
         Form {
@@ -35,12 +36,14 @@ struct DebugMenuView: View {
                     Task {
                         await subscriptionManager.loadProducts()
                         await subscriptionManager.refreshEntitlements()
+                        messageKey = "debug.storekitRefreshed"
                     }
                 }
 
                 DebugActionRow(titleKey: "settings.storekitSync", systemImage: "arrow.triangle.2.circlepath") {
                     Task {
                         await subscriptionManager.syncAppStoreAccount()
+                        messageKey = "debug.storekitSynced"
                     }
                 }
 
@@ -74,8 +77,20 @@ struct DebugMenuView: View {
                     _ = DebugToolsService.createNoWarrantyItem(context: modelContext)
                     messageKey = "debug.created"
                 }
+                DebugActionRow(titleKey: "debug.createReturnWindow", systemImage: "arrow.uturn.backward.circle") {
+                    _ = DebugToolsService.createReturnWindowItem(context: modelContext)
+                    messageKey = "debug.created"
+                }
+                DebugActionRow(titleKey: "debug.createRepairHistory", systemImage: "stethoscope") {
+                    _ = DebugToolsService.createRepairHistoryItem(context: modelContext)
+                    messageKey = "debug.created"
+                }
                 DebugActionRow(titleKey: "settings.exportJSON", systemImage: "square.and.arrow.up") {
-                    sharedURL = try? JSONExportService.export(items: items)
+                    do {
+                        sharedURL = try JSONExportService.export(items: items)
+                    } catch {
+                        messageKey = "debug.exportFailed"
+                    }
                 }
                 DebugActionRow(titleKey: "debug.clearAllData", systemImage: "trash", role: .destructive) {
                     confirmation = .clearAllData
@@ -85,12 +100,17 @@ struct DebugMenuView: View {
             Section("debug.section.paywall") {
                 DebugActionRow(titleKey: "debug.togglePro", subtitleKey: subscriptionManager.hasPro ? "settings.proUnlocked" : nil, systemImage: "hammer") {
                     DebugToolsService.toggleDebugPro()
+                    messageKey = subscriptionManager.isDebugProUnlocked ? "debug.proEnabled" : "debug.proDisabled"
                 }
                 DebugActionRow(titleKey: "debug.resetPro", systemImage: "arrow.counterclockwise") {
                     DebugToolsService.resetDebugPro()
+                    messageKey = "debug.proReset"
                 }
                 DebugActionRow(titleKey: "debug.triggerPaywall", systemImage: "crown") {
                     isShowingPaywall = true
+                }
+                DebugActionRow(titleKey: "debug.previewPurchaseSuccess", systemImage: "sparkles") {
+                    isShowingPurchaseSuccessPreview = true
                 }
             }
 
@@ -118,7 +138,11 @@ struct DebugMenuView: View {
 
             Section("debug.section.pdf") {
                 DebugActionRow(titleKey: "debug.exportTestPDF", systemImage: "doc.richtext") {
-                    sharedURL = try? DebugToolsService.exportTestPDF(context: modelContext)
+                    do {
+                        sharedURL = try DebugToolsService.exportTestPDF(context: modelContext)
+                    } catch {
+                        messageKey = "debug.exportFailed"
+                    }
                 }
             }
 
@@ -169,6 +193,15 @@ struct DebugMenuView: View {
                 }
                 DebugActionRow(titleKey: "debug.resetAllSettings", systemImage: "arrow.triangle.2.circlepath", role: .destructive) {
                     confirmation = .resetSettings
+                }
+            }
+        }
+        .overlay {
+            if isShowingPurchaseSuccessPreview {
+                PurchaseSuccessOverlay {
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        isShowingPurchaseSuccessPreview = false
+                    }
                 }
             }
         }

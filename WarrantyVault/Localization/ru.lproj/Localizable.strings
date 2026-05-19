@@ -343,3 +343,19 @@
 "paywall.benefit.returnWindow.body" = "Отслеживайте сроки возврата, пока деньги ещё можно вернуть.";
 "paywall.benefit.repair.body" = "Храните сервисные визиты, расходы и заметки рядом с товаром.";
 "paywall.benefit.pack.body" = "Отправляйте один PDF для сервиса: чек, гарантию и историю.";
+"paywall.success.title" = "Pro разблокирован";
+"paywall.success.message" = "Теперь доступны безлимитные товары, пакеты гарантии, история ремонтов и расширенные инструменты.";
+"paywall.success.continue" = "Продолжить";
+"paywall.purchasePending" = "Покупка ожидает подтверждения.";
+"paywall.purchaseCancelled" = "Покупка отменена.";
+"paywall.purchaseFailed" = "Покупка не удалась. Попробуйте ещё раз.";
+
+"debug.createReturnWindow" = "Создать товар со сроком возврата";
+"debug.createRepairHistory" = "Создать товар с историей ремонтов";
+"debug.previewPurchaseSuccess" = "Показать анимацию покупки";
+"debug.exportFailed" = "Экспорт не удался.";
+"debug.proEnabled" = "Локальный Pro включён.";
+"debug.proDisabled" = "Локальный Pro выключен.";
+"debug.proReset" = "Локальный Pro сброшен.";
+"debug.storekitRefreshed" = "Продукты StoreKit обновлены.";
+"debug.storekitSynced" = "Синхронизация App Store запрошена.";
