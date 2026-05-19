@@ -20,6 +20,7 @@
 "common.none" = "Нет";
 "common.edit" = "Править";
 "common.close" = "Закрыть";
+"common.clear" = "Очистить";
 
 "onboarding.receipts.title" = "Храните чеки безопасно";
 "onboarding.receipts.message" = "Сохраняйте чеки, фото товаров, серийные номера и гарантийные документы локально на iPhone.";

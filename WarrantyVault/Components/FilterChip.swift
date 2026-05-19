@@ -8,30 +8,27 @@ struct FilterChip: View {
     var body: some View {
         Button(action: action) {
             Text(LocalizedStringKey(titleKey))
-                .font(.subheadline.weight(isSelected ? .semibold : .regular))
+                .font(.caption.weight(isSelected ? .semibold : .medium))
                 .lineLimit(1)
                 .minimumScaleFactor(0.82)
-                .padding(.horizontal, 14)
-                .padding(.vertical, 8)
-                .foregroundStyle(isSelected ? Color.white : Color.primary)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 7)
+                .foregroundStyle(isSelected ? DesignSystem.Colors.premiumBlue : Color.secondary)
                 .background {
                     Capsule(style: .continuous)
-                        .fill(backgroundStyle)
+                        .fill(backgroundColor)
                         .overlay {
                             Capsule(style: .continuous)
-                                .strokeBorder(isSelected ? Color.white.opacity(0.25) : Color.primary.opacity(0.08), lineWidth: 0.7)
+                                .strokeBorder(isSelected ? DesignSystem.Colors.premiumBlue.opacity(0.24) : Color.primary.opacity(0.07), lineWidth: 0.7)
                         }
                 }
         }
         .buttonStyle(.plain)
-        .shadow(color: isSelected ? DesignSystem.Colors.premiumBlue.opacity(0.14) : .clear, radius: 10, y: 5)
     }
 
-    private var backgroundStyle: LinearGradient {
-        if isSelected {
-            LinearGradient(colors: [DesignSystem.Colors.premiumBlue.opacity(0.94), DesignSystem.Colors.premiumTeal.opacity(0.88)], startPoint: .topLeading, endPoint: .bottomTrailing)
-        } else {
-            LinearGradient(colors: [Color.secondary.opacity(0.11), Color.secondary.opacity(0.07)], startPoint: .topLeading, endPoint: .bottomTrailing)
-        }
+    private var backgroundColor: Color {
+        isSelected ? DesignSystem.Colors.premiumBlue.opacity(0.13) : Color.secondary.opacity(0.08)
     }
 }
+
+typealias FilterPill = FilterChip

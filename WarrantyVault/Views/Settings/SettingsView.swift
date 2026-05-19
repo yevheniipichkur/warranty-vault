@@ -1,24 +1,18 @@
-import SwiftData
 import SwiftUI
 
 struct SettingsView: View {
-    @Environment(\.modelContext) private var modelContext
     @EnvironmentObject private var languageManager: LanguageManager
     @EnvironmentObject private var appearanceManager: AppearanceManager
     @EnvironmentObject private var subscriptionManager: SubscriptionManager
     @StateObject private var cloudSyncManager = CloudSyncManager.shared
-    @Query(sort: \WarrantyItem.createdAt, order: .reverse) private var items: [WarrantyItem]
 
     @AppStorage("defaultCurrency") private var defaultCurrency = "USD"
     @AppStorage("reminderDefault30") private var reminderDefault30 = true
     @AppStorage("reminderDefault7") private var reminderDefault7 = true
     @AppStorage("reminderDefault1") private var reminderDefault1 = true
-    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = true
 
-    @State private var isShowingDeleteAllConfirmation = false
     @State private var isShowingPaywall = false
     @State private var isShowingICloudInfo = false
-    @State private var sharedURL: URL?
     @AppStorage("debugMenuUnlocked") private var debugMenuUnlocked = false
     @State private var appVersionTapCount = 0
     @State private var isShowingDebugUnlockedAlert = false
@@ -51,32 +45,6 @@ struct SettingsView: View {
                     }
                 }
                 Label("settings.appearanceInfo", systemImage: "circle.lefthalf.filled")
-            }
-
-            Section("settings.section.data") {
-                Button {
-                    insertDemoData()
-                } label: {
-                    Label("settings.seedDemo", systemImage: "sparkles")
-                }
-
-                Button {
-                    exportJSON()
-                } label: {
-                    Label("settings.exportJSON", systemImage: "square.and.arrow.up")
-                }
-
-                Button {
-                    hasCompletedOnboarding = false
-                } label: {
-                    Label("settings.showOnboarding", systemImage: "rectangle.stack")
-                }
-
-                Button(role: .destructive) {
-                    isShowingDeleteAllConfirmation = true
-                } label: {
-                    Label("settings.deleteAll", systemImage: "trash")
-                }
             }
 
             Section("settings.section.pro") {
@@ -167,26 +135,6 @@ struct SettingsView: View {
         .sheet(isPresented: $isShowingPaywall) {
             PaywallView()
         }
-        .sheet(isPresented: Binding(
-            get: { sharedURL != nil },
-            set: { isPresented in
-                if !isPresented {
-                    sharedURL = nil
-                }
-            }
-        )) {
-            if let sharedURL {
-                ShareSheet(items: [sharedURL])
-            }
-        }
-        .alert("settings.deleteAll.title", isPresented: $isShowingDeleteAllConfirmation) {
-            Button("common.delete", role: .destructive) {
-                deleteAllData()
-            }
-            Button("common.cancel", role: .cancel) {}
-        } message: {
-            Text("settings.deleteAll.message")
-        }
         .alert("icloud.title", isPresented: $isShowingICloudInfo) {
             Button("common.ok", role: .cancel) {}
         } message: {
@@ -200,29 +148,6 @@ struct SettingsView: View {
         .onAppear {
             cloudSyncManager.refreshStatus()
         }
-    }
-
-    private func insertDemoData() {
-        for item in DemoDataProvider.makeItems() {
-            modelContext.insert(item)
-        }
-        try? modelContext.save()
-    }
-
-    private func exportJSON() {
-        sharedURL = try? JSONExportService.export(items: items)
-    }
-
-    private func deleteAllData() {
-        for item in items {
-            ImageStorageService.deleteImage(at: item.productImagePath)
-            ImageStorageService.deleteImage(at: item.receiptImagePath)
-            ImageStorageService.deleteImage(at: item.warrantyDocumentImagePath)
-            NotificationManager.shared.removeReminders(for: item.id)
-            modelContext.delete(item)
-        }
-
-        try? modelContext.save()
     }
 
     private var appVersion: String {

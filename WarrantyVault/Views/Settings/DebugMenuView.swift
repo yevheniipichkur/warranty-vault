@@ -58,7 +58,6 @@ struct DebugMenuView: View {
                 }
             }
 
-            #if DEBUG
             Section("debug.section.data") {
                 DebugActionRow(titleKey: "debug.seedDemoData", subtitleKey: "debug.seedDemoData.subtitle", systemImage: "sparkles") {
                     confirmation = .seedDemo
@@ -75,13 +74,14 @@ struct DebugMenuView: View {
                     _ = DebugToolsService.createNoWarrantyItem(context: modelContext)
                     messageKey = "debug.created"
                 }
+                DebugActionRow(titleKey: "settings.exportJSON", systemImage: "square.and.arrow.up") {
+                    sharedURL = try? JSONExportService.export(items: items)
+                }
                 DebugActionRow(titleKey: "debug.clearAllData", systemImage: "trash", role: .destructive) {
                     confirmation = .clearAllData
                 }
             }
-            #endif
 
-            #if DEBUG
             Section("debug.section.paywall") {
                 DebugActionRow(titleKey: "debug.togglePro", subtitleKey: subscriptionManager.hasPro ? "settings.proUnlocked" : nil, systemImage: "hammer") {
                     DebugToolsService.toggleDebugPro()
@@ -93,9 +93,7 @@ struct DebugMenuView: View {
                     isShowingPaywall = true
                 }
             }
-            #endif
 
-            #if DEBUG
             Section("debug.section.notifications") {
                 DebugActionRow(titleKey: "debug.testNotifications", systemImage: "bell") {
                     Task {
@@ -103,9 +101,7 @@ struct DebugMenuView: View {
                     }
                 }
             }
-            #endif
 
-            #if DEBUG
             Section("debug.section.liveActivity") {
                 DebugActionRow(titleKey: "debug.testLiveActivity", systemImage: "activity") {
                     Task {
@@ -119,17 +115,13 @@ struct DebugMenuView: View {
                     }
                 }
             }
-            #endif
 
-            #if DEBUG
             Section("debug.section.pdf") {
                 DebugActionRow(titleKey: "debug.exportTestPDF", systemImage: "doc.richtext") {
                     sharedURL = try? DebugToolsService.exportTestPDF(context: modelContext)
                 }
             }
-            #endif
 
-            #if DEBUG
             Section("debug.section.localization") {
                 Picker("settings.language", selection: $languageManager.selectedLanguage) {
                     ForEach(AppLanguage.allCases) { language in
@@ -138,9 +130,7 @@ struct DebugMenuView: View {
                 }
                 .pickerStyle(.segmented)
             }
-            #endif
 
-            #if DEBUG
             Section("debug.section.appearance") {
                 Picker("settings.appearance", selection: $appearanceManager.selectedAppearance) {
                     ForEach(AppAppearance.allCases) { appearance in
@@ -149,7 +139,6 @@ struct DebugMenuView: View {
                 }
                 .pickerStyle(.segmented)
             }
-            #endif
 
             Section("debug.section.diagnostics") {
                 DebugActionRow(titleKey: "debug.showAppPaths", systemImage: "folder") {
@@ -173,7 +162,6 @@ struct DebugMenuView: View {
                     dismiss()
                 }
 
-                #if DEBUG
                 DebugActionRow(titleKey: "debug.resetOnboarding", systemImage: "rectangle.stack") {
                     DebugToolsService.resetOnboarding()
                     hasCompletedOnboarding = false
@@ -182,7 +170,6 @@ struct DebugMenuView: View {
                 DebugActionRow(titleKey: "debug.resetAllSettings", systemImage: "arrow.triangle.2.circlepath", role: .destructive) {
                     confirmation = .resetSettings
                 }
-                #endif
             }
         }
         .navigationTitle("debug.title")
@@ -257,6 +244,9 @@ struct DebugMenuView: View {
         #endif
     }
 }
+
+typealias QASettingsView = DebugMenuView
+typealias DebugSettingsView = DebugMenuView
 
 private enum DebugConfirmation {
     case seedDemo

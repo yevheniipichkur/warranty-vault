@@ -20,6 +20,7 @@
 "common.none" = "Brak";
 "common.edit" = "Edytuj";
 "common.close" = "Zamknij";
+"common.clear" = "Wyczyść";
 
 "onboarding.receipts.title" = "Przechowuj paragony bezpiecznie";
 "onboarding.receipts.message" = "Zapisuj paragony, zdjęcia produktów, numery seryjne i dokumenty gwarancyjne lokalnie na iPhonie.";

@@ -20,6 +20,7 @@
 "common.none" = "None";
 "common.edit" = "Edit";
 "common.close" = "Close";
+"common.clear" = "Clear";
 
 "onboarding.receipts.title" = "Keep receipts safe";
 "onboarding.receipts.message" = "Store receipts, product photos, serial numbers, and warranty documents locally on your iPhone.";

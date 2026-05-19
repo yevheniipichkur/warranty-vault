@@ -40,14 +40,36 @@ struct ItemsListView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 14) {
+            VStack(alignment: .leading, spacing: 16) {
+                HStack(spacing: 10) {
+                    PremiumSearchBar(text: $searchText, promptKey: "items.search.placeholder")
+
+                    Menu {
+                        Picker("sort.title", selection: $selectedSort) {
+                            ForEach(ItemSortOption.allCases) { option in
+                                Text(LocalizedStringKey(option.titleKey)).tag(option)
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "arrow.up.arrow.down")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(DesignSystem.Colors.premiumBlue)
+                            .frame(width: 42, height: 42)
+                            .background(Color.secondary.opacity(0.08), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                    .strokeBorder(Color.primary.opacity(0.06), lineWidth: 0.7)
+                            }
+                    }
+                    .accessibilityLabel(Text("sort.title"))
+                }
+                .padding(.horizontal, 20)
+
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 8) {
                         ForEach(ItemFilter.allCases) { filter in
-                            FilterChip(titleKey: filter.titleKey, isSelected: selectedFilter == filter) {
-                                withAnimation(.smooth) {
-                                    selectedFilter = filter
-                                }
+                            FilterPill(titleKey: filter.titleKey, isSelected: selectedFilter == filter) {
+                                selectedFilter = filter
                             }
                         }
                     }
@@ -90,10 +112,9 @@ struct ItemsListView: View {
                             NavigationLink {
                                 ItemDetailView(item: item)
                             } label: {
-                                ItemCard(item: item)
-                                    .animatedCard(delay: 0.03)
+                                WarrantyItemCard(item: item)
                             }
-                            .buttonStyle(.plain)
+                            .buttonStyle(WarrantyCardButtonStyle())
                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                 Button(role: .destructive) {
                                     deleteItem(item)
@@ -103,27 +124,17 @@ struct ItemsListView: View {
                             }
                         }
                     }
+                    // Performance: rows are lazily rendered and avoid per-row entrance
+                    // animations so search/filter changes do not reanimate the whole list.
+                    .transaction { $0.animation = nil }
                     .padding(.horizontal, 20)
                 }
             }
             .padding(.vertical, 8)
+            .padding(.bottom, 24)
         }
         .navigationTitle("items.title")
-        .searchable(text: $searchText, prompt: "items.search.placeholder")
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Menu {
-                    Picker("sort.title", selection: $selectedSort) {
-                        ForEach(ItemSortOption.allCases) { option in
-                            Text(LocalizedStringKey(option.titleKey)).tag(option)
-                        }
-                    }
-                } label: {
-                    Image(systemName: "arrow.up.arrow.down")
-                }
-                .accessibilityLabel(Text("sort.title"))
-            }
-
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     isShowingItemForm = true
@@ -185,10 +196,9 @@ private struct ItemGroup: View {
                 NavigationLink {
                     ItemDetailView(item: item)
                 } label: {
-                    ItemCard(item: item)
-                        .animatedCard(delay: 0.02)
+                    WarrantyItemCard(item: item)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(WarrantyCardButtonStyle())
                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                     Button(role: .destructive) {
                         deleteItem(item)

@@ -8,15 +8,18 @@ struct SectionHeader: View {
         HStack(spacing: 8) {
             if let systemImage {
                 Image(systemName: systemImage)
-                    .font(.subheadline.weight(.bold))
+                    .font(.caption.weight(.bold))
                     .foregroundStyle(DesignSystem.Colors.premiumBlue)
-                    .frame(width: 28, height: 28)
-                    .background(DesignSystem.Colors.premiumBlue.opacity(0.10), in: RoundedRectangle(cornerRadius: 9, style: .continuous))
+                    .frame(width: 22, height: 22)
+                    .background(DesignSystem.Colors.premiumBlue.opacity(0.09), in: RoundedRectangle(cornerRadius: 7, style: .continuous))
             }
             Text(LocalizedStringKey(titleKey))
-                .font(.headline.weight(.semibold))
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.primary)
             Spacer()
         }
         .accessibilityAddTraits(.isHeader)
     }
 }
+
+typealias SectionTitle = SectionHeader

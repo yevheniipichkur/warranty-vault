@@ -5,6 +5,7 @@ import UIKit
 
 enum ImageStorageService {
     private static let directoryName = "WarrantyVaultImages"
+    private static let imageCache = NSCache<NSString, UIImage>()
 
     static var imagesDirectory: URL {
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -54,7 +55,19 @@ enum ImageStorageService {
             return nil
         }
 
-        return UIImage(contentsOfFile: url.path)
+        let cacheKey = url.path as NSString
+        if let cachedImage = imageCache.object(forKey: cacheKey) {
+            return cachedImage
+        }
+
+        // Performance: list cards ask for thumbnails often while scrolling; cache
+        // decoded UIImages so SwiftUI does not repeatedly hit the file system.
+        guard let image = UIImage(contentsOfFile: url.path) else {
+            return nil
+        }
+
+        imageCache.setObject(image, forKey: cacheKey)
+        return image
     }
 
     static func deleteImage(at imagePath: String?) {
@@ -62,6 +75,7 @@ enum ImageStorageService {
             return
         }
 
+        imageCache.removeObject(forKey: url.path as NSString)
         try? FileManager.default.removeItem(at: url)
     }
 }
