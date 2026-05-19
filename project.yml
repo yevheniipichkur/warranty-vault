@@ -32,27 +32,12 @@ targets:
         embed: true
       - sdk: PhotosUI.framework
     info:
+      path: WarrantyVault/App/Info.plist
       properties:
-        CFBundleDevelopmentRegion: en
-        CFBundleDisplayName: Warranty Vault
-        CFBundleExecutable: "$(EXECUTABLE_NAME)"
-        CFBundleIdentifier: "$(PRODUCT_BUNDLE_IDENTIFIER)"
-        CFBundleInfoDictionaryVersion: "6.0"
-        CFBundleName: "$(PRODUCT_NAME)"
-        CFBundlePackageType: APPL
-        CFBundleShortVersionString: "$(MARKETING_VERSION)"
-        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         CFBundleIconName: AppIcon
-        LSRequiresIPhoneOS: true
-        NSPhotoLibraryUsageDescription: "Select receipt, product, and warranty document images to store locally in Warranty Vault."
-        NSSupportsLiveActivities: true
-        UIApplicationSceneManifest:
-          UIApplicationSupportsMultipleScenes: false
-        UILaunchScreen: {}
-        UISupportedInterfaceOrientations:
-          - UIInterfaceOrientationPortrait
     settings:
       base:
+        INFOPLIST_FILE: WarrantyVault/App/Info.plist
         GENERATE_INFOPLIST_FILE: NO
         PRODUCT_NAME: WarrantyVault
         PRODUCT_BUNDLE_IDENTIFIER: "$(APP_BUNDLE_ID)"
@@ -72,20 +57,13 @@ targets:
     resources:
       - path: WarrantyVault/Localization
     info:
+      path: WarrantyVaultLiveActivity/Info.plist
       properties:
-        CFBundleDevelopmentRegion: en
-        CFBundleDisplayName: Warranty Activity
-        CFBundleExecutable: "$(EXECUTABLE_NAME)"
-        CFBundleIdentifier: "$(PRODUCT_BUNDLE_IDENTIFIER)"
-        CFBundleInfoDictionaryVersion: "6.0"
-        CFBundleName: "$(PRODUCT_NAME)"
-        CFBundlePackageType: "$(PRODUCT_BUNDLE_PACKAGE_TYPE)"
-        CFBundleShortVersionString: "$(MARKETING_VERSION)"
-        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
     settings:
       base:
+        INFOPLIST_FILE: WarrantyVaultLiveActivity/Info.plist
         GENERATE_INFOPLIST_FILE: NO
         PRODUCT_NAME: WarrantyVaultLiveActivity
         PRODUCT_BUNDLE_IDENTIFIER: "$(APP_BUNDLE_ID).liveactivity"
