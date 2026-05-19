@@ -49,6 +49,8 @@ struct ImagePickerView: View {
             }
         }
         .onChange(of: selectedItem) { _, newValue in
+            guard let newValue else { return }
+
             Task {
                 isSaving = true
                 defer { isSaving = false }
@@ -56,6 +58,7 @@ struct ImagePickerView: View {
                 if let savedPath = try? await ImageStorageService.saveImage(from: newValue) {
                     ImageStorageService.deleteImage(at: imagePath)
                     imagePath = savedPath
+                    selectedItem = nil
                 }
             }
         }

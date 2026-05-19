@@ -3,6 +3,7 @@ import SwiftUI
 import UIKit
 
 struct ItemFormView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject private var subscriptionManager: SubscriptionManager
@@ -54,7 +55,8 @@ struct ItemFormView: View {
     var body: some View {
         ZStack {
             ScrollView {
-                VStack(spacing: 16) {
+                // Lazy rendering plus lightweight form cards keeps typing smooth on device.
+                LazyVStack(spacing: 14) {
                     // Essential fields — always visible
                     PremiumFormSection(titleKey: "form.section.basic", systemImage: "shippingbox") {
                         PremiumInputRow(titleKey: "item.name", systemImage: "tag") {
@@ -67,7 +69,6 @@ struct ItemFormView: View {
                                 .labelsHidden()
                         }
                     }
-                    .animatedCard(delay: 0.02)
 
                     PremiumFormSection(titleKey: "form.section.warranty", systemImage: "checkmark.shield") {
                         PremiumInputRow(titleKey: "item.warrantyDuration", systemImage: "clock") {
@@ -87,19 +88,17 @@ struct ItemFormView: View {
                             }
                         }
                     }
-                    .animatedCard(delay: 0.04)
 
-                    PremiumCard(cornerRadius: DesignSystem.Radius.large, padding: DesignSystem.Spacing.large) {
+                    LightweightFormCard {
                         VStack(alignment: .leading, spacing: 18) {
                             SectionHeader(titleKey: "form.section.images", systemImage: "doc.text.image")
                             ImagePickerView(titleKey: "image.product", symbolName: "shippingbox", imagePath: $productImagePath)
                         }
                     }
-                    .animatedCard(delay: 0.06)
 
                     // Toggle for advanced fields
                     Button {
-                        withAnimation(.spring(response: 0.38, dampingFraction: 0.82)) {
+                        withAnimation(MotionManager.fastAnimation(reduceMotion: reduceMotion)) {
                             showAdvancedFields.toggle()
                         }
                     } label: {
@@ -178,28 +177,25 @@ struct ItemFormView: View {
                                 .labelsHidden()
                             }
                         }
-                        .animatedCard(delay: 0.02)
 
-                        PremiumCard(cornerRadius: DesignSystem.Radius.large, padding: DesignSystem.Spacing.large) {
+                        LightweightFormCard {
                             VStack(alignment: .leading, spacing: 12) {
                                 SectionHeader(titleKey: "item.notes", systemImage: "note.text")
                                 TextEditor(text: $notes)
                                     .frame(minHeight: 96)
                                     .scrollContentBackground(.hidden)
                                     .padding(10)
-                                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                    .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
                             }
                         }
-                        .animatedCard(delay: 0.04)
 
-                        PremiumCard(cornerRadius: DesignSystem.Radius.large, padding: DesignSystem.Spacing.large) {
+                        LightweightFormCard {
                             VStack(alignment: .leading, spacing: 18) {
                                 SectionHeader(titleKey: "form.section.images", systemImage: "doc.text.image")
                                 ImagePickerView(titleKey: "image.receipt", symbolName: "doc.text.image", imagePath: $receiptImagePath)
                                 ImagePickerView(titleKey: "image.warrantyDocument", symbolName: "doc.badge.gearshape", imagePath: $warrantyDocumentImagePath)
                             }
                         }
-                        .animatedCard(delay: 0.06)
                     }
 
                     if item != nil {
@@ -211,6 +207,9 @@ struct ItemFormView: View {
                 }
                 .padding(20)
                 .padding(.bottom, 96)
+                .transaction { transaction in
+                    transaction.animation = nil
+                }
             }
             .scrollDismissesKeyboard(.interactively)
 

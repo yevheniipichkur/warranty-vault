@@ -1,4 +1,5 @@
 import Foundation
+import ImageIO
 import PhotosUI
 import SwiftUI
 import UIKit
@@ -27,14 +28,20 @@ enum ImageStorageService {
 
         let filename = "\(UUID().uuidString).jpg"
         let url = imagesDirectory.appendingPathComponent(filename)
+        let outputData: Data
 
-        if let image = UIImage(data: data),
-           let jpegData = image.jpegData(compressionQuality: 0.88) {
-            try jpegData.write(to: url, options: [.atomic])
+        // Performance: Photos can provide very large originals. Downsample once
+        // before saving so form previews and list cards do not decode huge files.
+        if let jpegData = downsampledJPEGData(from: data) {
+            outputData = jpegData
+        } else if let image = UIImage(data: data),
+                  let jpegData = image.jpegData(compressionQuality: 0.82) {
+            outputData = jpegData
         } else {
-            try data.write(to: url, options: [.atomic])
+            outputData = data
         }
 
+        try outputData.write(to: url, options: [.atomic])
         return filename
     }
 
@@ -77,5 +84,29 @@ enum ImageStorageService {
 
         imageCache.removeObject(forKey: url.path as NSString)
         try? FileManager.default.removeItem(at: url)
+    }
+
+    private static func downsampledJPEGData(
+        from data: Data,
+        maxPixelSize: Int = 1_800,
+        compressionQuality: CGFloat = 0.82
+    ) -> Data? {
+        let sourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
+        guard let source = CGImageSourceCreateWithData(data as CFData, sourceOptions) else {
+            return nil
+        }
+
+        let thumbnailOptions: [CFString: Any] = [
+            kCGImageSourceCreateThumbnailFromImageAlways: true,
+            kCGImageSourceCreateThumbnailWithTransform: true,
+            kCGImageSourceShouldCacheImmediately: false,
+            kCGImageSourceThumbnailMaxPixelSize: maxPixelSize
+        ]
+
+        guard let cgImage = CGImageSourceCreateThumbnailAtIndex(source, 0, thumbnailOptions as CFDictionary) else {
+            return nil
+        }
+
+        return UIImage(cgImage: cgImage).jpegData(compressionQuality: compressionQuality)
     }
 }
