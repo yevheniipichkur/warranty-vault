@@ -6,25 +6,21 @@ struct WarrantyStatusBadge: View {
     var body: some View {
         Label {
             Text(LocalizedStringKey(status.titleKey))
-                .font(.caption.weight(.semibold))
+                .font(.caption.weight(.bold))
                 .lineLimit(1)
                 .minimumScaleFactor(0.78)
         } icon: {
             Image(systemName: status.symbolName)
                 .font(.caption.weight(.bold))
         }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 6)
-        .foregroundStyle(tint)
-        .background(tint.opacity(0.13), in: Capsule(style: .continuous))
-    }
-
-    private var tint: Color {
-        switch status {
-        case .active: .green
-        case .expiringSoon: .orange
-        case .expired: .red
-        case .noWarranty: .secondary
+        .padding(.horizontal, 11)
+        .padding(.vertical, 7)
+        .foregroundStyle(status.tint)
+        .background(.ultraThinMaterial, in: Capsule(style: .continuous))
+        .overlay {
+            Capsule(style: .continuous)
+                .strokeBorder(status.tint.opacity(0.28), lineWidth: 0.8)
         }
+        .shadow(color: status.tint.opacity(0.12), radius: 8, y: 4)
     }
 }

@@ -51,73 +51,116 @@ struct ItemFormView: View {
 
     var body: some View {
         ZStack {
-            Form {
-                Section {
-                    TextField("item.name", text: $name)
-                    TextField("item.brand", text: $brand)
-                    TextField("item.model", text: $modelName)
-                    TextField("item.serialNumber", text: $serialNumber)
-                    TextField("item.store", text: $store)
-                } header: {
-                    Text("form.section.basic")
-                }
-
-                Section {
-                    DatePicker("item.purchaseDate", selection: $purchaseDate, displayedComponents: .date)
-
-                    Picker("item.warrantyDuration", selection: $warrantyDuration) {
-                        ForEach(WarrantyDurationOption.allCases) { duration in
-                            Text(LocalizedStringKey(duration.titleKey)).tag(duration)
+            ScrollView {
+                VStack(spacing: 16) {
+                    PremiumFormSection(titleKey: "form.section.basic", systemImage: "shippingbox") {
+                        PremiumInputRow(titleKey: "item.name", systemImage: "tag") {
+                            TextField("item.name", text: $name)
+                                .textInputAutocapitalization(.words)
+                        }
+                        PremiumDivider()
+                        PremiumInputRow(titleKey: "item.brand", systemImage: "building.2") {
+                            TextField("item.brand", text: $brand)
+                                .textInputAutocapitalization(.words)
+                        }
+                        PremiumDivider()
+                        PremiumInputRow(titleKey: "item.model", systemImage: "barcode.viewfinder") {
+                            TextField("item.model", text: $modelName)
+                        }
+                        PremiumDivider()
+                        PremiumInputRow(titleKey: "item.serialNumber", systemImage: "number") {
+                            TextField("item.serialNumber", text: $serialNumber)
+                                .textInputAutocapitalization(.characters)
                         }
                     }
+                    .animatedCard(delay: 0.02)
 
-                    if warrantyDuration != .noWarranty {
-                        DatePicker("item.warrantyExpiration", selection: $warrantyExpirationDate, displayedComponents: .date)
-                    }
-                } header: {
-                    Text("form.section.warranty")
-                }
-
-                Section {
-                    TextField("item.price", value: $price, format: .number)
-                        .keyboardType(.decimalPad)
-                    TextField("item.currency", text: $currency)
-                        .textInputAutocapitalization(.characters)
-                    Picker("item.category", selection: $category) {
-                        ForEach(WarrantyCategory.allCases) { category in
-                            Label(LocalizedStringKey(category.titleKey), systemImage: category.symbolName)
-                                .tag(category)
+                    PremiumFormSection(titleKey: "form.section.purchase", systemImage: "cart") {
+                        PremiumInputRow(titleKey: "item.store", systemImage: "storefront") {
+                            TextField("item.store", text: $store)
+                                .textInputAutocapitalization(.words)
+                        }
+                        PremiumDivider()
+                        PremiumInputRow(titleKey: "item.purchaseDate", systemImage: "calendar") {
+                            DatePicker("", selection: $purchaseDate, displayedComponents: .date)
+                                .labelsHidden()
+                        }
+                        PremiumDivider()
+                        PremiumInputRow(titleKey: "item.price", systemImage: "creditcard") {
+                            TextField("item.price", value: $price, format: .number)
+                                .keyboardType(.decimalPad)
+                        }
+                        PremiumDivider()
+                        PremiumInputRow(titleKey: "item.currency", systemImage: "banknote") {
+                            TextField("item.currency", text: $currency)
+                                .textInputAutocapitalization(.characters)
+                        }
+                        PremiumDivider()
+                        PremiumInputRow(titleKey: "item.category", systemImage: category.symbolName) {
+                            Picker("item.category", selection: $category) {
+                                ForEach(WarrantyCategory.allCases) { category in
+                                    Label(LocalizedStringKey(category.titleKey), systemImage: category.symbolName)
+                                        .tag(category)
+                                }
+                            }
+                            .labelsHidden()
                         }
                     }
-                } header: {
-                    Text("form.section.purchase")
-                }
+                    .animatedCard(delay: 0.05)
 
-                Section {
-                    TextEditor(text: $notes)
-                        .frame(minHeight: 90)
-                } header: {
-                    Text("item.notes")
-                }
+                    PremiumFormSection(titleKey: "form.section.warranty", systemImage: "checkmark.shield") {
+                        PremiumInputRow(titleKey: "item.warrantyDuration", systemImage: "clock") {
+                            Picker("item.warrantyDuration", selection: $warrantyDuration) {
+                                ForEach(WarrantyDurationOption.allCases) { duration in
+                                    Text(LocalizedStringKey(duration.titleKey)).tag(duration)
+                                }
+                            }
+                            .labelsHidden()
+                        }
 
-                Section {
-                    ImagePickerView(titleKey: "image.product", symbolName: "shippingbox", imagePath: $productImagePath)
-                    ImagePickerView(titleKey: "image.receipt", symbolName: "doc.text.image", imagePath: $receiptImagePath)
-                    ImagePickerView(titleKey: "image.warrantyDocument", symbolName: "doc.badge.gearshape", imagePath: $warrantyDocumentImagePath)
-                } header: {
-                    Text("form.section.images")
-                }
+                        if warrantyDuration != .noWarranty {
+                            PremiumDivider()
+                            PremiumInputRow(titleKey: "item.warrantyExpiration", systemImage: "shield.lefthalf.filled") {
+                                DatePicker("", selection: $warrantyExpirationDate, displayedComponents: .date)
+                                    .labelsHidden()
+                            }
+                        }
+                    }
+                    .animatedCard(delay: 0.08)
 
-                if item != nil {
-                    Section {
-                        Button(role: .destructive) {
+                    PremiumCard(cornerRadius: DesignSystem.Radius.large, padding: DesignSystem.Spacing.large) {
+                        VStack(alignment: .leading, spacing: 12) {
+                            SectionHeader(titleKey: "item.notes", systemImage: "note.text")
+                            TextEditor(text: $notes)
+                                .frame(minHeight: 96)
+                                .scrollContentBackground(.hidden)
+                                .padding(10)
+                                .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                        }
+                    }
+                    .animatedCard(delay: 0.11)
+
+                    PremiumCard(cornerRadius: DesignSystem.Radius.large, padding: DesignSystem.Spacing.large) {
+                        VStack(alignment: .leading, spacing: 18) {
+                            SectionHeader(titleKey: "form.section.images", systemImage: "doc.text.image")
+                            ImagePickerView(titleKey: "image.product", symbolName: "shippingbox", imagePath: $productImagePath)
+                            ImagePickerView(titleKey: "image.receipt", symbolName: "doc.text.image", imagePath: $receiptImagePath)
+                            ImagePickerView(titleKey: "image.warrantyDocument", symbolName: "doc.badge.gearshape", imagePath: $warrantyDocumentImagePath)
+                        }
+                    }
+                    .animatedCard(delay: 0.14)
+
+                    if item != nil {
+                        PrimaryButton(titleKey: "common.delete", systemImage: "trash", role: .destructive) {
                             showingDeleteConfirmation = true
-                        } label: {
-                            Label("common.delete", systemImage: "trash")
                         }
+                        .padding(.top, 2)
                     }
                 }
+                .padding(20)
+                .padding(.bottom, 96)
             }
+            .scrollDismissesKeyboard(.interactively)
 
             if showingSaveSuccess {
                 Color.black.opacity(0.18)
@@ -142,12 +185,15 @@ struct ItemFormView: View {
                     dismiss()
                 }
             }
-            ToolbarItem(placement: .confirmationAction) {
-                Button("common.save") {
-                    save()
-                }
-                .fontWeight(.semibold)
+        }
+        .safeAreaInset(edge: .bottom) {
+            PrimaryButton(titleKey: "common.save", systemImage: "checkmark") {
+                save()
             }
+            .padding(.horizontal, 20)
+            .padding(.top, 10)
+            .padding(.bottom, 10)
+            .background(.ultraThinMaterial)
         }
         .onChange(of: purchaseDate) { _, _ in updateCalculatedExpirationIfNeeded() }
         .onChange(of: warrantyDuration) { _, _ in updateCalculatedExpirationIfNeeded() }

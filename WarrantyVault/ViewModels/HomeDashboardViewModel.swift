@@ -7,6 +7,10 @@ struct HomeDashboardViewModel {
         items.count
     }
 
+    var activeCount: Int {
+        items.filter { $0.warrantyStatus == .active }.count
+    }
+
     var expiringSoonCount: Int {
         items.filter { $0.warrantyStatus == .expiringSoon }.count
     }

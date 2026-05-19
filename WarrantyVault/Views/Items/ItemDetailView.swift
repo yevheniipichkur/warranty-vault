@@ -21,17 +21,11 @@ struct ItemDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
-                StoredImageView(imagePath: item.productImagePath, placeholderSystemImage: item.categoryType.symbolName)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 260)
-                    .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
-                    .overlay(alignment: .bottomLeading) {
-                        WarrantyStatusBadge(status: item.warrantyStatus)
-                            .padding(14)
-                    }
+                DetailHeroCard(item: item)
+                    .animatedCard(delay: 0.02)
 
                 if item.warrantyStatus == .expiringSoon {
-                    GlassCard(cornerRadius: 18) {
+                    PremiumCard(cornerRadius: 18, tint: .orange) {
                         Label {
                             Text("detail.expiringWarning")
                                 .font(.body.weight(.medium))
@@ -42,7 +36,16 @@ struct ItemDetailView: View {
                     }
                 }
 
-                GlassCard {
+                if item.hasWarranty, let expirationDate = item.warrantyExpirationDate {
+                    WarrantyTimelineCard(
+                        purchaseDate: item.purchaseDate,
+                        expirationDate: expirationDate,
+                        status: item.warrantyStatus
+                    )
+                    .animatedCard(delay: 0.04)
+                }
+
+                PremiumCard {
                     VStack(alignment: .leading, spacing: 12) {
                         SectionHeader(titleKey: "detail.section.details", systemImage: "info.circle")
                         DetailRow(titleKey: "item.brand", value: item.brand)
@@ -60,7 +63,7 @@ struct ItemDetailView: View {
                 }
 
                 if item.receiptImagePath != nil || item.warrantyDocumentImagePath != nil {
-                    GlassCard {
+                    PremiumCard {
                         VStack(alignment: .leading, spacing: 14) {
                             SectionHeader(titleKey: "detail.section.documents", systemImage: "doc.text.image")
 
@@ -179,6 +182,123 @@ struct ItemDetailView: View {
         modelContext.delete(item)
         try? modelContext.save()
         dismiss()
+    }
+}
+
+private struct DetailHeroCard: View {
+    let item: WarrantyItem
+
+    var body: some View {
+        ZStack(alignment: .bottomLeading) {
+            StoredImageView(imagePath: item.productImagePath, placeholderSystemImage: item.categoryType.symbolName)
+                .frame(maxWidth: .infinity)
+                .frame(height: 286)
+                .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
+                .overlay {
+                    LinearGradient(
+                        colors: [.clear, .black.opacity(0.10), .black.opacity(0.52)],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
+                }
+                .overlay {
+                    RoundedRectangle(cornerRadius: 30, style: .continuous)
+                        .strokeBorder(.white.opacity(0.18), lineWidth: 0.8)
+                }
+
+            VStack(alignment: .leading, spacing: 10) {
+                WarrantyStatusBadge(status: item.warrantyStatus)
+
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(item.name)
+                        .font(.title.weight(.bold))
+                        .foregroundStyle(.white)
+                        .lineLimit(2)
+
+                    if !subtitle.isEmpty {
+                        Text(subtitle)
+                            .font(.subheadline.weight(.medium))
+                            .foregroundStyle(.white.opacity(0.82))
+                            .lineLimit(1)
+                    }
+                }
+            }
+            .padding(18)
+        }
+        .shadow(color: DesignSystem.Shadow.elevated, radius: 22, y: 14)
+    }
+
+    private var subtitle: String {
+        [item.brand, item.store].filter { !$0.isEmpty }.joined(separator: " • ")
+    }
+}
+
+private struct WarrantyTimelineCard: View {
+    @Environment(\.locale) private var locale
+
+    let purchaseDate: Date
+    let expirationDate: Date
+    let status: WarrantyStatus
+
+    private var progress: Double {
+        let total = expirationDate.timeIntervalSince(purchaseDate)
+        guard total > 0 else { return status == .expired ? 1 : 0 }
+        let elapsed = Date().timeIntervalSince(purchaseDate)
+        return min(max(elapsed / total, 0), 1)
+    }
+
+    private var daysLeft: Int {
+        LiveActivityManager.daysLeft(until: expirationDate)
+    }
+
+    var body: some View {
+        PremiumCard(tint: status.tint) {
+            VStack(alignment: .leading, spacing: 14) {
+                HStack {
+                    Label(LocalizedStringKey("item.warrantyExpiration"), systemImage: "shield.lefthalf.filled")
+                        .font(.headline.weight(.semibold))
+                        .foregroundStyle(.primary)
+                    Spacer()
+                    WarrantyStatusBadge(status: status)
+                }
+
+                ProgressView(value: progress)
+                    .tint(status.tint)
+                    .scaleEffect(x: 1, y: 1.35, anchor: .center)
+
+                HStack(alignment: .top) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("item.purchaseDate")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Text(DateFormatterProvider.string(from: purchaseDate, locale: locale))
+                            .font(.subheadline.weight(.semibold))
+                    }
+
+                    Spacer()
+
+                    VStack(alignment: .trailing, spacing: 4) {
+                        Text("liveActivity.daysLeft")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Text(status == .expired ? "0" : "\(daysLeft)")
+                            .font(.title3.weight(.bold))
+                            .monospacedDigit()
+                    }
+
+                    Spacer()
+
+                    VStack(alignment: .trailing, spacing: 4) {
+                        Text("item.warrantyExpiration")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Text(DateFormatterProvider.string(from: expirationDate, locale: locale))
+                            .font(.subheadline.weight(.semibold))
+                    }
+                }
+            }
+        }
     }
 }
 

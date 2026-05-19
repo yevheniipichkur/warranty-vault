@@ -17,7 +17,7 @@ struct GlassTabBar: View {
                 }
             }
         }
-        .padding(8)
+        .padding(7)
         .glassBackground(cornerRadius: 28)
         .padding(.horizontal, 14)
         .padding(.bottom, 8)
@@ -42,13 +42,14 @@ struct GlassTabItem: View {
                     .minimumScaleFactor(0.72)
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 48)
-            .scaleEffect(isSelected ? 1.04 : 1)
-            .foregroundStyle(isSelected ? Color.accentColor : Color.secondary)
+            .frame(height: 50)
+            .scaleEffect(isSelected ? 1.03 : 1)
+            .foregroundStyle(isSelected ? Color.white : Color.secondary)
             .background {
                 if isSelected {
                     Capsule(style: .continuous)
-                        .fill(Color.accentColor.opacity(0.14))
+                        .fill(LinearGradient(colors: [DesignSystem.Colors.premiumBlue, DesignSystem.Colors.premiumTeal], startPoint: .topLeading, endPoint: .bottomTrailing))
+                        .shadow(color: Color.accentColor.opacity(0.22), radius: 12, y: 6)
                 }
             }
             .contentShape(Rectangle())

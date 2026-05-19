@@ -13,12 +13,25 @@ struct FilterChip: View {
                 .minimumScaleFactor(0.82)
                 .padding(.horizontal, 14)
                 .padding(.vertical, 8)
-                .foregroundStyle(isSelected ? Color.accentColor : Color.primary)
+                .foregroundStyle(isSelected ? Color.white : Color.primary)
                 .background {
                     Capsule(style: .continuous)
-                        .fill(isSelected ? Color.accentColor.opacity(0.16) : Color.secondary.opacity(0.10))
+                        .fill(backgroundStyle)
+                        .overlay {
+                            Capsule(style: .continuous)
+                                .strokeBorder(isSelected ? Color.white.opacity(0.25) : Color.primary.opacity(0.08), lineWidth: 0.7)
+                        }
                 }
         }
         .buttonStyle(.plain)
+        .shadow(color: isSelected ? Color.accentColor.opacity(0.18) : .clear, radius: 10, y: 5)
+    }
+
+    private var backgroundStyle: LinearGradient {
+        if isSelected {
+            LinearGradient(colors: [DesignSystem.Colors.premiumBlue, DesignSystem.Colors.premiumTeal], startPoint: .topLeading, endPoint: .bottomTrailing)
+        } else {
+            LinearGradient(colors: [Color.secondary.opacity(0.11), Color.secondary.opacity(0.07)], startPoint: .topLeading, endPoint: .bottomTrailing)
+        }
     }
 }

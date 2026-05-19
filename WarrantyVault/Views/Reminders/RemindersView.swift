@@ -16,7 +16,7 @@ struct RemindersView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
-                GlassCard {
+                PremiumCard {
                     VStack(alignment: .leading, spacing: 12) {
                         SectionHeader(titleKey: "reminders.permission", systemImage: "bell.badge")
                         Text(statusTextKey)
@@ -32,7 +32,7 @@ struct RemindersView: View {
                     }
                 }
 
-                GlassCard {
+                PremiumCard(cornerRadius: DesignSystem.Radius.medium, tint: DesignSystem.Colors.premiumAmber) {
                     HStack {
                         Label("reminders.pending", systemImage: "clock")
                         Spacer()
@@ -97,13 +97,13 @@ private struct ReminderItemRow: View {
     @Environment(\.locale) private var locale
 
     var body: some View {
-        GlassCard(cornerRadius: 18) {
+        PremiumCard(cornerRadius: 18, padding: DesignSystem.Spacing.medium, tint: item.warrantyStatus.tint) {
             HStack(spacing: 12) {
                 Image(systemName: item.categoryType.symbolName)
                     .font(.title3.weight(.semibold))
-                    .foregroundStyle(Color.accentColor)
+                    .foregroundStyle(item.warrantyStatus.tint)
                     .frame(width: 42, height: 42)
-                    .background(Color.accentColor.opacity(0.12), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .background(item.warrantyStatus.tint.opacity(0.12), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(item.name)
@@ -121,7 +121,7 @@ private struct ReminderItemRow: View {
                 Button(action: scheduleAction) {
                     Image(systemName: "bell.badge")
                 }
-                .buttonStyle(.bordered)
+                .buttonStyle(.borderedProminent)
                 .buttonBorderShape(.roundedRectangle(radius: 12))
                 .accessibilityLabel(Text("detail.addReminder"))
             }

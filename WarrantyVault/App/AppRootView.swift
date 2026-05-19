@@ -49,14 +49,19 @@ struct AppRootView: View {
 
 struct AppBackground: View {
     var body: some View {
-        LinearGradient(
-            colors: [
-                Color(uiColor: .systemBackground),
-                Color(uiColor: .secondarySystemBackground)
-            ],
-            startPoint: .top,
-            endPoint: .bottom
-        )
+        ZStack {
+            Color(uiColor: .systemBackground)
+
+            LinearGradient(
+                colors: [
+                    DesignSystem.Colors.premiumBlue.opacity(0.10),
+                    Color(uiColor: .systemBackground),
+                    DesignSystem.Colors.premiumTeal.opacity(0.08)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        }
         .ignoresSafeArea()
     }
 }

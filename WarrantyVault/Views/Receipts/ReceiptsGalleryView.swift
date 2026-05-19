@@ -72,7 +72,7 @@ private struct ReceiptCard: View {
     let item: WarrantyItem
 
     var body: some View {
-        GlassCard(cornerRadius: 20) {
+        PremiumCard(cornerRadius: 20, padding: DesignSystem.Spacing.medium, tint: item.warrantyStatus.tint) {
             VStack(alignment: .leading, spacing: 10) {
                 StoredImageView(imagePath: item.receiptImagePath, placeholderSystemImage: "doc.text.image")
                     .frame(height: 142)
