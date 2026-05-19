@@ -7,7 +7,7 @@ struct WarrantyVaultLiveActivity: Widget {
         ActivityConfiguration(for: WarrantyActivityAttributes.self) { context in
             LockScreenWarrantyActivityView(context: context)
                 .activityBackgroundTint(Color(uiColor: .secondarySystemBackground))
-                .activitySystemActionForegroundColor(.accentColor)
+                .activitySystemActionForegroundColor(.warrantyAmber)
         } dynamicIsland: { context in
             DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
@@ -25,7 +25,7 @@ struct WarrantyVaultLiveActivity: Widget {
                         Text("\(context.state.daysLeft)")
                             .font(.title3.weight(.bold))
                             .monospacedDigit()
-                        Text("liveActivity.daysLeft")
+                        Text(context.state.daysLeftText)
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                     }
@@ -33,23 +33,23 @@ struct WarrantyVaultLiveActivity: Widget {
 
                 DynamicIslandExpandedRegion(.bottom) {
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("liveActivity.checkReceipt")
+                        Text(context.state.checkReceiptText)
                             .font(.caption)
                             .foregroundStyle(.secondary)
                         ProgressView(value: progressValue(daysLeft: context.state.daysLeft))
-                            .tint(.orange)
+                            .tint(.warrantyAmber)
                     }
                 }
             } compactLeading: {
                 Image(systemName: "checkmark.shield.fill")
-                    .foregroundStyle(.orange)
+                    .foregroundStyle(.warrantyAmber)
             } compactTrailing: {
-                Text("\(context.state.daysLeft)d")
+                Text("\(context.state.daysLeft)\(context.state.dayShortText)")
                     .font(.caption.weight(.semibold))
                     .monospacedDigit()
             } minimal: {
                 Image(systemName: "shield.fill")
-                    .foregroundStyle(.orange)
+                    .foregroundStyle(.warrantyAmber)
             }
         }
     }
@@ -67,18 +67,18 @@ private struct LockScreenWarrantyActivityView: View {
         HStack(spacing: 14) {
             Image(systemName: "checkmark.shield.fill")
                 .font(.title2.weight(.semibold))
-                .foregroundStyle(.orange)
+                .foregroundStyle(.warrantyAmber)
                 .frame(width: 44, height: 44)
-                .background(.orange.opacity(0.14), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                .background(Color.warrantyAmber.opacity(0.14), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
 
             VStack(alignment: .leading, spacing: 5) {
-                Text("liveActivity.status.expiringSoon")
+                Text(context.state.statusText)
                     .font(.caption.weight(.semibold))
-                    .foregroundStyle(.orange)
+                    .foregroundStyle(.warrantyAmber)
                 Text(context.state.itemName)
                     .font(.headline)
                     .lineLimit(1)
-                Text("liveActivity.checkReceipt")
+                Text(context.state.checkReceiptText)
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
@@ -90,7 +90,7 @@ private struct LockScreenWarrantyActivityView: View {
                 Text("\(context.state.daysLeft)")
                     .font(.title.weight(.bold))
                     .monospacedDigit()
-                Text("liveActivity.daysLeft")
+                Text(context.state.daysLeftText)
                     .font(.caption2)
                     .foregroundStyle(.secondary)
                 Text(context.state.expirationDate, style: .date)
@@ -100,4 +100,8 @@ private struct LockScreenWarrantyActivityView: View {
         }
         .padding(16)
     }
+}
+
+private extension Color {
+    static let warrantyAmber = Color(red: 0.78, green: 0.54, blue: 0.28)
 }

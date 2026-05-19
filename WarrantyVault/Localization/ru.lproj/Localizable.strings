@@ -38,6 +38,10 @@
 "home.stat.value" = "Общая стоимость";
 "home.upcoming" = "Ближайшие окончания";
 "home.noUpcoming" = "Нет ближайших окончаний активных гарантий.";
+"home.hero.allGood" = "Всё под контролем.";
+"home.hero.attention" = "Некоторые гарантии требуют внимания.";
+"home.needsAttention" = "Требует внимания";
+"home.recentItems" = "Недавно добавлено";
 
 "items.title" = "Товары";
 "items.search.placeholder" = "Поиск по названию, бренду, магазину, номеру";
@@ -193,6 +197,7 @@
 "liveActivity.stop" = "Остановить Live Activity";
 "liveActivity.status.expiringSoon" = "Гарантия скоро истекает";
 "liveActivity.daysLeft" = "Дней осталось";
+"liveActivity.dayShort" = "дн.";
 "liveActivity.checkReceipt" = "Проверьте чек до окончания гарантии.";
 "liveActivity.started" = "Live Activity запущена.";
 "liveActivity.stopped" = "Live Activity остановлена.";

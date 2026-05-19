@@ -52,6 +52,12 @@ struct ItemCard: View {
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
                     .minimumScaleFactor(0.78)
+
+                    if item.hasWarranty, item.warrantyExpirationDate != nil {
+                        ProgressView(value: warrantyProgress)
+                            .tint(item.warrantyStatus.tint)
+                            .scaleEffect(x: 1, y: 0.72, anchor: .center)
+                    }
                 }
             }
         }
@@ -59,5 +65,12 @@ struct ItemCard: View {
 
     private var subtitle: String {
         [item.brand, item.store].filter { !$0.isEmpty }.joined(separator: " • ")
+    }
+
+    private var warrantyProgress: Double {
+        guard let expirationDate = item.warrantyExpirationDate else { return 0 }
+        let total = expirationDate.timeIntervalSince(item.purchaseDate)
+        guard total > 0 else { return item.warrantyStatus == .expired ? 1 : 0 }
+        return min(max(Date().timeIntervalSince(item.purchaseDate) / total, 0), 1)
     }
 }

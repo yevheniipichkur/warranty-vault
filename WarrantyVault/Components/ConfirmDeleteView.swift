@@ -11,9 +11,9 @@ struct ConfirmDeleteView: View {
             VStack(spacing: 18) {
                 Image(systemName: "trash.fill")
                     .font(.title.weight(.bold))
-                    .foregroundStyle(.red)
+                    .foregroundStyle(DesignSystem.Colors.premiumRed)
                     .frame(width: 58, height: 58)
-                    .background(.red.opacity(0.12), in: Circle())
+                    .background(DesignSystem.Colors.premiumRed.opacity(0.12), in: Circle())
 
                 VStack(spacing: 6) {
                     Text(LocalizedStringKey(titleKey))

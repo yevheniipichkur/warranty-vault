@@ -30,9 +30,9 @@ struct PremiumInputRow<Content: View>: View {
         HStack(spacing: 12) {
             Image(systemName: systemImage)
                 .font(.subheadline.weight(.semibold))
-                .foregroundStyle(Color.accentColor)
+                .foregroundStyle(DesignSystem.Colors.premiumBlue)
                 .frame(width: 28, height: 28)
-                .background(Color.accentColor.opacity(0.10), in: RoundedRectangle(cornerRadius: 9, style: .continuous))
+                .background(DesignSystem.Colors.premiumBlue.opacity(0.10), in: RoundedRectangle(cornerRadius: 9, style: .continuous))
 
             Text(LocalizedStringKey(titleKey))
                 .font(.subheadline)

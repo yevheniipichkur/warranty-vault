@@ -50,14 +50,14 @@ private struct PremiumButtonStyle: ButtonStyle {
     }
 
     private var tint: Color {
-        isDestructive ? .red : DesignSystem.Colors.premiumBlue
+        isDestructive ? DesignSystem.Colors.premiumRed : DesignSystem.Colors.premiumBlue
     }
 
     private var background: LinearGradient {
         if isDestructive {
-            LinearGradient(colors: [.red.opacity(0.92), .pink.opacity(0.82)], startPoint: .topLeading, endPoint: .bottomTrailing)
+            LinearGradient(colors: [DesignSystem.Colors.premiumRed, DesignSystem.Colors.premiumAmber.opacity(0.78)], startPoint: .topLeading, endPoint: .bottomTrailing)
         } else {
-            LinearGradient(colors: [DesignSystem.Colors.premiumBlue, DesignSystem.Colors.premiumTeal], startPoint: .topLeading, endPoint: .bottomTrailing)
+            LinearGradient(colors: [DesignSystem.Colors.premiumBlue.opacity(0.96), DesignSystem.Colors.premiumTeal.opacity(0.92)], startPoint: .topLeading, endPoint: .bottomTrailing)
         }
     }
 }

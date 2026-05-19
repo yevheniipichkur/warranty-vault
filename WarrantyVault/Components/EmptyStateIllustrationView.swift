@@ -25,14 +25,14 @@ struct EmptyStateIllustrationView: View {
                 }
 
             Circle()
-                .fill(Color.accentColor.opacity(0.12))
+                .fill(DesignSystem.Colors.premiumBlue.opacity(0.10))
                 .frame(width: 78, height: 78)
                 .offset(x: 18, y: -18)
 
             symbol
                 .font(.system(size: 50, weight: .semibold))
                 .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(Color.accentColor)
+                .foregroundStyle(DesignSystem.Colors.premiumBlue)
                 .offset(y: reduceMotion ? 0 : (float ? -4 : 4))
         }
         .frame(width: 136, height: 136)
@@ -52,7 +52,7 @@ struct EmptyStateIllustrationView: View {
                 .overlay(alignment: .bottomTrailing) {
                     Image(systemName: "checkmark.shield.fill")
                         .font(.system(size: 22, weight: .bold))
-                        .foregroundStyle(.green)
+                        .foregroundStyle(DesignSystem.Colors.premiumMint)
                         .background(.background, in: Circle())
                         .offset(x: 12, y: 8)
                 }

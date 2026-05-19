@@ -43,11 +43,7 @@ final class LiveActivityManager: ObservableObject {
         await endWarrantyActivity()
 
         let attributes = WarrantyActivityAttributes(itemID: item.id.uuidString)
-        let state = WarrantyActivityAttributes.ContentState(
-            itemName: item.name,
-            expirationDate: expirationDate,
-            daysLeft: Self.daysLeft(until: expirationDate)
-        )
+        let state = contentState(for: item, expirationDate: expirationDate)
         let content = ActivityContent(state: state, staleDate: Calendar.current.date(byAdding: .hour, value: 8, to: .now))
 
         do {
@@ -73,11 +69,7 @@ final class LiveActivityManager: ObservableObject {
             return
         }
 
-        let state = WarrantyActivityAttributes.ContentState(
-            itemName: item.name,
-            expirationDate: expirationDate,
-            daysLeft: Self.daysLeft(until: expirationDate)
-        )
+        let state = contentState(for: item, expirationDate: expirationDate)
         await activity.update(ActivityContent(state: state, staleDate: Calendar.current.date(byAdding: .hour, value: 8, to: .now)))
         activeActivityID = activity.id
     }
@@ -99,5 +91,19 @@ final class LiveActivityManager: ObservableObject {
         let start = calendar.startOfDay(for: .now)
         let end = calendar.startOfDay(for: date)
         return max(0, calendar.dateComponents([.day], from: start, to: end).day ?? 0)
+    }
+
+    private func contentState(for item: WarrantyItem, expirationDate: Date) -> WarrantyActivityAttributes.ContentState {
+        let language = LanguageManager.shared.selectedLanguage
+
+        return WarrantyActivityAttributes.ContentState(
+            itemName: item.name,
+            expirationDate: expirationDate,
+            daysLeft: Self.daysLeft(until: expirationDate),
+            statusText: L10n.string("liveActivity.status.expiringSoon", language: language),
+            daysLeftText: L10n.string("liveActivity.daysLeft", language: language),
+            checkReceiptText: L10n.string("liveActivity.checkReceipt", language: language),
+            dayShortText: L10n.string("liveActivity.dayShort", language: language)
+        )
     }
 }

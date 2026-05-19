@@ -38,6 +38,10 @@
 "home.stat.value" = "Загальна вартість";
 "home.upcoming" = "Найближчі завершення";
 "home.noUpcoming" = "Немає найближчих завершень активних гарантій.";
+"home.hero.allGood" = "Усе під контролем.";
+"home.hero.attention" = "Деякі гарантії потребують уваги.";
+"home.needsAttention" = "Потребує уваги";
+"home.recentItems" = "Нещодавно додані";
 
 "items.title" = "Речі";
 "items.search.placeholder" = "Пошук за назвою, брендом, магазином, номером";
@@ -193,6 +197,7 @@
 "liveActivity.stop" = "Зупинити Live Activity";
 "liveActivity.status.expiringSoon" = "Гарантія скоро завершується";
 "liveActivity.daysLeft" = "Днів лишилось";
+"liveActivity.dayShort" = "д";
 "liveActivity.checkReceipt" = "Перевірте чек до завершення гарантії.";
 "liveActivity.started" = "Live Activity запущено.";
 "liveActivity.stopped" = "Live Activity зупинено.";

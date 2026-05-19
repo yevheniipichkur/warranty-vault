@@ -19,8 +19,22 @@ struct HomeDashboardViewModel {
         items.filter { $0.warrantyStatus == .expired }.count
     }
 
+    var attentionCount: Int {
+        expiringSoonCount + expiredCount
+    }
+
     var totalValue: Double {
         items.reduce(0) { $0 + $1.price }
+    }
+
+    var needsAttention: [WarrantyItem] {
+        items
+            .filter { $0.warrantyStatus == .expiringSoon || $0.warrantyStatus == .expired }
+            .sorted {
+                ($0.warrantyExpirationDate ?? .distantPast) < ($1.warrantyExpirationDate ?? .distantPast)
+            }
+            .prefix(3)
+            .map { $0 }
     }
 
     var upcomingExpirations: [WarrantyItem] {
@@ -31,5 +45,9 @@ struct HomeDashboardViewModel {
             }
             .prefix(5)
             .map { $0 }
+    }
+
+    var recentItems: [WarrantyItem] {
+        Array(items.prefix(3))
     }
 }

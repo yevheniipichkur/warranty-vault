@@ -38,6 +38,10 @@
 "home.stat.value" = "Łączna wartość";
 "home.upcoming" = "Najbliższe końce gwarancji";
 "home.noUpcoming" = "Brak nadchodzących końców aktywnych gwarancji.";
+"home.hero.allGood" = "Wszystko pod kontrolą.";
+"home.hero.attention" = "Niektóre gwarancje wymagają uwagi.";
+"home.needsAttention" = "Wymaga uwagi";
+"home.recentItems" = "Ostatnio dodane";
 
 "items.title" = "Rzeczy";
 "items.search.placeholder" = "Szukaj nazwy, marki, sklepu, numeru";
@@ -193,6 +197,7 @@
 "liveActivity.stop" = "Zatrzymaj Live Activity";
 "liveActivity.status.expiringSoon" = "Gwarancja wkrótce wygasa";
 "liveActivity.daysLeft" = "Dni pozostało";
+"liveActivity.dayShort" = "d";
 "liveActivity.checkReceipt" = "Sprawdź paragon przed końcem gwarancji.";
 "liveActivity.started" = "Live Activity uruchomiona.";
 "liveActivity.stopped" = "Live Activity zatrzymana.";

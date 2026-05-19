@@ -17,23 +17,25 @@ enum DesignSystem {
     }
 
     enum Colors {
-        static let premiumBlue = Color(red: 0.18, green: 0.42, blue: 0.86)
-        static let premiumTeal = Color(red: 0.10, green: 0.62, blue: 0.58)
-        static let premiumMint = Color(red: 0.22, green: 0.70, blue: 0.44)
-        static let premiumAmber = Color(red: 0.96, green: 0.58, blue: 0.18)
+        static let premiumBlue = Color(red: 0.32, green: 0.43, blue: 0.58)
+        static let premiumTeal = Color(red: 0.28, green: 0.54, blue: 0.52)
+        static let premiumMint = Color(red: 0.38, green: 0.61, blue: 0.46)
+        static let premiumAmber = Color(red: 0.78, green: 0.54, blue: 0.28)
+        static let premiumRed = Color(red: 0.70, green: 0.30, blue: 0.32)
+        static let neutralGlassTint = Color(red: 0.58, green: 0.62, blue: 0.66)
 
         static var heroGradient: [Color] {
             [
-                premiumBlue.opacity(0.95),
-                premiumTeal.opacity(0.92),
-                premiumMint.opacity(0.86)
+                premiumBlue.opacity(0.88),
+                premiumTeal.opacity(0.82),
+                premiumMint.opacity(0.72)
             ]
         }
     }
 
     enum Shadow {
-        static let card = Color.black.opacity(0.08)
-        static let elevated = Color.black.opacity(0.14)
+        static let card = Color.black.opacity(0.055)
+        static let elevated = Color.black.opacity(0.10)
     }
 }
 
@@ -42,8 +44,8 @@ extension WarrantyStatus {
         switch self {
         case .active: DesignSystem.Colors.premiumMint
         case .expiringSoon: DesignSystem.Colors.premiumAmber
-        case .expired: .red
-        case .noWarranty: .secondary
+        case .expired: DesignSystem.Colors.premiumRed
+        case .noWarranty: DesignSystem.Colors.neutralGlassTint
         }
     }
 }

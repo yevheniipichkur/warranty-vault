@@ -3,13 +3,13 @@ import SwiftUI
 struct PremiumCard<Content: View>: View {
     var cornerRadius: CGFloat = DesignSystem.Radius.large
     var padding: CGFloat = DesignSystem.Spacing.large
-    var tint: Color = Color.accentColor
+    var tint: Color = DesignSystem.Colors.premiumBlue
     @ViewBuilder var content: Content
 
     init(
         cornerRadius: CGFloat = DesignSystem.Radius.large,
         padding: CGFloat = DesignSystem.Spacing.large,
-        tint: Color = Color.accentColor,
+        tint: Color = DesignSystem.Colors.premiumBlue,
         @ViewBuilder content: () -> Content
     ) {
         self.cornerRadius = cornerRadius

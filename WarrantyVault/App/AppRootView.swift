@@ -54,9 +54,9 @@ struct AppBackground: View {
 
             LinearGradient(
                 colors: [
-                    DesignSystem.Colors.premiumBlue.opacity(0.10),
+                    DesignSystem.Colors.premiumBlue.opacity(0.055),
                     Color(uiColor: .systemBackground),
-                    DesignSystem.Colors.premiumTeal.opacity(0.08)
+                    DesignSystem.Colors.premiumTeal.opacity(0.045)
                 ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing

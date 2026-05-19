@@ -38,6 +38,10 @@
 "home.stat.value" = "Total value";
 "home.upcoming" = "Upcoming expirations";
 "home.noUpcoming" = "No active warranty expirations are coming up.";
+"home.hero.allGood" = "Everything is covered.";
+"home.hero.attention" = "Some warranties need attention.";
+"home.needsAttention" = "Needs attention";
+"home.recentItems" = "Recently added";
 
 "items.title" = "Items";
 "items.search.placeholder" = "Search name, brand, store, serial number";
@@ -193,6 +197,7 @@
 "liveActivity.stop" = "Stop Live Activity";
 "liveActivity.status.expiringSoon" = "Warranty ends soon";
 "liveActivity.daysLeft" = "Days left";
+"liveActivity.dayShort" = "d";
 "liveActivity.checkReceipt" = "Check your receipt before warranty ends.";
 "liveActivity.started" = "Live Activity started.";
 "liveActivity.stopped" = "Live Activity stopped.";

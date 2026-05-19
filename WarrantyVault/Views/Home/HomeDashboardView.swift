@@ -12,11 +12,6 @@ struct HomeDashboardView: View {
         HomeDashboardViewModel(items: items)
     }
 
-    private let gridColumns = [
-        GridItem(.flexible(), spacing: 12),
-        GridItem(.flexible(), spacing: 12)
-    ]
-
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
@@ -37,44 +32,16 @@ struct HomeDashboardView: View {
                     )
                     .padding(.top, 48)
                 } else {
-                    LazyVGrid(columns: gridColumns, spacing: 12) {
-                        StatCard(titleKey: "home.stat.items", value: "\(viewModel.totalItems)", symbolName: "shippingbox.fill", tint: .blue)
-                            .animatedCard(delay: 0.02)
-                        StatCard(titleKey: "home.stat.expiring", value: "\(viewModel.expiringSoonCount)", symbolName: "clock.badge.exclamationmark.fill", tint: .orange)
-                            .animatedCard(delay: 0.06)
-                        StatCard(titleKey: "home.stat.expired", value: "\(viewModel.expiredCount)", symbolName: "xmark.seal.fill", tint: .red)
-                            .animatedCard(delay: 0.10)
-                        StatCard(
-                            titleKey: "home.stat.value",
-                            value: CurrencyFormatterProvider.string(from: viewModel.totalValue, currencyCode: defaultCurrency, locale: locale),
-                            symbolName: "creditcard.fill",
-                            tint: .green
-                        )
-                        .animatedCard(delay: 0.14)
+                    if !viewModel.needsAttention.isEmpty {
+                        HomeItemSection(titleKey: "home.needsAttention", systemImage: "exclamationmark.shield.fill", items: viewModel.needsAttention)
+                            .animatedCard(delay: 0.03)
                     }
 
-                    VStack(alignment: .leading, spacing: 12) {
-                        SectionHeader(titleKey: "home.upcoming", systemImage: "calendar.badge.clock")
+                    HomeItemSection(titleKey: "home.upcoming", systemImage: "calendar.badge.clock", items: viewModel.upcomingExpirations, emptyKey: "home.noUpcoming")
+                        .animatedCard(delay: 0.06)
 
-                        if viewModel.upcomingExpirations.isEmpty {
-                            GlassCard {
-                                Text("home.noUpcoming")
-                                    .font(.body)
-                                    .foregroundStyle(.secondary)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                            }
-                        } else {
-                            ForEach(viewModel.upcomingExpirations) { item in
-                                NavigationLink {
-                                    ItemDetailView(item: item)
-                                } label: {
-                                    ItemCard(item: item)
-                                        .animatedCard(delay: 0.04)
-                                }
-                                .buttonStyle(.plain)
-                            }
-                        }
-                    }
+                    HomeItemSection(titleKey: "home.recentItems", systemImage: "clock.arrow.circlepath", items: viewModel.recentItems)
+                        .animatedCard(delay: 0.09)
                 }
             }
             .padding(20)
@@ -109,13 +76,13 @@ private struct DashboardHeroView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("app.name")
                         .font(.largeTitle.weight(.bold))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.primary)
                         .lineLimit(1)
                         .minimumScaleFactor(0.78)
 
-                    Text("settings.dataStaysOnDevice")
+                    Text(LocalizedStringKey(viewModel.attentionCount == 0 ? "home.hero.allGood" : "home.hero.attention"))
                         .font(.subheadline.weight(.medium))
-                        .foregroundStyle(.white.opacity(0.82))
+                        .foregroundStyle(.secondary)
                 }
 
                 Spacer(minLength: 8)
@@ -123,34 +90,36 @@ private struct DashboardHeroView: View {
                 Image(systemName: "checkmark.shield.fill")
                     .font(.system(size: 34, weight: .semibold))
                     .symbolRenderingMode(.hierarchical)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(DesignSystem.Colors.premiumBlue)
                     .frame(width: 58, height: 58)
-                    .background(.white.opacity(0.18), in: RoundedRectangle(cornerRadius: 19, style: .continuous))
+                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 19, style: .continuous))
             }
 
             HStack(spacing: 10) {
-                HeroMetric(value: "\(viewModel.activeCount)", titleKey: "status.active", symbolName: "checkmark.seal.fill")
-                HeroMetric(value: "\(viewModel.expiringSoonCount)", titleKey: "status.expiringSoon", symbolName: "clock.badge.exclamationmark.fill")
-                HeroMetric(value: "\(viewModel.expiredCount)", titleKey: "status.expired", symbolName: "xmark.seal.fill")
+                HeroMetric(value: "\(viewModel.activeCount)", titleKey: "status.active", symbolName: "checkmark.seal.fill", tint: DesignSystem.Colors.premiumMint)
+                HeroMetric(value: "\(viewModel.expiringSoonCount)", titleKey: "status.expiringSoon", symbolName: "clock.badge.exclamationmark.fill", tint: DesignSystem.Colors.premiumAmber)
+                HeroMetric(value: "\(viewModel.expiredCount)", titleKey: "status.expired", symbolName: "xmark.seal.fill", tint: DesignSystem.Colors.premiumRed)
             }
 
             HStack(spacing: 10) {
-                PremiumMetricPill(value: "\(viewModel.totalItems)", titleKey: "home.stat.items", symbolName: "shippingbox.fill", tint: .white)
-                    .foregroundStyle(.white)
-                PremiumMetricPill(value: totalValue, titleKey: "home.stat.value", symbolName: "creditcard.fill", tint: .white)
-                    .foregroundStyle(.white)
+                PremiumMetricPill(value: "\(viewModel.totalItems)", titleKey: "home.stat.items", symbolName: "shippingbox.fill", tint: DesignSystem.Colors.premiumBlue)
+                PremiumMetricPill(value: totalValue, titleKey: "home.stat.value", symbolName: "creditcard.fill", tint: DesignSystem.Colors.premiumTeal)
             }
         }
         .padding(22)
         .background {
             RoundedRectangle(cornerRadius: 30, style: .continuous)
-                .fill(LinearGradient(colors: DesignSystem.Colors.heroGradient, startPoint: .topLeading, endPoint: .bottomTrailing))
+                .fill(.thinMaterial)
+                .overlay {
+                    LinearGradient(colors: DesignSystem.Colors.heroGradient.map { $0.opacity(0.24) }, startPoint: .topLeading, endPoint: .bottomTrailing)
+                        .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
+                }
                 .overlay {
                     RoundedRectangle(cornerRadius: 30, style: .continuous)
-                        .strokeBorder(.white.opacity(0.24), lineWidth: 0.8)
+                        .strokeBorder(.primary.opacity(0.07), lineWidth: 0.8)
                 }
         }
-        .shadow(color: DesignSystem.Colors.premiumBlue.opacity(0.24), radius: 24, y: 14)
+        .shadow(color: DesignSystem.Shadow.card, radius: 22, y: 12)
     }
 }
 
@@ -158,24 +127,60 @@ private struct HeroMetric: View {
     let value: String
     let titleKey: String
     let symbolName: String
+    let tint: Color
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Image(systemName: symbolName)
                 .font(.subheadline.weight(.bold))
-                .foregroundStyle(.white.opacity(0.92))
+                .foregroundStyle(tint)
             Text(value)
                 .font(.title2.weight(.heavy))
                 .monospacedDigit()
-                .foregroundStyle(.white)
+                .foregroundStyle(.primary)
             Text(LocalizedStringKey(titleKey))
                 .font(.caption2.weight(.semibold))
-                .foregroundStyle(.white.opacity(0.78))
+                .foregroundStyle(.secondary)
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)
-        .background(.white.opacity(0.14), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .strokeBorder(.primary.opacity(0.06), lineWidth: 0.7)
+        }
+    }
+}
+
+private struct HomeItemSection: View {
+    let titleKey: String
+    let systemImage: String
+    let items: [WarrantyItem]
+    var emptyKey: String?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            SectionHeader(titleKey: titleKey, systemImage: systemImage)
+
+            if items.isEmpty, let emptyKey {
+                PremiumCard(cornerRadius: DesignSystem.Radius.medium, padding: DesignSystem.Spacing.large, tint: DesignSystem.Colors.neutralGlassTint) {
+                    Text(LocalizedStringKey(emptyKey))
+                        .font(.body)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            } else {
+                ForEach(items) { item in
+                    NavigationLink {
+                        ItemDetailView(item: item)
+                    } label: {
+                        ItemCard(item: item)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
     }
 }

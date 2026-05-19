@@ -25,13 +25,13 @@ struct ItemDetailView: View {
                     .animatedCard(delay: 0.02)
 
                 if item.warrantyStatus == .expiringSoon {
-                    PremiumCard(cornerRadius: 18, tint: .orange) {
+                    PremiumCard(cornerRadius: 18, tint: DesignSystem.Colors.premiumAmber) {
                         Label {
                             Text("detail.expiringWarning")
                                 .font(.body.weight(.medium))
                         } icon: {
                             Image(systemName: "exclamationmark.triangle.fill")
-                                .foregroundStyle(.orange)
+                                .foregroundStyle(DesignSystem.Colors.premiumAmber)
                         }
                     }
                 }
@@ -80,37 +80,42 @@ struct ItemDetailView: View {
                     }
                 }
 
-                VStack(spacing: 10) {
-                    PrimaryButton(titleKey: "detail.exportPDF", systemImage: "square.and.arrow.up") {
-                        exportPDF()
-                    }
-
-                    PrimaryButton(titleKey: "detail.addReminder", systemImage: reminderScheduled ? "checkmark" : "bell.badge") {
+                DetailActionGrid(
+                    reminderScheduled: reminderScheduled,
+                    showsLiveActivity: canShowLiveActivityButton,
+                    liveActivityIsRunning: liveActivityManager.activeActivityID != nil,
+                    exportAction: exportPDF,
+                    reminderAction: {
                         Task {
                             await NotificationManager.shared.rescheduleReminders(for: item)
                             reminderScheduled = true
                         }
-                    }
-
-                    if canShowLiveActivityButton {
-                        PrimaryButton(
-                            titleKey: liveActivityManager.activeActivityID == nil ? "liveActivity.start" : "liveActivity.stop",
-                            systemImage: liveActivityManager.activeActivityID == nil ? "waveform.path.ecg.rectangle" : "stop.circle"
-                        ) {
-                            Task {
-                                if liveActivityManager.activeActivityID == nil {
-                                    _ = await liveActivityManager.startWarrantyActivity(for: item)
-                                } else {
-                                    await liveActivityManager.endWarrantyActivity()
-                                }
-                                isShowingLiveActivityMessage = true
+                    },
+                    liveActivityAction: {
+                        Task {
+                            if liveActivityManager.activeActivityID == nil {
+                                _ = await liveActivityManager.startWarrantyActivity(for: item)
+                            } else {
+                                await liveActivityManager.endWarrantyActivity()
                             }
+                            isShowingLiveActivityMessage = true
                         }
                     }
+                )
 
-                    PrimaryButton(titleKey: "common.delete", systemImage: "trash", role: .destructive) {
-                        isShowingDeleteConfirmation = true
-                    }
+                Button(role: .destructive) {
+                    isShowingDeleteConfirmation = true
+                } label: {
+                    Label("common.delete", systemImage: "trash")
+                        .font(.headline.weight(.semibold))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 15)
+                        .foregroundStyle(DesignSystem.Colors.premiumRed)
+                        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                                .strokeBorder(DesignSystem.Colors.premiumRed.opacity(0.22), lineWidth: 0.8)
+                        }
                 }
             }
             .padding(20)
@@ -182,6 +187,83 @@ struct ItemDetailView: View {
         modelContext.delete(item)
         try? modelContext.save()
         dismiss()
+    }
+}
+
+private struct DetailActionGrid: View {
+    let reminderScheduled: Bool
+    let showsLiveActivity: Bool
+    let liveActivityIsRunning: Bool
+    let exportAction: () -> Void
+    let reminderAction: () -> Void
+    let liveActivityAction: () -> Void
+
+    private var columns: [GridItem] {
+        [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)]
+    }
+
+    var body: some View {
+        LazyVGrid(columns: columns, spacing: 12) {
+            DetailActionButton(
+                titleKey: "detail.exportPDF",
+                systemImage: "square.and.arrow.up",
+                tint: DesignSystem.Colors.premiumBlue,
+                action: exportAction
+            )
+
+            DetailActionButton(
+                titleKey: "detail.addReminder",
+                systemImage: reminderScheduled ? "checkmark.circle.fill" : "bell.badge",
+                tint: DesignSystem.Colors.premiumAmber,
+                action: reminderAction
+            )
+
+            if showsLiveActivity {
+                DetailActionButton(
+                    titleKey: liveActivityIsRunning ? "liveActivity.stop" : "liveActivity.start",
+                    systemImage: liveActivityIsRunning ? "stop.circle" : "waveform.path.ecg.rectangle",
+                    tint: DesignSystem.Colors.premiumTeal,
+                    action: liveActivityAction
+                )
+                .gridCellColumns(2)
+            }
+        }
+    }
+}
+
+private struct DetailActionButton: View {
+    let titleKey: String
+    let systemImage: String
+    let tint: Color
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 10) {
+                Image(systemName: systemImage)
+                    .font(.title3.weight(.semibold))
+                    .symbolRenderingMode(.hierarchical)
+                    .foregroundStyle(tint)
+                    .frame(width: 38, height: 38)
+                    .background(tint.opacity(0.12), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+
+                Text(LocalizedStringKey(titleKey))
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.primary)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.center)
+                    .minimumScaleFactor(0.82)
+            }
+            .frame(maxWidth: .infinity, minHeight: 112)
+            .padding(.horizontal, 12)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+            .overlay {
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .strokeBorder(tint.opacity(0.18), lineWidth: 0.8)
+            }
+            .shadow(color: tint.opacity(0.08), radius: 10, y: 6)
+        }
+        .buttonStyle(.plain)
     }
 }
 

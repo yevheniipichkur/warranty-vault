@@ -48,8 +48,8 @@ struct GlassTabItem: View {
             .background {
                 if isSelected {
                     Capsule(style: .continuous)
-                        .fill(LinearGradient(colors: [DesignSystem.Colors.premiumBlue, DesignSystem.Colors.premiumTeal], startPoint: .topLeading, endPoint: .bottomTrailing))
-                        .shadow(color: Color.accentColor.opacity(0.22), radius: 12, y: 6)
+                        .fill(LinearGradient(colors: [DesignSystem.Colors.premiumBlue.opacity(0.95), DesignSystem.Colors.premiumTeal.opacity(0.88)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                        .shadow(color: DesignSystem.Colors.premiumBlue.opacity(0.16), radius: 10, y: 5)
                 }
             }
             .contentShape(Rectangle())

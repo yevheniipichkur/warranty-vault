@@ -17,8 +17,8 @@ struct StoredImageView: View {
                         .overlay {
                             LinearGradient(
                                 colors: [
-                                    DesignSystem.Colors.premiumBlue.opacity(0.16),
-                                    DesignSystem.Colors.premiumTeal.opacity(0.10),
+                                    DesignSystem.Colors.premiumBlue.opacity(0.08),
+                                    DesignSystem.Colors.premiumTeal.opacity(0.06),
                                     .clear
                                 ],
                                 startPoint: .topLeading,
@@ -28,7 +28,7 @@ struct StoredImageView: View {
                     Image(systemName: placeholderSystemImage)
                         .font(.title2.weight(.semibold))
                         .symbolRenderingMode(.hierarchical)
-                        .foregroundStyle(Color.accentColor.opacity(0.82))
+                        .foregroundStyle(DesignSystem.Colors.neutralGlassTint)
                 }
             }
         }

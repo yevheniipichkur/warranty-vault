@@ -11,9 +11,9 @@ struct PaywallView: View {
                 VStack(spacing: 18) {
                     Image(systemName: "crown.fill")
                         .font(.system(size: 54, weight: .bold))
-                        .foregroundStyle(Color.accentColor)
+                        .foregroundStyle(DesignSystem.Colors.premiumAmber)
                         .frame(width: 96, height: 96)
-                        .background(Color.accentColor.opacity(0.13), in: RoundedRectangle(cornerRadius: 28, style: .continuous))
+                        .background(DesignSystem.Colors.premiumAmber.opacity(0.13), in: RoundedRectangle(cornerRadius: 28, style: .continuous))
 
                     VStack(spacing: 8) {
                         Text("paywall.title")

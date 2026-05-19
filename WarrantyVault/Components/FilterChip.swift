@@ -24,12 +24,12 @@ struct FilterChip: View {
                 }
         }
         .buttonStyle(.plain)
-        .shadow(color: isSelected ? Color.accentColor.opacity(0.18) : .clear, radius: 10, y: 5)
+        .shadow(color: isSelected ? DesignSystem.Colors.premiumBlue.opacity(0.14) : .clear, radius: 10, y: 5)
     }
 
     private var backgroundStyle: LinearGradient {
         if isSelected {
-            LinearGradient(colors: [DesignSystem.Colors.premiumBlue, DesignSystem.Colors.premiumTeal], startPoint: .topLeading, endPoint: .bottomTrailing)
+            LinearGradient(colors: [DesignSystem.Colors.premiumBlue.opacity(0.94), DesignSystem.Colors.premiumTeal.opacity(0.88)], startPoint: .topLeading, endPoint: .bottomTrailing)
         } else {
             LinearGradient(colors: [Color.secondary.opacity(0.11), Color.secondary.opacity(0.07)], startPoint: .topLeading, endPoint: .bottomTrailing)
         }

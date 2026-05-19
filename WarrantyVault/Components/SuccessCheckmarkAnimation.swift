@@ -7,10 +7,10 @@ struct SuccessCheckmarkAnimation: View {
     var body: some View {
         ZStack {
             Circle()
-                .fill(.green.opacity(0.16))
+                .fill(DesignSystem.Colors.premiumMint.opacity(0.16))
             Image(systemName: "checkmark")
                 .font(.system(size: 38, weight: .bold))
-                .foregroundStyle(.green)
+                .foregroundStyle(DesignSystem.Colors.premiumMint)
                 .scaleEffect(isVisible ? 1 : 0.7)
                 .opacity(isVisible ? 1 : 0)
         }
