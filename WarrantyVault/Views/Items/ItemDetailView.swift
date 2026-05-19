@@ -319,6 +319,8 @@ private struct DetailActionButton: View {
 private struct DetailHeroCard: View {
     let item: WarrantyItem
 
+    @State private var isViewerPresented = false
+
     var body: some View {
         ZStack(alignment: .bottomLeading) {
             StoredImageView(imagePath: item.productImagePath, placeholderSystemImage: item.categoryType.symbolName)
@@ -336,6 +338,19 @@ private struct DetailHeroCard: View {
                 .overlay {
                     RoundedRectangle(cornerRadius: 30, style: .continuous)
                         .strokeBorder(.white.opacity(0.18), lineWidth: 0.8)
+                }
+                .overlay(alignment: .topTrailing) {
+                    if ImageStorageService.url(for: item.productImagePath) != nil {
+                        Image(systemName: "arrow.up.left.and.arrow.down.right")
+                            .font(.subheadline.weight(.semibold))
+                            .padding(8)
+                            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                            .padding(12)
+                    }
+                }
+                .onTapGesture {
+                    guard ImageStorageService.url(for: item.productImagePath) != nil else { return }
+                    isViewerPresented = true
                 }
 
             VStack(alignment: .leading, spacing: 10) {
@@ -363,6 +378,11 @@ private struct DetailHeroCard: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .shadow(color: DesignSystem.Shadow.elevated, radius: 22, y: 14)
+        .fullScreenCover(isPresented: $isViewerPresented) {
+            if let url = ImageStorageService.url(for: item.productImagePath) {
+                MediaViewerSheet(urls: [url])
+            }
+        }
     }
 
     private var subtitle: String {
@@ -527,16 +547,39 @@ private struct DocumentPreview: View {
     let titleKey: String
     let imagePath: String?
 
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            StoredImageView(imagePath: imagePath, placeholderSystemImage: "doc.text.image")
-                .frame(height: 130)
-                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+    @State private var isViewerPresented = false
 
-            Text(LocalizedStringKey(titleKey))
-                .font(.caption.weight(.semibold))
-                .lineLimit(1)
+    var body: some View {
+        Button {
+            guard ImageStorageService.url(for: imagePath) != nil else { return }
+            isViewerPresented = true
+        } label: {
+            VStack(alignment: .leading, spacing: 8) {
+                StoredImageView(imagePath: imagePath, placeholderSystemImage: "doc.text.image")
+                    .frame(height: 130)
+                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .overlay(alignment: .bottomTrailing) {
+                        if ImageStorageService.url(for: imagePath) != nil {
+                            Image(systemName: "arrow.up.left.and.arrow.down.right")
+                                .font(.caption.weight(.semibold))
+                                .padding(6)
+                                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                                .padding(6)
+                        }
+                    }
+
+                Text(LocalizedStringKey(titleKey))
+                    .font(.caption.weight(.semibold))
+                    .lineLimit(1)
+                    .foregroundStyle(.primary)
+            }
+            .frame(maxWidth: .infinity)
         }
-        .frame(maxWidth: .infinity)
+        .buttonStyle(.plain)
+        .fullScreenCover(isPresented: $isViewerPresented) {
+            if let url = ImageStorageService.url(for: imagePath) {
+                MediaViewerSheet(urls: [url])
+            }
+        }
     }
 }
