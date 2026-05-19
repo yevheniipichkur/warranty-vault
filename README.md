@@ -330,6 +330,10 @@ sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 
 Проверьте `PROVISIONING_PROFILE_BASE64`, `BUNDLE_ID`, `APPLE_TEAM_ID`. Для Live Activity extension проверьте профиль для `BUNDLE_ID.liveactivity`.
 
+`The bundle version must be higher than the previously uploaded version`
+
+Это ошибка App Store Connect/TestFlight: такой `CFBundleVersion` уже был загружен. GitHub Actions использует автоматический номер билда `github.run_number.github.run_attempt`, поэтому новый запуск workflow должен получить новый build number. Если собираете вручную на Mac, увеличьте `CURRENT_PROJECT_VERSION` в `project.yml` или передайте его в `xcodebuild`.
+
 `Simulator iPhone 16 not found`
 
 Укажите доступный simulator:
