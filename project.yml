@@ -23,9 +23,7 @@ targets:
         excludes:
           - App/Info.plist
           - Localization
-          - Resources
     resources:
-      - path: WarrantyVault/Resources
       - path: WarrantyVault/Localization
     dependencies:
       - target: WarrantyVaultLiveActivity
