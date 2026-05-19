@@ -74,6 +74,20 @@ struct ItemFormView: View {
                             DatePicker("", selection: $purchaseDate, displayedComponents: .date)
                                 .labelsHidden()
                         }
+                        PremiumDivider()
+                        PremiumInputRow(titleKey: "item.price", systemImage: "creditcard") {
+                            TextField("item.price", value: $price, format: .number)
+                                .keyboardType(.decimalPad)
+                        }
+                        PremiumDivider()
+                        PremiumInputRow(titleKey: "item.currency", systemImage: "banknote") {
+                            Picker("item.currency", selection: $currency) {
+                                ForEach(CurrencyFormatterProvider.commonCurrencies, id: \.self) { code in
+                                    Text(CurrencyFormatterProvider.displayName(for: code)).tag(code)
+                                }
+                            }
+                            .labelsHidden()
+                        }
                     }
 
                     PremiumFormSection(titleKey: "form.section.warranty", systemImage: "checkmark.shield") {
@@ -117,6 +131,7 @@ struct ItemFormView: View {
                         VStack(alignment: .leading, spacing: 18) {
                             SectionHeader(titleKey: "form.section.images", systemImage: "doc.text.image")
                             ImagePickerView(titleKey: "image.product", symbolName: "shippingbox", imagePath: $productImagePath)
+                            ImagePickerView(titleKey: "image.receipt", symbolName: "doc.text.image", imagePath: $receiptImagePath)
                         }
                     }
 
@@ -177,20 +192,6 @@ struct ItemFormView: View {
                                     .textInputAutocapitalization(.words)
                             }
                             PremiumDivider()
-                            PremiumInputRow(titleKey: "item.price", systemImage: "creditcard") {
-                                TextField("item.price", value: $price, format: .number)
-                                    .keyboardType(.decimalPad)
-                            }
-                            PremiumDivider()
-                            PremiumInputRow(titleKey: "item.currency", systemImage: "banknote") {
-                                Picker("item.currency", selection: $currency) {
-                                    ForEach(CurrencyFormatterProvider.commonCurrencies, id: \.self) { code in
-                                        Text(CurrencyFormatterProvider.displayName(for: code)).tag(code)
-                                    }
-                                }
-                                .labelsHidden()
-                            }
-                            PremiumDivider()
                             PremiumInputRow(titleKey: "item.category", systemImage: category.symbolName) {
                                 Picker("item.category", selection: $category) {
                                     ForEach(WarrantyCategory.allCases) { category in
@@ -226,7 +227,6 @@ struct ItemFormView: View {
                         LightweightFormCard {
                             VStack(alignment: .leading, spacing: 18) {
                                 SectionHeader(titleKey: "form.section.images", systemImage: "doc.text.image")
-                                ImagePickerView(titleKey: "image.receipt", symbolName: "doc.text.image", imagePath: $receiptImagePath)
                                 ImagePickerView(titleKey: "image.warrantyDocument", symbolName: "doc.badge.gearshape", imagePath: $warrantyDocumentImagePath)
                             }
                         }
