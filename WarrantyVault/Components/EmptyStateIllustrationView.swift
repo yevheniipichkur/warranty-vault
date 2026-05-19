@@ -11,59 +11,23 @@ enum EmptyStateIllustrationKind {
 struct EmptyStateIllustrationView: View {
     let kind: EmptyStateIllustrationKind
 
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var float = false
-
     var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 32, style: .continuous)
-                .fill(.thinMaterial)
-                .frame(width: 126, height: 126)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 32, style: .continuous)
-                        .strokeBorder(.primary.opacity(0.08), lineWidth: 1)
-                }
-
-            Circle()
-                .fill(DesignSystem.Colors.premiumBlue.opacity(0.10))
-                .frame(width: 78, height: 78)
-                .offset(x: 18, y: -18)
-
-            symbol
-                .font(.system(size: 50, weight: .semibold))
-                .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(DesignSystem.Colors.premiumBlue)
-                .offset(y: reduceMotion ? 0 : (float ? -4 : 4))
-        }
+        PremiumArtworkView(kind: artworkKind, size: 136)
         .frame(width: 136, height: 136)
-        .onAppear {
-            guard !reduceMotion else { return }
-            withAnimation(.easeInOut(duration: 2.2).repeatForever(autoreverses: true)) {
-                float.toggle()
-            }
-        }
     }
 
-    @ViewBuilder
-    private var symbol: some View {
+    private var artworkKind: PremiumArtworkKind {
         switch kind {
         case .receiptShield:
-            Image(systemName: "doc.text.image.fill")
-                .overlay(alignment: .bottomTrailing) {
-                    Image(systemName: "checkmark.shield.fill")
-                        .font(.system(size: 22, weight: .bold))
-                        .foregroundStyle(DesignSystem.Colors.premiumMint)
-                        .background(.background, in: Circle())
-                        .offset(x: 12, y: 8)
-                }
+            .receipt
         case .emptyBox:
-            Image(systemName: "shippingbox.fill")
+            .vault
         case .reminderBell:
-            Image(systemName: "bell.badge.fill")
+            .reminder
         case .archiveExport:
-            Image(systemName: "square.and.arrow.up.fill")
+            .archive
         case .search:
-            Image(systemName: "magnifyingglass")
+            .search
         }
     }
 }

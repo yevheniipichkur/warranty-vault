@@ -71,10 +71,7 @@ struct SplashView: View {
             Color(uiColor: .systemBackground).ignoresSafeArea()
 
             VStack(spacing: 18) {
-                Image(systemName: "checkmark.shield.fill")
-                    .font(.system(size: 76, weight: .bold))
-                    .symbolRenderingMode(.hierarchical)
-                    .foregroundStyle(DesignSystem.Colors.premiumBlue)
+                PremiumArtworkView(kind: .vault, size: 116)
 
                 Text("app.name")
                     .font(.largeTitle.weight(.bold))
@@ -94,19 +91,6 @@ struct SplashView: View {
 
 struct AppBackground: View {
     var body: some View {
-        ZStack {
-            Color(uiColor: .systemBackground)
-
-            LinearGradient(
-                colors: [
-                    DesignSystem.Colors.premiumBlue.opacity(0.055),
-                    Color(uiColor: .systemBackground),
-                    DesignSystem.Colors.premiumTeal.opacity(0.045)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-        }
-        .ignoresSafeArea()
+        AmbientBackground(kind: .app)
     }
 }

@@ -14,56 +14,67 @@ struct RemindersView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 18) {
-                PremiumCard {
-                    VStack(alignment: .leading, spacing: 12) {
-                        SectionHeader(titleKey: "reminders.permission", systemImage: "bell.badge")
-                        Text(statusTextKey)
-                            .font(.body)
-                            .foregroundStyle(.secondary)
+        ZStack {
+            AmbientBackground(kind: .reminders)
 
-                        PrimaryButton(titleKey: "reminders.enable", systemImage: "bell.badge") {
-                            Task {
-                                _ = await notificationManager.requestAuthorizationIfNeeded()
-                                await refreshPendingCount()
-                            }
-                        }
-                    }
-                }
-
-                PremiumCard(cornerRadius: DesignSystem.Radius.medium, tint: DesignSystem.Colors.premiumAmber) {
-                    HStack {
-                        Label("reminders.pending", systemImage: "clock")
-                        Spacer()
-                        Text("\(pendingCount)")
-                            .font(.title3.weight(.bold))
-                            .monospacedDigit()
-                    }
-                }
-
-                if warrantyItems.isEmpty {
-                    EmptyStateView(
-                        symbolName: "bell.slash",
-                        titleKey: "reminders.empty.title",
+            ScrollView {
+                VStack(alignment: .leading, spacing: 18) {
+                    ScreenHeroCard(
+                        titleKey: "reminders.title",
                         messageKey: "reminders.empty.message",
-                        illustrationKind: .reminderBell
+                        artworkKind: .reminder,
+                        tint: DesignSystem.Colors.premiumAmber
                     )
-                } else {
-                    VStack(alignment: .leading, spacing: 12) {
-                        SectionHeader(titleKey: "reminders.upcoming", systemImage: "calendar.badge.clock")
-                        ForEach(warrantyItems) { item in
-                            ReminderItemRow(item: item) {
+
+                    PremiumCard {
+                        VStack(alignment: .leading, spacing: 12) {
+                            SectionHeader(titleKey: "reminders.permission", systemImage: "bell.badge")
+                            Text(statusTextKey)
+                                .font(.body)
+                                .foregroundStyle(.secondary)
+
+                            PrimaryButton(titleKey: "reminders.enable", systemImage: "bell.badge") {
                                 Task {
-                                    await notificationManager.rescheduleReminders(for: item)
+                                    _ = await notificationManager.requestAuthorizationIfNeeded()
                                     await refreshPendingCount()
                                 }
                             }
                         }
                     }
+
+                    PremiumCard(cornerRadius: DesignSystem.Radius.medium, tint: DesignSystem.Colors.premiumAmber) {
+                        HStack {
+                            Label("reminders.pending", systemImage: "clock")
+                            Spacer()
+                            Text("\(pendingCount)")
+                                .font(.title3.weight(.bold))
+                                .monospacedDigit()
+                        }
+                    }
+
+                    if warrantyItems.isEmpty {
+                        EmptyStateView(
+                            symbolName: "bell.slash",
+                            titleKey: "reminders.empty.title",
+                            messageKey: "reminders.empty.message",
+                            illustrationKind: .reminderBell
+                        )
+                    } else {
+                        VStack(alignment: .leading, spacing: 12) {
+                            SectionHeader(titleKey: "reminders.upcoming", systemImage: "calendar.badge.clock")
+                            ForEach(warrantyItems) { item in
+                                ReminderItemRow(item: item) {
+                                    Task {
+                                        await notificationManager.rescheduleReminders(for: item)
+                                        await refreshPendingCount()
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
+                .padding(20)
             }
-            .padding(20)
         }
         .navigationTitle("reminders.title")
         .task {

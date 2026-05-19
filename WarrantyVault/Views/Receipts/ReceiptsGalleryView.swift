@@ -19,49 +19,62 @@ struct ReceiptsGalleryView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 14) {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 8) {
-                        FilterChip(titleKey: "filter.all", isSelected: selectedCategory == nil) {
-                            selectedCategory = nil
-                        }
+        ZStack {
+            AmbientBackground(kind: .receipts)
 
-                        ForEach(WarrantyCategory.allCases) { category in
-                            FilterChip(titleKey: category.titleKey, isSelected: selectedCategory == category) {
-                                selectedCategory = category
-                            }
-                        }
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 4)
-                }
-
-                if receiptItems.isEmpty {
-                    EmptyStateView(
-                        symbolName: "doc.text.image",
-                        titleKey: "receipts.empty.title",
+            ScrollView {
+                VStack(alignment: .leading, spacing: 14) {
+                    ScreenHeroCard(
+                        titleKey: "receipts.title",
                         messageKey: "receipts.empty.message",
-                        illustrationKind: .receiptShield
+                        artworkKind: .receipt,
+                        tint: DesignSystem.Colors.premiumTeal
                     )
                     .padding(.horizontal, 20)
-                    .padding(.top, 42)
-                } else {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 156), spacing: 12)], spacing: 12) {
-                        ForEach(receiptItems) { item in
-                            NavigationLink {
-                                ItemDetailView(item: item)
-                            } label: {
-                                ReceiptCard(item: item)
-                                    .animatedCard(delay: 0.03)
+                    .padding(.bottom, 2)
+
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 8) {
+                            FilterChip(titleKey: "filter.all", isSelected: selectedCategory == nil) {
+                                selectedCategory = nil
                             }
-                            .buttonStyle(.plain)
+
+                            ForEach(WarrantyCategory.allCases) { category in
+                                FilterChip(titleKey: category.titleKey, isSelected: selectedCategory == category) {
+                                    selectedCategory = category
+                                }
+                            }
                         }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 4)
                     }
-                    .padding(.horizontal, 20)
+
+                    if receiptItems.isEmpty {
+                        EmptyStateView(
+                            symbolName: "doc.text.image",
+                            titleKey: "receipts.empty.title",
+                            messageKey: "receipts.empty.message",
+                            illustrationKind: .receiptShield
+                        )
+                        .padding(.horizontal, 20)
+                        .padding(.top, 42)
+                    } else {
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 156), spacing: 12)], spacing: 12) {
+                            ForEach(receiptItems) { item in
+                                NavigationLink {
+                                    ItemDetailView(item: item)
+                                } label: {
+                                    ReceiptCard(item: item)
+                                        .animatedCard(delay: 0.03)
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
+                        .padding(.horizontal, 20)
+                    }
                 }
+                .padding(.vertical, 8)
             }
-            .padding(.vertical, 8)
         }
         .navigationTitle("receipts.title")
         .searchable(text: $searchText, prompt: "receipts.search.placeholder")

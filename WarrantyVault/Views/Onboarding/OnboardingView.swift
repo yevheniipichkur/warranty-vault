@@ -12,38 +12,42 @@ struct OnboardingView: View {
     ]
 
     var body: some View {
-        VStack(spacing: 24) {
-            Spacer(minLength: 28)
+        ZStack {
+            AmbientBackground(kind: .onboarding)
 
-            Text("app.name")
-                .font(.largeTitle.weight(.bold))
-                .multilineTextAlignment(.center)
+            VStack(spacing: 24) {
+                Spacer(minLength: 28)
 
-            TabView(selection: $currentPage) {
-                ForEach(Array(pages.enumerated()), id: \.offset) { index, page in
-                    OnboardingPageView(page: page, isActive: currentPage == index)
-                        .tag(index)
-                }
-            }
-            .tabViewStyle(.page(indexDisplayMode: .always))
+                Text("app.name")
+                    .font(.largeTitle.weight(.bold))
+                    .multilineTextAlignment(.center)
 
-            PrimaryButton(
-                titleKey: currentPage == pages.indices.last ? "onboarding.getStarted" : "common.next",
-                systemImage: "arrow.right"
-            ) {
-                UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                if currentPage == pages.indices.last {
-                    withAnimation(MotionManager.softAnimation(reduceMotion: reduceMotion)) {
-                        hasCompletedOnboarding = true
-                    }
-                } else {
-                    withAnimation(MotionManager.softAnimation(reduceMotion: reduceMotion)) {
-                        currentPage += 1
+                TabView(selection: $currentPage) {
+                    ForEach(Array(pages.enumerated()), id: \.offset) { index, page in
+                        OnboardingPageView(page: page, isActive: currentPage == index)
+                            .tag(index)
                     }
                 }
+                .tabViewStyle(.page(indexDisplayMode: .always))
+
+                PrimaryButton(
+                    titleKey: currentPage == pages.indices.last ? "onboarding.getStarted" : "common.next",
+                    systemImage: "arrow.right"
+                ) {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    if currentPage == pages.indices.last {
+                        withAnimation(MotionManager.softAnimation(reduceMotion: reduceMotion)) {
+                            hasCompletedOnboarding = true
+                        }
+                    } else {
+                        withAnimation(MotionManager.softAnimation(reduceMotion: reduceMotion)) {
+                            currentPage += 1
+                        }
+                    }
+                }
+                .padding(.horizontal, 24)
+                .padding(.bottom, 28)
             }
-            .padding(.horizontal, 24)
-            .padding(.bottom, 28)
         }
     }
 }

@@ -168,12 +168,8 @@ private struct DashboardHeroView: View {
 
                 Spacer(minLength: 8)
 
-                Image(systemName: "checkmark.shield.fill")
-                    .font(.system(size: 34, weight: .semibold))
-                    .symbolRenderingMode(.hierarchical)
-                    .foregroundStyle(DesignSystem.Colors.premiumBlue)
-                    .frame(width: 58, height: 58)
-                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 19, style: .continuous))
+                PremiumArtworkView(kind: .vault, size: 82)
+                    .accessibilityHidden(true)
             }
 
             HStack(spacing: 10) {

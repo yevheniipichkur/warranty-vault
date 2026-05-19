@@ -60,6 +60,8 @@ struct ItemFormView: View {
 
     var body: some View {
         ZStack {
+            AmbientBackground(kind: .app)
+
             ScrollView {
                 // Lazy rendering plus lightweight form cards keeps typing smooth on device.
                 LazyVStack(spacing: 14) {

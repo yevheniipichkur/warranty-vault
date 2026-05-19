@@ -17,12 +17,14 @@ struct PaywallView: View {
 
     var body: some View {
         ZStack {
+            AmbientBackground(kind: .paywall)
+
             NavigationStack {
                 ScrollView {
                     VStack(spacing: 24) {
                     // Hero
                     VStack(spacing: 14) {
-                        VaultIllustrationView(kind: .proVault)
+                        PremiumArtworkView(kind: .pro, size: 132)
 
                         Text("paywall.title")
                             .font(.title.weight(.bold))
