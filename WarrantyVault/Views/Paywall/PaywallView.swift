@@ -4,6 +4,7 @@ import SwiftUI
 struct PaywallView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var subscriptionManager: SubscriptionManager
+    @AppStorage("debugMenuUnlocked") private var debugMenuUnlocked = false
 
     var body: some View {
         NavigationStack {
@@ -70,50 +71,54 @@ struct PaywallView: View {
                                     Text("paywall.productsUnavailable")
                                         .font(.headline)
                                         .fixedSize(horizontal: false, vertical: true)
-                                    if !subscriptionManager.loadDiagnostic.isEmpty {
-                                        Text(subscriptionManager.loadDiagnostic)
-                                            .font(.caption)
-                                            .foregroundStyle(.secondary)
-                                            .multilineTextAlignment(.leading)
-                                            .fixedSize(horizontal: false, vertical: true)
-                                    }
-                                    if !subscriptionManager.diagnosticLines.isEmpty {
-                                        Divider()
-                                            .padding(.vertical, 4)
-                                        ForEach(subscriptionManager.diagnosticLines, id: \.self) { line in
-                                            StoreKitDiagnosticLine(line: line)
-                                        }
-                                    }
 
-                                    VStack(spacing: 8) {
-                                        Button {
-                                            Task {
-                                                await subscriptionManager.loadProducts()
-                                                await subscriptionManager.refreshEntitlements()
-                                            }
-                                        } label: {
-                                            Label("settings.storekitRefresh", systemImage: "arrow.clockwise")
-                                                .font(.caption.weight(.semibold))
-                                                .lineLimit(2)
+                                    if debugMenuUnlocked {
+                                        if !subscriptionManager.loadDiagnostic.isEmpty {
+                                            Text(subscriptionManager.loadDiagnostic)
+                                                .font(.caption)
+                                                .foregroundStyle(.secondary)
+                                                .multilineTextAlignment(.leading)
                                                 .fixedSize(horizontal: false, vertical: true)
-                                                .frame(maxWidth: .infinity, alignment: .leading)
                                         }
-                                        .buttonStyle(.bordered)
-                                        .controlSize(.small)
 
-                                        Button {
-                                            Task {
-                                                await subscriptionManager.syncAppStoreAccount()
+                                        if !subscriptionManager.diagnosticLines.isEmpty {
+                                            Divider()
+                                                .padding(.vertical, 4)
+                                            ForEach(subscriptionManager.diagnosticLines, id: \.self) { line in
+                                                StoreKitDiagnosticLine(line: line)
                                             }
-                                        } label: {
-                                            Label("settings.storekitSync", systemImage: "arrow.triangle.2.circlepath")
-                                                .font(.caption.weight(.semibold))
-                                                .lineLimit(2)
-                                                .fixedSize(horizontal: false, vertical: true)
-                                                .frame(maxWidth: .infinity, alignment: .leading)
                                         }
-                                        .buttonStyle(.bordered)
-                                        .controlSize(.small)
+
+                                        VStack(spacing: 8) {
+                                            Button {
+                                                Task {
+                                                    await subscriptionManager.loadProducts()
+                                                    await subscriptionManager.refreshEntitlements()
+                                                }
+                                            } label: {
+                                                Label("settings.storekitRefresh", systemImage: "arrow.clockwise")
+                                                    .font(.caption.weight(.semibold))
+                                                    .lineLimit(2)
+                                                    .fixedSize(horizontal: false, vertical: true)
+                                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                            }
+                                            .buttonStyle(.bordered)
+                                            .controlSize(.small)
+
+                                            Button {
+                                                Task {
+                                                    await subscriptionManager.syncAppStoreAccount()
+                                                }
+                                            } label: {
+                                                Label("settings.storekitSync", systemImage: "arrow.triangle.2.circlepath")
+                                                    .font(.caption.weight(.semibold))
+                                                    .lineLimit(2)
+                                                    .fixedSize(horizontal: false, vertical: true)
+                                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                            }
+                                            .buttonStyle(.bordered)
+                                            .controlSize(.small)
+                                        }
                                     }
                                 }
                                 .frame(maxWidth: .infinity, alignment: .leading)

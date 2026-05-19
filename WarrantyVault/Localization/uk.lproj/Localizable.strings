@@ -248,6 +248,7 @@
 "liveActivity.noEligibleItem" = "Ця річ не підходить для Live Activity.";
 
 "debug.title" = "Developer / QA";
+"debug.disableMenu" = "Вимкнути Debug / QA";
 "debug.unlocked.title" = "Debug-меню розблоковано";
 "debug.unlocked.message" = "Секція Developer / QA тепер доступна.";
 "debug.section.data" = "Дані";

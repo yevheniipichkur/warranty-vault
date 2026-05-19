@@ -19,11 +19,9 @@ struct SettingsView: View {
     @State private var isShowingPaywall = false
     @State private var isShowingICloudInfo = false
     @State private var sharedURL: URL?
-    #if DEBUG
     @AppStorage("debugMenuUnlocked") private var debugMenuUnlocked = false
     @State private var appVersionTapCount = 0
     @State private var isShowingDebugUnlockedAlert = false
-    #endif
 
     var body: some View {
         Form {
@@ -93,38 +91,6 @@ struct SettingsView: View {
                 }
             }
 
-            Section("settings.section.storekit") {
-                Button {
-                    Task {
-                        await subscriptionManager.loadProducts()
-                        await subscriptionManager.refreshEntitlements()
-                    }
-                } label: {
-                    Label("settings.storekitRefresh", systemImage: "arrow.clockwise")
-                }
-
-                Button {
-                    Task {
-                        await subscriptionManager.syncAppStoreAccount()
-                    }
-                } label: {
-                    Label("settings.storekitSync", systemImage: "arrow.triangle.2.circlepath")
-                }
-
-                if !subscriptionManager.loadDiagnostic.isEmpty {
-                    Text(subscriptionManager.loadDiagnostic)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(nil)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .textSelection(.enabled)
-                }
-
-                ForEach(subscriptionManager.diagnosticLines, id: \.self) { line in
-                    StoreKitDiagnosticLine(line: line)
-                }
-            }
-
             Section("settings.section.proFeatures") {
                 SettingsFeatureRow(
                     titleKey: "feature.scanner.title",
@@ -171,7 +137,6 @@ struct SettingsView: View {
                         .foregroundStyle(.secondary)
                 }
                 .contentShape(Rectangle())
-                #if DEBUG
                 .onTapGesture {
                     appVersionTapCount += 1
                     if appVersionTapCount >= 7 {
@@ -180,9 +145,7 @@ struct SettingsView: View {
                         isShowingDebugUnlockedAlert = true
                     }
                 }
-                #endif
 
-                #if DEBUG
                 if debugMenuUnlocked {
                     NavigationLink {
                         DebugMenuView()
@@ -190,7 +153,6 @@ struct SettingsView: View {
                         Label("debug.title", systemImage: "ladybug")
                     }
                 }
-                #endif
             }
 
             Section("settings.section.privacy") {
@@ -230,13 +192,11 @@ struct SettingsView: View {
         } message: {
             Text("icloud.setupMessage")
         }
-        #if DEBUG
         .alert("debug.unlocked.title", isPresented: $isShowingDebugUnlockedAlert) {
             Button("common.ok", role: .cancel) {}
         } message: {
             Text("debug.unlocked.message")
         }
-        #endif
         .onAppear {
             cloudSyncManager.refreshStatus()
         }

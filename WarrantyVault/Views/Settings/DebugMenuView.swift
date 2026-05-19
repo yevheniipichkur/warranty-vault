@@ -1,8 +1,8 @@
-#if DEBUG
 import SwiftData
 import SwiftUI
 
 struct DebugMenuView: View {
+    @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject private var languageManager: LanguageManager
     @EnvironmentObject private var appearanceManager: AppearanceManager
@@ -25,11 +25,40 @@ struct DebugMenuView: View {
     var body: some View {
         Form {
             Section {
-                Label("DEBUG BUILD", systemImage: "ladybug.fill")
+                Label(debugBuildLabel, systemImage: "ladybug.fill")
                     .font(.caption.weight(.bold))
                     .foregroundStyle(.orange)
             }
 
+            Section("settings.section.storekit") {
+                DebugActionRow(titleKey: "settings.storekitRefresh", systemImage: "arrow.clockwise") {
+                    Task {
+                        await subscriptionManager.loadProducts()
+                        await subscriptionManager.refreshEntitlements()
+                    }
+                }
+
+                DebugActionRow(titleKey: "settings.storekitSync", systemImage: "arrow.triangle.2.circlepath") {
+                    Task {
+                        await subscriptionManager.syncAppStoreAccount()
+                    }
+                }
+
+                if !subscriptionManager.loadDiagnostic.isEmpty {
+                    Text(subscriptionManager.loadDiagnostic)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(nil)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .textSelection(.enabled)
+                }
+
+                ForEach(subscriptionManager.diagnosticLines, id: \.self) { line in
+                    StoreKitDiagnosticLine(line: line)
+                }
+            }
+
+            #if DEBUG
             Section("debug.section.data") {
                 DebugActionRow(titleKey: "debug.seedDemoData", subtitleKey: "debug.seedDemoData.subtitle", systemImage: "sparkles") {
                     confirmation = .seedDemo
@@ -50,7 +79,9 @@ struct DebugMenuView: View {
                     confirmation = .clearAllData
                 }
             }
+            #endif
 
+            #if DEBUG
             Section("debug.section.paywall") {
                 DebugActionRow(titleKey: "debug.togglePro", subtitleKey: subscriptionManager.hasPro ? "settings.proUnlocked" : nil, systemImage: "hammer") {
                     DebugToolsService.toggleDebugPro()
@@ -62,7 +93,9 @@ struct DebugMenuView: View {
                     isShowingPaywall = true
                 }
             }
+            #endif
 
+            #if DEBUG
             Section("debug.section.notifications") {
                 DebugActionRow(titleKey: "debug.testNotifications", systemImage: "bell") {
                     Task {
@@ -70,7 +103,9 @@ struct DebugMenuView: View {
                     }
                 }
             }
+            #endif
 
+            #if DEBUG
             Section("debug.section.liveActivity") {
                 DebugActionRow(titleKey: "debug.testLiveActivity", systemImage: "activity") {
                     Task {
@@ -84,13 +119,17 @@ struct DebugMenuView: View {
                     }
                 }
             }
+            #endif
 
+            #if DEBUG
             Section("debug.section.pdf") {
                 DebugActionRow(titleKey: "debug.exportTestPDF", systemImage: "doc.richtext") {
                     sharedURL = try? DebugToolsService.exportTestPDF(context: modelContext)
                 }
             }
+            #endif
 
+            #if DEBUG
             Section("debug.section.localization") {
                 Picker("settings.language", selection: $languageManager.selectedLanguage) {
                     ForEach(AppLanguage.allCases) { language in
@@ -99,7 +138,9 @@ struct DebugMenuView: View {
                 }
                 .pickerStyle(.segmented)
             }
+            #endif
 
+            #if DEBUG
             Section("debug.section.appearance") {
                 Picker("settings.appearance", selection: $appearanceManager.selectedAppearance) {
                     ForEach(AppAppearance.allCases) { appearance in
@@ -108,6 +149,7 @@ struct DebugMenuView: View {
                 }
                 .pickerStyle(.segmented)
             }
+            #endif
 
             Section("debug.section.diagnostics") {
                 DebugActionRow(titleKey: "debug.showAppPaths", systemImage: "folder") {
@@ -126,6 +168,12 @@ struct DebugMenuView: View {
             }
 
             Section("debug.section.reset") {
+                DebugActionRow(titleKey: "debug.disableMenu", systemImage: "eye.slash") {
+                    debugMenuUnlocked = false
+                    dismiss()
+                }
+
+                #if DEBUG
                 DebugActionRow(titleKey: "debug.resetOnboarding", systemImage: "rectangle.stack") {
                     DebugToolsService.resetOnboarding()
                     hasCompletedOnboarding = false
@@ -134,6 +182,7 @@ struct DebugMenuView: View {
                 DebugActionRow(titleKey: "debug.resetAllSettings", systemImage: "arrow.triangle.2.circlepath", role: .destructive) {
                     confirmation = .resetSettings
                 }
+                #endif
             }
         }
         .navigationTitle("debug.title")
@@ -199,6 +248,14 @@ struct DebugMenuView: View {
             messageKey = "debug.resetDone"
         }
     }
+
+    private var debugBuildLabel: String {
+        #if DEBUG
+        return "DEBUG BUILD"
+        #else
+        return "QA MODE"
+        #endif
+    }
 }
 
 private enum DebugConfirmation {
@@ -229,4 +286,3 @@ private enum DebugConfirmation {
         }
     }
 }
-#endif

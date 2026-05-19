@@ -69,7 +69,7 @@ struct ItemDetailView: View {
                         VStack(alignment: .leading, spacing: 14) {
                             SectionHeader(titleKey: "detail.section.documents", systemImage: "doc.text.image")
 
-                            HStack(spacing: 12) {
+                            LazyVGrid(columns: [GridItem(.adaptive(minimum: 140), spacing: 12)], spacing: 12) {
                                 if item.receiptImagePath != nil {
                                     DocumentPreview(titleKey: "image.receipt", imagePath: item.receiptImagePath)
                                 }
@@ -126,7 +126,9 @@ struct ItemDetailView: View {
                         }
                 }
             }
-            .padding(20)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 18)
         }
         .navigationTitle(item.name)
         .navigationBarTitleDisplayMode(.large)
@@ -321,7 +323,7 @@ private struct DetailHeroCard: View {
         ZStack(alignment: .bottomLeading) {
             StoredImageView(imagePath: item.productImagePath, placeholderSystemImage: item.categoryType.symbolName)
                 .frame(maxWidth: .infinity)
-                .frame(height: 286)
+                .frame(height: 270)
                 .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
                 .overlay {
                     LinearGradient(
@@ -344,16 +346,21 @@ private struct DetailHeroCard: View {
                         .font(.title.weight(.bold))
                         .foregroundStyle(.white)
                         .lineLimit(2)
+                        .minimumScaleFactor(0.78)
+                        .fixedSize(horizontal: false, vertical: true)
 
                     if !subtitle.isEmpty {
                         Text(subtitle)
                             .font(.subheadline.weight(.medium))
                             .foregroundStyle(.white.opacity(0.82))
-                            .lineLimit(1)
+                            .lineLimit(2)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(18)
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .shadow(color: DesignSystem.Shadow.elevated, radius: 22, y: 14)
     }
@@ -384,50 +391,53 @@ private struct WarrantyTimelineCard: View {
     var body: some View {
         PremiumCard(tint: status.tint) {
             VStack(alignment: .leading, spacing: 14) {
-                HStack {
-                    Label(LocalizedStringKey("item.warrantyExpiration"), systemImage: "shield.lefthalf.filled")
-                        .font(.headline.weight(.semibold))
-                        .foregroundStyle(.primary)
-                    Spacer()
-                    WarrantyStatusBadge(status: status)
+                ViewThatFits(in: .horizontal) {
+                    HStack(alignment: .center, spacing: 10) {
+                        timelineTitle
+                        Spacer(minLength: 8)
+                        WarrantyStatusBadge(status: status)
+                    }
+
+                    VStack(alignment: .leading, spacing: 10) {
+                        timelineTitle
+                        WarrantyStatusBadge(status: status)
+                    }
                 }
 
                 ProgressView(value: progress)
                     .tint(status.tint)
                     .scaleEffect(x: 1, y: 1.35, anchor: .center)
 
-                HStack(alignment: .top) {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("item.purchaseDate")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                        Text(DateFormatterProvider.string(from: purchaseDate, locale: locale))
-                            .font(.subheadline.weight(.semibold))
-                    }
+                LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
+                    TimelineMetric(
+                        titleKey: "item.purchaseDate",
+                        value: DateFormatterProvider.string(from: purchaseDate, locale: locale),
+                        alignment: .leading
+                    )
 
-                    Spacer()
+                    TimelineMetric(
+                        titleKey: "liveActivity.daysLeft",
+                        value: status == .expired ? "0" : "\(daysLeft)",
+                        alignment: .center,
+                        isEmphasized: true
+                    )
 
-                    VStack(alignment: .trailing, spacing: 4) {
-                        Text("liveActivity.daysLeft")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                        Text(status == .expired ? "0" : "\(daysLeft)")
-                            .font(.title3.weight(.bold))
-                            .monospacedDigit()
-                    }
-
-                    Spacer()
-
-                    VStack(alignment: .trailing, spacing: 4) {
-                        Text("item.warrantyExpiration")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                        Text(DateFormatterProvider.string(from: expirationDate, locale: locale))
-                            .font(.subheadline.weight(.semibold))
-                    }
+                    TimelineMetric(
+                        titleKey: "item.warrantyExpiration",
+                        value: DateFormatterProvider.string(from: expirationDate, locale: locale),
+                        alignment: .leading
+                    )
                 }
             }
         }
+    }
+
+    private var timelineTitle: some View {
+        Label(LocalizedStringKey("item.warrantyExpiration"), systemImage: "shield.lefthalf.filled")
+            .font(.headline.weight(.semibold))
+            .foregroundStyle(.primary)
+            .lineLimit(2)
+            .fixedSize(horizontal: false, vertical: true)
     }
 }
 
@@ -440,24 +450,77 @@ private struct DetailRow: View {
         if let value, value.isEmpty {
             EmptyView()
         } else {
-            HStack(alignment: .top, spacing: 12) {
+            VStack(alignment: .leading, spacing: 5) {
                 Text(LocalizedStringKey(titleKey))
-                    .font(.subheadline)
+                    .font(.caption)
                     .foregroundStyle(.secondary)
-                    .frame(width: 136, alignment: .leading)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
 
                 if let valueKey {
                     Text(LocalizedStringKey(valueKey))
                         .font(.subheadline.weight(.medium))
+                        .lineLimit(nil)
+                        .fixedSize(horizontal: false, vertical: true)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 } else {
                     Text(value ?? "")
                         .font(.subheadline.weight(.medium))
+                        .lineLimit(nil)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .textSelection(.enabled)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.vertical, 3)
         }
     }
+}
+
+private struct TimelineMetric: View {
+    let titleKey: String
+    let value: String
+    var alignment: TimelineMetricAlignment = .leading
+    var isEmphasized = false
+
+    var body: some View {
+        VStack(alignment: horizontalAlignment, spacing: 4) {
+            Text(LocalizedStringKey(titleKey))
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .lineLimit(2)
+                .multilineTextAlignment(textAlignment)
+                .minimumScaleFactor(0.78)
+
+            Text(value)
+                .font(isEmphasized ? .title3.weight(.bold) : .subheadline.weight(.semibold))
+                .monospacedDigit()
+                .lineLimit(2)
+                .multilineTextAlignment(textAlignment)
+                .minimumScaleFactor(0.78)
+        }
+        .frame(maxWidth: .infinity, alignment: frameAlignment)
+        .padding(12)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+    }
+
+    private var horizontalAlignment: HorizontalAlignment {
+        alignment == .center ? .center : .leading
+    }
+
+    private var textAlignment: TextAlignment {
+        alignment == .center ? .center : .leading
+    }
+
+    private var frameAlignment: Alignment {
+        alignment == .center ? .center : .leading
+    }
+}
+
+private enum TimelineMetricAlignment: Equatable {
+    case leading
+    case center
 }
 
 private struct DocumentPreview: View {

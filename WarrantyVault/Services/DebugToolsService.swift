@@ -1,4 +1,3 @@
-#if DEBUG
 import Foundation
 import SwiftData
 import UserNotifications
@@ -211,4 +210,3 @@ enum DebugToolsService {
         NotificationManager.shared.removeReminders(for: item.id)
     }
 }
-#endif

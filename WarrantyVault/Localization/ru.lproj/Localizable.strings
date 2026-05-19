@@ -248,6 +248,7 @@
 "liveActivity.noEligibleItem" = "Этот товар не подходит для Live Activity.";
 
 "debug.title" = "Developer / QA";
+"debug.disableMenu" = "Отключить Debug / QA";
 "debug.unlocked.title" = "Debug-меню разблокировано";
 "debug.unlocked.message" = "Секция Developer / QA теперь доступна.";
 "debug.section.data" = "Данные";

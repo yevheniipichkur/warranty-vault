@@ -1,4 +1,3 @@
-#if DEBUG
 import SwiftUI
 
 struct DebugActionRow: View {
@@ -44,4 +43,3 @@ struct DebugActionRow: View {
         .buttonStyle(.plain)
     }
 }
-#endif

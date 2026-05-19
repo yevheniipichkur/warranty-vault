@@ -248,6 +248,7 @@
 "liveActivity.noEligibleItem" = "This item is not eligible for Live Activity.";
 
 "debug.title" = "Developer / QA";
+"debug.disableMenu" = "Disable Debug / QA";
 "debug.unlocked.title" = "Debug menu unlocked";
 "debug.unlocked.message" = "Developer / QA section is now available.";
 "debug.section.data" = "Data";
